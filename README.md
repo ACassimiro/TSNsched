@@ -40,15 +40,15 @@ cd /home/cav/tsnsched_artifact/Script/
 
 The input java file (example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
 
-P -> SW1 -> SW2 -> Sub1
-     |       |
-     |       V
-     |       Sub2
-     V        
-     SW3 -> Sub3
-     |
-     V
-    Sub4
+    P -> SW1 -> SW2 -> Sub1
+         |       |
+         |       V
+         |       Sub2
+         V        
+         SW3 -> Sub3
+         |
+         V
+        Sub4
 
 The generated TSN schedule can be found in the output directory in the file output/example.java.log and output/example.java.out.
 The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the output/example.java.out file.
