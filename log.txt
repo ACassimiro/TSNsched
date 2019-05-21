@@ -1,0 +1,375 @@
+SCHEDULER LOG:
+
+
+SWITCH LIST:
+  Switch name: switch1
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 40
+        Cycle duration: 10000
+
+
+FLOW LIST:
+  Flow name: flow1
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev5, 
+    Path to dev5: dev0, switch1(flow1Fragment1), dev5, 
+
+    Fragment name: flow1Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 4
+        Fragment slot start: 0.0
+        Fragment slot duration: 15.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20053.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40055.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60055.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80054.5
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100055.0
+          ----------------------------
+
+  Flow name: flow2
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev5, 
+    Path to dev5: dev1, switch1(flow2Fragment1), dev5, 
+
+    Fragment name: flow2Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 3
+        Fragment slot start: 31.0
+        Fragment slot duration: 15.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20086.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40086.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60086.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80086.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100086.0
+          ----------------------------
+
+  Flow name: flow3
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev5, 
+    Path to dev5: dev2, switch1(flow3Fragment1), dev5, 
+
+    Fragment name: flow3Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 5
+        Fragment slot start: 47.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20100.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40100.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60100.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80100.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100100.0
+          ----------------------------
+
+  Flow name: flow4
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev5, 
+    Path to dev5: dev3, switch1(flow4Fragment1), dev5, 
+
+    Fragment name: flow4Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 7
+        Fragment slot start: 16.0
+        Fragment slot duration: 14.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20069.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40069.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60069.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80069.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100069.0
+          ----------------------------
+
+  Flow name: flow5
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev0, 
+    Path to dev0: dev5, switch1(flow5Fragment1), dev0, 
+
+    Fragment name: flow5Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev0
+        Fragment priority: 6
+        Fragment slot start: 47.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20100.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40100.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60100.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80100.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100100.0
+          ----------------------------
+
+  Flow name: flow6
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev1, 
+    Path to dev1: dev5, switch1(flow6Fragment1), dev1, 
+
+    Fragment name: flow6Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev1
+        Fragment priority: 6
+        Fragment slot start: 9962.0
+        Fragment slot duration: 13.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20015.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40015.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60015.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80015.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100015.0
+          ----------------------------
+
+  Flow name: flow7
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev2, 
+    Path to dev2: dev5, switch1(flow7Fragment1), dev2, 
+
+    Fragment name: flow7Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev2
+        Fragment priority: 6
+        Fragment slot start: 9987.0
+        Fragment slot duration: 13.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20040.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40040.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60040.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80040.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100040.0
+          ----------------------------
+
+  Flow name: flow8
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev3, 
+    Path to dev3: dev5, switch1(flow8Fragment1), dev3, 
+
+    Fragment name: flow8Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev3
+        Fragment priority: 1
+        Fragment slot start: 9948.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20014.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40014.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60014.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80014.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100014.0
+          ----------------------------
+
+  Flow name: flow9
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev6, 
+    Path to dev6: dev5, switch1(flow9Fragment1), dev6, 
+
+    Fragment name: flow9Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev6
+        Fragment priority: 7
+        Fragment slot start: 47.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20100.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40100.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60100.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80100.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100100.0
+          ----------------------------
+
+  Flow name: flow10
+    Start dev. first t1: 20000
+    Start dev. HC: 100
+    Start dev. packet periodicity: 20000
+    Flow type: Multicast
+    List of leaves: dev5, 
+    Path to dev5: dev6, switch1(flow10Fragment1), dev5, 
+
+    Fragment name: flow10Fragment1
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 1
+        Fragment slot start: 9987.0
+        Fragment slot duration: 13.0
+        Fragment times-
+          (0) Fragment departure time: 20000.0
+          (0) Fragment arrival time: 20001.0
+          (0) Fragment scheduled time: 20040.0
+          ----------------------------
+          (1) Fragment departure time: 40000.0
+          (1) Fragment arrival time: 40001.0
+          (1) Fragment scheduled time: 40040.0
+          ----------------------------
+          (2) Fragment departure time: 60000.0
+          (2) Fragment arrival time: 60001.0
+          (2) Fragment scheduled time: 60040.0
+          ----------------------------
+          (3) Fragment departure time: 80000.0
+          (3) Fragment arrival time: 80001.0
+          (3) Fragment scheduled time: 80040.0
+          ----------------------------
+          (4) Fragment departure time: 100000.0
+          (4) Fragment arrival time: 100001.0
+          (4) Fragment scheduled time: 100040.0
+          ----------------------------
+

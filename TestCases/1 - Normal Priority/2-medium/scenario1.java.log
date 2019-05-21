@@ -1,0 +1,464 @@
+SCHEDULER LOG:
+
+
+SWITCH LIST:
+  Switch name: switch0
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 400
+
+  Switch name: switch1
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 2080357016953933782643/4180000000000000000
+
+  Switch name: switch2
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 400
+
+  Switch name: switch3
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 2799255186493271609073/2090000000000000000
+        Cycle duration: 8001/20
+
+  Switch name: switch4
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 2001
+        Cycle duration: 400
+
+  Switch name: switch5
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 400
+
+  Switch name: switch6
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 10950/11
+
+  Switch name: switch7
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 400
+
+  Switch name: switch8
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 59381/88
+        Cycle duration: 54979/110
+
+  Switch name: switch9
+    Max packet size: 100.0
+    Port speed: 100.0
+    Time to Travel: 1.0
+    Transmission time: 13.0
+    Cycle information -
+        First cycle start: 0
+        Cycle duration: 400
+
+
+FLOW LIST:
+  Flow name: flow1
+    Start dev. first t1: 2000
+    Start dev. HC: 1000
+    Start dev. packet periodicity: 2000
+    Flow type: Multicast
+    List of leaves: dev5, dev6, dev7, dev30, dev31, dev32, dev40, dev41, dev42, 
+    Path to dev5: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment5), dev5, 
+    Path to dev6: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment6), dev6, 
+    Path to dev7: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment7), dev7, 
+    Path to dev30: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment8), dev30, 
+    Path to dev31: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment9), dev31, 
+    Path to dev32: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment10), dev32, 
+    Path to dev40: dev23, switch4(flow1Fragment2), switch8(flow1Fragment11), dev40, 
+    Path to dev41: dev23, switch4(flow1Fragment2), switch8(flow1Fragment12), dev41, 
+    Path to dev42: dev23, switch4(flow1Fragment2), switch8(flow1Fragment13), dev42, 
+
+    Fragment name: flow1Fragment1
+        Fragment node: switch4
+        Fragment next hop: switch3
+        Fragment priority: 1
+        Fragment slot start: 111.679276
+        Fragment slot duration: 19.327272
+        Fragment times-
+          (0) Fragment departure time: 2000.0
+          (0) Fragment arrival time: 2001.0
+          (0) Fragment scheduled time: 2125.6792
+          ----------------------------
+          (1) Fragment departure time: 4000.0
+          (1) Fragment arrival time: 4001.0
+          (1) Fragment scheduled time: 4925.679
+          ----------------------------
+          (2) Fragment departure time: 6000.0
+          (2) Fragment arrival time: 6001.0
+          (2) Fragment scheduled time: 6525.679
+          ----------------------------
+          (3) Fragment departure time: 8000.0
+          (3) Fragment arrival time: 8001.0
+          (3) Fragment scheduled time: 8525.68
+          ----------------------------
+          (4) Fragment departure time: 10000.0
+          (4) Fragment arrival time: 10001.0
+          (4) Fragment scheduled time: 10530.002
+          ----------------------------
+    Fragment name: flow1Fragment2
+        Fragment node: switch4
+        Fragment next hop: switch8
+        Fragment priority: 1
+        Fragment slot start: 242.83864
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 2000.0
+          (0) Fragment arrival time: 2001.0
+          (0) Fragment scheduled time: 2256.8386
+          ----------------------------
+          (1) Fragment departure time: 4000.0
+          (1) Fragment arrival time: 4001.0
+          (1) Fragment scheduled time: 4293.839
+          ----------------------------
+          (2) Fragment departure time: 6000.0
+          (2) Fragment arrival time: 6001.0
+          (2) Fragment scheduled time: 6256.839
+          ----------------------------
+          (3) Fragment departure time: 8000.0
+          (3) Fragment arrival time: 8001.0
+          (3) Fragment scheduled time: 8656.839
+          ----------------------------
+          (4) Fragment departure time: 10000.0
+          (4) Fragment arrival time: 10001.0
+          (4) Fragment scheduled time: 10656.839
+          ----------------------------
+    Fragment name: flow1Fragment3
+        Fragment node: switch3
+        Fragment next hop: switch1
+        Fragment priority: 1
+        Fragment slot start: 381.48636
+        Fragment slot duration: 18.563637
+        Fragment times-
+          (0) Fragment departure time: 2125.6792
+          (0) Fragment arrival time: 2126.6792
+          (0) Fragment scheduled time: 2533.9429
+          ----------------------------
+          (1) Fragment departure time: 4925.679
+          (1) Fragment arrival time: 4926.679
+          (1) Fragment scheduled time: 4939.8066
+          ----------------------------
+          (2) Fragment departure time: 6525.679
+          (2) Fragment arrival time: 6526.679
+          (2) Fragment scheduled time: 6540.0063
+          ----------------------------
+          (3) Fragment departure time: 8525.68
+          (3) Fragment arrival time: 8526.68
+          (3) Fragment scheduled time: 8540.257
+          ----------------------------
+          (4) Fragment departure time: 10530.002
+          (4) Fragment arrival time: 10531.002
+          (4) Fragment scheduled time: 10935.12
+          ----------------------------
+    Fragment name: flow1Fragment4
+        Fragment node: switch3
+        Fragment next hop: switch6
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 2125.6792
+          (0) Fragment arrival time: 2126.6792
+          (0) Fragment scheduled time: 2152.4565
+          ----------------------------
+          (1) Fragment departure time: 4925.679
+          (1) Fragment arrival time: 4926.679
+          (1) Fragment scheduled time: 4985.2363
+          ----------------------------
+          (2) Fragment departure time: 6525.679
+          (2) Fragment arrival time: 6526.679
+          (2) Fragment scheduled time: 6590.0063
+          ----------------------------
+          (3) Fragment departure time: 8525.68
+          (3) Fragment arrival time: 8526.68
+          (3) Fragment scheduled time: 8953.307
+          ----------------------------
+          (4) Fragment departure time: 10530.002
+          (4) Fragment arrival time: 10531.002
+          (4) Fragment scheduled time: 10553.634
+          ----------------------------
+    Fragment name: flow1Fragment5
+        Fragment node: switch1
+        Fragment next hop: dev5
+        Fragment priority: 1
+        Fragment slot start: 448.74515
+        Fragment slot duration: 48.947914
+        Fragment times-
+          (0) Fragment departure time: 2533.9429
+          (0) Fragment arrival time: 2534.9429
+          (0) Fragment scheduled time: 2950.2104
+          ----------------------------
+          (1) Fragment departure time: 4939.8066
+          (1) Fragment arrival time: 4940.8066
+          (1) Fragment scheduled time: 4966.5024
+          ----------------------------
+          (2) Fragment departure time: 6540.0063
+          (2) Fragment arrival time: 6541.0063
+          (2) Fragment scheduled time: 6944.701
+          ----------------------------
+          (3) Fragment departure time: 8540.257
+          (3) Fragment arrival time: 8541.257
+          (3) Fragment scheduled time: 8941.027
+          ----------------------------
+          (4) Fragment departure time: 10935.12
+          (4) Fragment arrival time: 10936.12
+          (4) Fragment scheduled time: 10949.247
+          ----------------------------
+    Fragment name: flow1Fragment6
+        Fragment node: switch1
+        Fragment next hop: dev6
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 35.273663
+        Fragment times-
+          (0) Fragment departure time: 2533.9429
+          (0) Fragment arrival time: 2534.9429
+          (0) Fragment scheduled time: 2999.1584
+          ----------------------------
+          (1) Fragment departure time: 4939.8066
+          (1) Fragment arrival time: 4940.8066
+          (1) Fragment scheduled time: 4990.058
+          ----------------------------
+          (2) Fragment departure time: 6540.0063
+          (2) Fragment arrival time: 6541.0063
+          (2) Fragment scheduled time: 6991.681
+          ----------------------------
+          (3) Fragment departure time: 8540.257
+          (3) Fragment arrival time: 8541.257
+          (3) Fragment scheduled time: 8993.749
+          ----------------------------
+          (4) Fragment departure time: 10935.12
+          (4) Fragment arrival time: 10936.12
+          (4) Fragment scheduled time: 10984.521
+          ----------------------------
+    Fragment name: flow1Fragment7
+        Fragment node: switch1
+        Fragment next hop: dev7
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 49.98098
+        Fragment times-
+          (0) Fragment departure time: 2533.9429
+          (0) Fragment arrival time: 2534.9429
+          (0) Fragment scheduled time: 2999.1584
+          ----------------------------
+          (1) Fragment departure time: 4939.8066
+          (1) Fragment arrival time: 4940.8066
+          (1) Fragment scheduled time: 4999.176
+          ----------------------------
+          (2) Fragment departure time: 6540.0063
+          (2) Fragment arrival time: 6541.0063
+          (2) Fragment scheduled time: 6999.222
+          ----------------------------
+          (3) Fragment departure time: 8540.257
+          (3) Fragment arrival time: 8541.257
+          (3) Fragment scheduled time: 9000.0
+          ----------------------------
+          (4) Fragment departure time: 10935.12
+          (4) Fragment arrival time: 10936.12
+          (4) Fragment scheduled time: 10999.229
+          ----------------------------
+    Fragment name: flow1Fragment8
+        Fragment node: switch6
+        Fragment next hop: dev30
+        Fragment priority: 1
+        Fragment slot start: 0.6363636
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 2152.4565
+          (0) Fragment arrival time: 2153.4565
+          (0) Fragment scheduled time: 3000.0
+          ----------------------------
+          (1) Fragment departure time: 4985.2363
+          (1) Fragment arrival time: 4986.2363
+          (1) Fragment scheduled time: 4999.364
+          ----------------------------
+          (2) Fragment departure time: 6590.0063
+          (2) Fragment arrival time: 6591.0063
+          (2) Fragment scheduled time: 6999.364
+          ----------------------------
+          (3) Fragment departure time: 8953.307
+          (3) Fragment arrival time: 8954.307
+          (3) Fragment scheduled time: 8999.363
+          ----------------------------
+          (4) Fragment departure time: 10553.634
+          (4) Fragment arrival time: 10554.634
+          (4) Fragment scheduled time: 10999.363
+          ----------------------------
+    Fragment name: flow1Fragment9
+        Fragment node: switch6
+        Fragment next hop: dev31
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 2152.4565
+          (0) Fragment arrival time: 2153.4565
+          (0) Fragment scheduled time: 2999.3635
+          ----------------------------
+          (1) Fragment departure time: 4985.2363
+          (1) Fragment arrival time: 4986.2363
+          (1) Fragment scheduled time: 4999.364
+          ----------------------------
+          (2) Fragment departure time: 6590.0063
+          (2) Fragment arrival time: 6591.0063
+          (2) Fragment scheduled time: 6999.364
+          ----------------------------
+          (3) Fragment departure time: 8953.307
+          (3) Fragment arrival time: 8954.307
+          (3) Fragment scheduled time: 8999.363
+          ----------------------------
+          (4) Fragment departure time: 10553.634
+          (4) Fragment arrival time: 10554.634
+          (4) Fragment scheduled time: 11000.0
+          ----------------------------
+    Fragment name: flow1Fragment10
+        Fragment node: switch6
+        Fragment next hop: dev32
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 50.0
+        Fragment times-
+          (0) Fragment departure time: 2152.4565
+          (0) Fragment arrival time: 2153.4565
+          (0) Fragment scheduled time: 2999.3635
+          ----------------------------
+          (1) Fragment departure time: 4985.2363
+          (1) Fragment arrival time: 4986.2363
+          (1) Fragment scheduled time: 4999.364
+          ----------------------------
+          (2) Fragment departure time: 6590.0063
+          (2) Fragment arrival time: 6591.0063
+          (2) Fragment scheduled time: 6999.364
+          ----------------------------
+          (3) Fragment departure time: 8953.307
+          (3) Fragment arrival time: 8954.307
+          (3) Fragment scheduled time: 9000.0
+          ----------------------------
+          (4) Fragment departure time: 10553.634
+          (4) Fragment arrival time: 10554.634
+          (4) Fragment scheduled time: 10999.363
+          ----------------------------
+    Fragment name: flow1Fragment11
+        Fragment node: switch8
+        Fragment next hop: dev40
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 18.727272
+        Fragment times-
+          (0) Fragment departure time: 2256.8386
+          (0) Fragment arrival time: 2257.8386
+          (0) Fragment scheduled time: 2687.0205
+          ----------------------------
+          (1) Fragment departure time: 4293.839
+          (1) Fragment arrival time: 4294.839
+          (1) Fragment scheduled time: 4686.3843
+          ----------------------------
+          (2) Fragment departure time: 6256.839
+          (2) Fragment arrival time: 6257.839
+          (2) Fragment scheduled time: 6685.6206
+          ----------------------------
+          (3) Fragment departure time: 8656.839
+          (3) Fragment arrival time: 8657.839
+          (3) Fragment scheduled time: 8687.0205
+          ----------------------------
+          (4) Fragment departure time: 10656.839
+          (4) Fragment arrival time: 10657.839
+          (4) Fragment scheduled time: 10689.693
+          ----------------------------
+    Fragment name: flow1Fragment12
+        Fragment node: switch8
+        Fragment next hop: dev41
+        Fragment priority: 1
+        Fragment slot start: 0.0
+        Fragment slot duration: 15.163636
+        Fragment times-
+          (0) Fragment departure time: 2256.8386
+          (0) Fragment arrival time: 2257.8386
+          (0) Fragment scheduled time: 2687.0205
+          ----------------------------
+          (1) Fragment departure time: 4293.839
+          (1) Fragment arrival time: 4294.839
+          (1) Fragment scheduled time: 4686.257
+          ----------------------------
+          (2) Fragment departure time: 6256.839
+          (2) Fragment arrival time: 6257.839
+          (2) Fragment scheduled time: 6686.257
+          ----------------------------
+          (3) Fragment departure time: 8656.839
+          (3) Fragment arrival time: 8657.839
+          (3) Fragment scheduled time: 8686.257
+          ----------------------------
+          (4) Fragment departure time: 10656.839
+          (4) Fragment arrival time: 10657.839
+          (4) Fragment scheduled time: 10686.13
+          ----------------------------
+    Fragment name: flow1Fragment13
+        Fragment node: switch8
+        Fragment next hop: dev42
+        Fragment priority: 1
+        Fragment slot start: 484.3909
+        Fragment slot duration: 15.418181
+        Fragment times-
+          (0) Fragment departure time: 2256.8386
+          (0) Fragment arrival time: 2257.8386
+          (0) Fragment scheduled time: 2671.6023
+          ----------------------------
+          (1) Fragment departure time: 4293.839
+          (1) Fragment arrival time: 4294.839
+          (1) Fragment scheduled time: 4670.966
+          ----------------------------
+          (2) Fragment departure time: 6256.839
+          (2) Fragment arrival time: 6257.839
+          (2) Fragment scheduled time: 6670.966
+          ----------------------------
+          (3) Fragment departure time: 8656.839
+          (3) Fragment arrival time: 8657.839
+          (3) Fragment scheduled time: 8670.966
+          ----------------------------
+          (4) Fragment departure time: 10656.839
+          (4) Fragment arrival time: 10657.839
+          (4) Fragment scheduled time: 10670.966
+          ----------------------------
+

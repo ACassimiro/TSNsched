@@ -1,0 +1,1311 @@
+findSchedulerModel
+
+Z3 Major Version: 4
+Z3 Full Version: 4.8.5.0
+Z3 Full Version String: Z3 4.8.5.0
+
+Rules set. Checking solver.
+Current time of the day: 18:28:58.777
+(define-fun flow1Fragment1ScheduledTime4 () Real
+  (/ 22007704186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment6ScheduledTime4 () Real
+  (/ 22957649143633357342501.0 2090000000000000000.0))
+(define-fun flow1Fragment5ScheduledTime4 () Real
+  (/ 2080357016953933782643.0 190000000000000000.0))
+(define-fun flow1Fragment8ScheduledTime4 () Real
+  (/ 120993.0 11.0))
+(define-fun flow1Fragment1ScheduledTime2 () Real
+  (/ 13638669686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment4ScheduledTime2 () Real
+  (/ 13773113686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment4Priority () Int
+  1)
+(define-fun flow1Fragment4ScheduledTime4 () Real
+  (/ 22057094686493271609073.0 2090000000000000000.0))
+(define-fun slotflow1Fragment8PriorityDuration () Real
+  50.0)
+(define-fun flow1Fragment12ScheduledTime0 () Real
+  (/ 1182289.0 440.0))
+(define-fun slotflow1Fragment5PriorityStart () Real
+  (/ 1875754739166424304931.0 4180000000000000000.0))
+(define-fun cycle29Duration () Real
+  400.0)
+(define-fun flow1Fragment3ScheduledTime0 () Real
+  (/ 5295940686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment11ScheduledTime2 () Real
+  (/ 2941673.0 440.0))
+(define-fun flow1Fragment13ScheduledTime0 () Real
+  (/ 235101.0 88.0))
+(define-fun flow1Fragment1ScheduledTime1 () Real
+  (/ 10294669686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment2ScheduledTime0 () Real
+  (/ 993009.0 440.0))
+(define-fun flow1Fragment9ScheduledTime1 () Real
+  (/ 54993.0 11.0))
+(define-fun flow1Fragment8ScheduledTime0 () Real
+  3000.0)
+(define-fun flow1Fragment11Priority () Int
+  1)
+(define-fun flow1Fragment12ScheduledTime4 () Real
+  (/ 4701897.0 440.0))
+(define-fun flow1Fragment11ScheduledTime3 () Real
+  (/ 3822289.0 440.0))
+(define-fun slotflow1Fragment4PriorityStart () Real
+  0.0)
+(define-fun slotflow1Fragment12PriorityStart () Real
+  0.0)
+(define-fun cycle57Start () Real
+  2001.0)
+(define-fun cycle43Duration () Real
+  (/ 8001.0 20.0))
+(define-fun flow1Fragment3Priority () Int
+  1)
+(define-fun flow1Fragment1ScheduledTime3 () Real
+  (/ 17818669686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment4ScheduledTime3 () Real
+  (/ 18712410686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment2ScheduledTime3 () Real
+  (/ 3809009.0 440.0))
+(define-fun slotflow1Fragment9PriorityDuration () Real
+  50.0)
+(define-fun slotflow1Fragment2PriorityDuration () Real
+  50.0)
+(define-fun flow1Fragment9ScheduledTime2 () Real
+  (/ 76993.0 11.0))
+(define-fun slotflow1Fragment11PriorityStart () Real
+  0.0)
+(define-fun slotflow1Fragment6PriorityStart () Real
+  0.0)
+(define-fun cycle43Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment6ScheduledTime0 () Real
+  (/ 6268241050861801347929.0 2090000000000000000.0))
+(define-fun flow1Fragment6ScheduledTime2 () Real
+  (/ 265683879863294169913.0 38000000000000000.0))
+(define-fun flow1Fragment6Priority () Int
+  1)
+(define-fun cycle15Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun flow1Fragment5Priority () Int
+  1)
+(define-fun flow1Fragment3ScheduledTime4 () Real
+  (/ 22854401186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment5ScheduledTime3 () Real
+  (/ 18686747013691649304931.0 2090000000000000000.0))
+(define-fun cycle85Duration () Real
+  (/ 10950.0 11.0))
+(define-fun flow1Fragment1ScheduledTime0 () Real
+  (/ 4442669686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment7ScheduledTime3 () Real
+  9000.0)
+(define-fun flow1Fragment8ScheduledTime3 () Real
+  (/ 98993.0 11.0))
+(define-fun flow1Fragment9ScheduledTime0 () Real
+  (/ 32993.0 11.0))
+(define-fun flow1Fragment9ScheduledTime4 () Real
+  11000.0)
+(define-fun cycle15Start () Real
+  0.0)
+(define-fun slotflow1Fragment5PriorityDuration () Real
+  (/ 12787642361719342357.0 261250000000000000.0))
+(define-fun flow1Fragment7ScheduledTime2 () Real
+  (/ 14628374292983659604179.0 2090000000000000000.0))
+(define-fun slotflow1Fragment12PriorityDuration () Real
+  (/ 834.0 55.0))
+(define-fun flow1Fragment11ScheduledTime4 () Real
+  (/ 940693.0 88.0))
+(define-fun flow1Fragment4ScheduledTime0 () Real
+  (/ 4498634186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment10ScheduledTime4 () Real
+  (/ 120993.0 11.0))
+(define-fun flow1Fragment12ScheduledTime1 () Real
+  (/ 2061953.0 440.0))
+(define-fun cycle57Duration () Real
+  400.0)
+(define-fun slotflow1Fragment7PriorityStart () Real
+  0.0)
+(define-fun flow1Fragment7ScheduledTime4 () Real
+  (/ 2873548429350538367451.0 261250000000000000.0))
+(define-fun flow1Fragment13ScheduledTime2 () Real
+  (/ 587045.0 88.0))
+(define-fun flow1Fragment4ScheduledTime1 () Real
+  (/ 274188.0 55.0))
+(define-fun slotflow1Fragment11PriorityDuration () Real
+  (/ 206.0 11.0))
+(define-fun flow1Fragment6ScheduledTime1 () Real
+  (/ 189622201541266707513.0 38000000000000000.0))
+(define-fun cycle71Duration () Real
+  400.0)
+(define-fun flow1Fragment13ScheduledTime3 () Real
+  (/ 763045.0 88.0))
+(define-fun slotflow1Fragment1PriorityStart () Real
+  (/ 233409686493271609073.0 2090000000000000000.0))
+(define-fun cycle1Duration () Real
+  400.0)
+(define-fun cycle85Start () Real
+  0.0)
+(define-fun flow1Fragment2ScheduledTime2 () Real
+  (/ 2753009.0 440.0))
+(define-fun flow1Fragment2ScheduledTime4 () Real
+  (/ 4689009.0 440.0))
+(define-fun slotflow1Fragment13PriorityDuration () Real
+  (/ 848.0 55.0))
+(define-fun cycle113Start () Real
+  (/ 59381.0 88.0))
+(define-fun slotflow1Fragment8PriorityStart () Real
+  (/ 7.0 11.0))
+(define-fun flow1Fragment5ScheduledTime1 () Real
+  (/ 2075997962243843782643.0 418000000000000000.0))
+(define-fun flow1Fragment3ScheduledTime3 () Real
+  (/ 17849136186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment7ScheduledTime1 () Real
+  (/ 10448277660659238847929.0 2090000000000000000.0))
+(define-fun slotflow1Fragment3PriorityStart () Real
+  (/ 83927.0 220.0))
+(define-fun slotflow1Fragment2PriorityStart () Real
+  (/ 106849.0 440.0))
+(define-fun flow1Fragment6ScheduledTime3 () Real
+  (/ 3759387021945097955443.0 418000000000000000.0))
+(define-fun slotflow1Fragment6PriorityDuration () Real
+  (/ 18430489285021433357.0 522500000000000000.0))
+(define-fun flow1Fragment8ScheduledTime1 () Real
+  (/ 54993.0 11.0))
+(define-fun flow1Fragment12ScheduledTime2 () Real
+  (/ 2941953.0 440.0))
+(define-fun cycle113Duration () Real
+  (/ 54979.0 110.0))
+(define-fun flow1Fragment12ScheduledTime3 () Real
+  (/ 3821953.0 440.0))
+(define-fun flow1Fragment13ScheduledTime4 () Real
+  (/ 939045.0 88.0))
+(define-fun flow1Fragment10ScheduledTime2 () Real
+  (/ 76993.0 11.0))
+(define-fun flow1Fragment11ScheduledTime1 () Real
+  (/ 2062009.0 440.0))
+(define-fun flow1Fragment13ScheduledTime1 () Real
+  (/ 411045.0 88.0))
+(define-fun slotflow1Fragment4PriorityDuration () Real
+  50.0)
+(define-fun slotflow1Fragment7PriorityDuration () Real
+  (/ 1099581561168792953.0 22000000000000000.0))
+(define-fun flow1Fragment10ScheduledTime3 () Real
+  9000.0)
+(define-fun flow1Fragment2ScheduledTime1 () Real
+  (/ 1889289.0 440.0))
+(define-fun flow1Fragment8ScheduledTime2 () Real
+  (/ 76993.0 11.0))
+(define-fun cycle127Duration () Real
+  400.0)
+(define-fun flow1Fragment12Priority () Int
+  1)
+(define-fun slotflow1Fragment10PriorityStart () Real
+  0.0)
+(define-fun dev50FirstT1Time () Real
+  2000.0)
+(define-fun cycle99Duration () Real
+  400.0)
+(define-fun flow1Fragment13Priority () Int
+  1)
+(define-fun flow1Fragment3ScheduledTime1 () Real
+  (/ 10324195686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment11ScheduledTime0 () Real
+  (/ 1182289.0 440.0))
+(define-fun flow1Fragment3ScheduledTime2 () Real
+  (/ 13668613686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment10ScheduledTime0 () Real
+  (/ 32993.0 11.0))
+(define-fun flow1Fragment1Priority () Int
+  1)
+(define-fun slotflow1Fragment10PriorityDuration () Real
+  50.0)
+(define-fun flow1Fragment5ScheduledTime2 () Real
+  (/ 14514425636468046609073.0 2090000000000000000.0))
+(define-fun slotflow1Fragment3PriorityDuration () Real
+  (/ 1021.0 55.0))
+(define-fun flow1Fragment9ScheduledTime3 () Real
+  (/ 98993.0 11.0))
+(define-fun flow1Fragment7ScheduledTime0 () Real
+  (/ 6268241050861801347929.0 2090000000000000000.0))
+(define-fun flow1Fragment8Priority () Int
+  1)
+(define-fun slotflow1Fragment9PriorityStart () Real
+  0.0)
+(define-fun flow1Fragment2Priority () Int
+  1)
+(define-fun flow1Fragment5ScheduledTime0 () Real
+  (/ 6165939911968046609073.0 2090000000000000000.0))
+(define-fun flow1Fragment10Priority () Int
+  1)
+(define-fun slotflow1Fragment13PriorityStart () Real
+  (/ 53283.0 110.0))
+(define-fun flow1Fragment9Priority () Int
+  1)
+(define-fun flow1Fragment10ScheduledTime1 () Real
+  (/ 54993.0 11.0))
+(define-fun slotflow1Fragment1PriorityDuration () Real
+  (/ 1063.0 55.0))
+(define-fun flow1Fragment7Priority () Int
+  1)
+(define-fun flow1Fragment13ScheduledTime5 () Real
+  (/ 940189.0 88.0))
+(define-fun flow1Fragment12ScheduledTime5 () Real
+  (/ 4707617.0 440.0))
+(define-fun flow1Fragment11ScheduledTime5 () Real
+  (/ 941837.0 88.0))
+(define-fun flow1Fragment10ScheduledTime5 () Real
+  (/ 121136.0 11.0))
+(define-fun flow1Fragment9ScheduledTime5 () Real
+  11013.0)
+(define-fun flow1Fragment8ScheduledTime5 () Real
+  (/ 121136.0 11.0))
+(define-fun flow1Fragment2ScheduledTime5 () Real
+  (/ 4694729.0 440.0))
+(define-fun flow1Fragment1ScheduledTime5 () Real
+  (/ 22034874186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment4ScheduledTime5 () Real
+  (/ 22084264686493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment3ScheduledTime5 () Real
+  (/ 22881571186493271609073.0 2090000000000000000.0))
+(define-fun flow1Fragment7ScheduledTime5 () Real
+  (/ 2876944679350538367451.0 261250000000000000.0))
+(define-fun flow1Fragment6ScheduledTime5 () Real
+  (/ 22984819143633357342501.0 2090000000000000000.0))
+(define-fun flow1Fragment5ScheduledTime5 () Real
+  (/ 2082827016953933782643.0 190000000000000000.0))
+(define-fun cycle127Start () Real
+  0.0)
+(define-fun cycle99Start () Real
+  0.0)
+(define-fun cycle71Start () Real
+  0.0)
+(define-fun cycle29Start () Real
+  0.0)
+(define-fun cycle1Start () Real
+  0.0)
+(define-fun flow1JitterOfPacket4Fordev42 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket3Fordev42 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev42 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev42 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev42 () Real
+  (/ 28.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev42 () Real
+  (/ 59101.0 88.0))
+(define-fun flow1latencyOfPacket1Fordev42 () Real
+  (/ 59045.0 88.0))
+(define-fun flow1latencyOfPacket2Fordev42 () Real
+  (/ 59045.0 88.0))
+(define-fun flow1latencyOfPacket3Fordev42 () Real
+  (/ 59045.0 88.0))
+(define-fun flow1latencyOfPacket4Fordev42 () Real
+  (/ 59045.0 88.0))
+(define-fun flow1JitterOfPacket4Fordev41 () Real
+  (/ 14.0 55.0))
+(define-fun flow1JitterOfPacket3Fordev41 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev41 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev41 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev41 () Real
+  (/ 7.0 11.0))
+(define-fun flow1latencyOfPacket0Fordev41 () Real
+  (/ 302289.0 440.0))
+(define-fun flow1latencyOfPacket1Fordev41 () Real
+  (/ 301953.0 440.0))
+(define-fun flow1latencyOfPacket2Fordev41 () Real
+  (/ 301953.0 440.0))
+(define-fun flow1latencyOfPacket3Fordev41 () Real
+  (/ 301953.0 440.0))
+(define-fun flow1latencyOfPacket4Fordev41 () Real
+  (/ 301897.0 440.0))
+(define-fun flow1JitterOfPacket4Fordev40 () Real
+  (/ 28.0 11.0))
+(define-fun flow1JitterOfPacket3Fordev40 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev40 () Real
+  (/ 84.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev40 () Real
+  (/ 42.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev40 () Real
+  (/ 7.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev40 () Real
+  (/ 302289.0 440.0))
+(define-fun flow1latencyOfPacket1Fordev40 () Real
+  (/ 302009.0 440.0))
+(define-fun flow1latencyOfPacket2Fordev40 () Real
+  (/ 301673.0 440.0))
+(define-fun flow1latencyOfPacket3Fordev40 () Real
+  (/ 302289.0 440.0))
+(define-fun flow1latencyOfPacket4Fordev40 () Real
+  (/ 60693.0 88.0))
+(define-fun flow1JitterOfPacket4Fordev32 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket3Fordev32 () Real
+  (/ 28.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev32 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev32 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev32 () Real
+  (/ 7.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev32 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket1Fordev32 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket2Fordev32 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket3Fordev32 () Real
+  1000.0)
+(define-fun flow1latencyOfPacket4Fordev32 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1JitterOfPacket4Fordev31 () Real
+  (/ 28.0 55.0))
+(define-fun flow1JitterOfPacket3Fordev31 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev31 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev31 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev31 () Real
+  (/ 7.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev31 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket1Fordev31 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket2Fordev31 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket3Fordev31 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket4Fordev31 () Real
+  1000.0)
+(define-fun flow1JitterOfPacket4Fordev30 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket3Fordev30 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket2Fordev30 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket1Fordev30 () Real
+  (/ 7.0 55.0))
+(define-fun flow1JitterOfPacket0Fordev30 () Real
+  (/ 28.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev30 () Real
+  1000.0)
+(define-fun flow1latencyOfPacket1Fordev30 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket2Fordev30 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket3Fordev30 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1latencyOfPacket4Fordev30 () Real
+  (/ 10993.0 11.0))
+(define-fun flow1JitterOfPacket4Fordev7 () Real
+  (/ 14139634604968859.0 110000000000000000.0))
+(define-fun flow1JitterOfPacket3Fordev7 () Real
+  (/ 1343912138198652071.0 2090000000000000000.0))
+(define-fun flow1JitterOfPacket2Fordev7 () Real
+  (/ 2373009500141.0 17600000000000.0))
+(define-fun flow1JitterOfPacket1Fordev7 () Real
+  (/ 318675539.0 1760000000.0))
+(define-fun flow1JitterOfPacket0Fordev7 () Real
+  (/ 415037.0 2090000.0))
+(define-fun flow1latencyOfPacket0Fordev7 () Real
+  (/ 2088241050861801347929.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket1Fordev7 () Real
+  (/ 2088277660659238847929.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket2Fordev7 () Real
+  (/ 2088374292983659604179.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket3Fordev7 () Real
+  1000.0)
+(define-fun flow1latencyOfPacket4Fordev7 () Real
+  (/ 261048429350538367451.0 261250000000000000.0))
+(define-fun flow1JitterOfPacket4Fordev6 () Real
+  (/ 7641406330471001357.0 1045000000000000000.0))
+(define-fun flow1JitterOfPacket3Fordev6 () Real
+  (/ 6584133932879.0 3437500000000.0))
+(define-fun flow1JitterOfPacket2Fordev6 () Real
+  (/ 13098841.0 85937500.0))
+(define-fun flow1JitterOfPacket1Fordev6 () Real
+  (/ 6103407112879.0 3437500000000.0))
+(define-fun flow1JitterOfPacket0Fordev6 () Real
+  (/ 7654547283751001357.0 1045000000000000000.0))
+(define-fun flow1latencyOfPacket0Fordev6 () Real
+  (/ 2088241050861801347929.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket1Fordev6 () Real
+  (/ 37622201541266707513.0 38000000000000000.0))
+(define-fun flow1latencyOfPacket2Fordev6 () Real
+  (/ 37683879863294169913.0 38000000000000000.0))
+(define-fun flow1latencyOfPacket3Fordev6 () Real
+  (/ 415387021945097955443.0 418000000000000000.0))
+(define-fun flow1latencyOfPacket4Fordev6 () Real
+  (/ 2057649143633357342501.0 2090000000000000000.0))
+(define-fun flow1JitterOfPacket4Fordev5 () Real
+  (/ 4797316789.0 4400000000.0))
+(define-fun flow1JitterOfPacket3Fordev5 () Real
+  (/ 884495376199877461.0 95000000000000000.0))
+(define-fun flow1JitterOfPacket2Fordev5 () Real
+  (/ 1240029.0 220000.0))
+(define-fun flow1JitterOfPacket1Fordev5 () Real
+  (/ 16891949625586152071.0 1045000000000000000.0))
+(define-fun flow1JitterOfPacket0Fordev5 () Real
+  (/ 7.0 55.0))
+(define-fun flow1latencyOfPacket0Fordev5 () Real
+  (/ 1985939911968046609073.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket1Fordev5 () Real
+  (/ 403997962243843782643.0 418000000000000000.0))
+(define-fun flow1latencyOfPacket2Fordev5 () Real
+  (/ 1974425636468046609073.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket3Fordev5 () Real
+  (/ 1966747013691649304931.0 2090000000000000000.0))
+(define-fun flow1latencyOfPacket4Fordev5 () Real
+  (/ 180357016953933782643.0 190000000000000000.0))
+(define-fun cycle140Start () Real
+  0.0)
+(define-fun cycle140Duration () Real
+  400.0)
+(define-fun cycle139Start () Real
+  0.0)
+(define-fun cycle139Duration () Real
+  400.0)
+(define-fun cycle138Start () Real
+  0.0)
+(define-fun cycle138Duration () Real
+  400.0)
+(define-fun cycle137Start () Real
+  0.0)
+(define-fun cycle137Duration () Real
+  400.0)
+(define-fun cycle136Start () Real
+  0.0)
+(define-fun cycle136Duration () Real
+  400.0)
+(define-fun cycle135Start () Real
+  0.0)
+(define-fun cycle135Duration () Real
+  400.0)
+(define-fun cycle134Start () Real
+  0.0)
+(define-fun cycle134Duration () Real
+  400.0)
+(define-fun cycle133Start () Real
+  0.0)
+(define-fun cycle133Duration () Real
+  400.0)
+(define-fun cycle132Start () Real
+  0.0)
+(define-fun cycle132Duration () Real
+  400.0)
+(define-fun cycle131Start () Real
+  0.0)
+(define-fun cycle131Duration () Real
+  400.0)
+(define-fun cycle130Start () Real
+  0.0)
+(define-fun cycle130Duration () Real
+  400.0)
+(define-fun cycle129Start () Real
+  0.0)
+(define-fun cycle129Duration () Real
+  400.0)
+(define-fun cycle128Start () Real
+  0.0)
+(define-fun cycle128Duration () Real
+  400.0)
+(define-fun cycleOfswitch9Start () Real
+  0.0)
+(define-fun cycleOfswitch9Duration () Real
+  400.0)
+(define-fun cycle126Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle126Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle125Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle125Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle124Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle124Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle123Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle123Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle122Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle122Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle121Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle121Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle120Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle120Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle119Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle119Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle118Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle118Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle117Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle117Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle116Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle116Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle115Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle115Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle114Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycle114Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycleOfswitch8Start () Real
+  (/ 59381.0 88.0))
+(define-fun cycleOfswitch8Duration () Real
+  (/ 54979.0 110.0))
+(define-fun cycle112Start () Real
+  0.0)
+(define-fun cycle112Duration () Real
+  400.0)
+(define-fun cycle111Start () Real
+  0.0)
+(define-fun cycle111Duration () Real
+  400.0)
+(define-fun cycle110Start () Real
+  0.0)
+(define-fun cycle110Duration () Real
+  400.0)
+(define-fun cycle109Start () Real
+  0.0)
+(define-fun cycle109Duration () Real
+  400.0)
+(define-fun cycle108Start () Real
+  0.0)
+(define-fun cycle108Duration () Real
+  400.0)
+(define-fun cycle107Start () Real
+  0.0)
+(define-fun cycle107Duration () Real
+  400.0)
+(define-fun cycle106Start () Real
+  0.0)
+(define-fun cycle106Duration () Real
+  400.0)
+(define-fun cycle105Start () Real
+  0.0)
+(define-fun cycle105Duration () Real
+  400.0)
+(define-fun cycle104Start () Real
+  0.0)
+(define-fun cycle104Duration () Real
+  400.0)
+(define-fun cycle103Start () Real
+  0.0)
+(define-fun cycle103Duration () Real
+  400.0)
+(define-fun cycle102Start () Real
+  0.0)
+(define-fun cycle102Duration () Real
+  400.0)
+(define-fun cycle101Start () Real
+  0.0)
+(define-fun cycle101Duration () Real
+  400.0)
+(define-fun cycle100Start () Real
+  0.0)
+(define-fun cycle100Duration () Real
+  400.0)
+(define-fun cycleOfswitch7Start () Real
+  0.0)
+(define-fun cycleOfswitch7Duration () Real
+  400.0)
+(define-fun cycle98Start () Real
+  0.0)
+(define-fun cycle98Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle97Start () Real
+  0.0)
+(define-fun cycle97Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle96Start () Real
+  0.0)
+(define-fun cycle96Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle95Start () Real
+  0.0)
+(define-fun cycle95Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle94Start () Real
+  0.0)
+(define-fun cycle94Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle93Start () Real
+  0.0)
+(define-fun cycle93Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle92Start () Real
+  0.0)
+(define-fun cycle92Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle91Start () Real
+  0.0)
+(define-fun cycle91Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle90Start () Real
+  0.0)
+(define-fun cycle90Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle89Start () Real
+  0.0)
+(define-fun cycle89Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle88Start () Real
+  0.0)
+(define-fun cycle88Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle87Start () Real
+  0.0)
+(define-fun cycle87Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle86Start () Real
+  0.0)
+(define-fun cycle86Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycleOfswitch6Start () Real
+  0.0)
+(define-fun cycleOfswitch6Duration () Real
+  (/ 10950.0 11.0))
+(define-fun cycle84Start () Real
+  0.0)
+(define-fun cycle84Duration () Real
+  400.0)
+(define-fun cycle83Start () Real
+  0.0)
+(define-fun cycle83Duration () Real
+  400.0)
+(define-fun cycle82Start () Real
+  0.0)
+(define-fun cycle82Duration () Real
+  400.0)
+(define-fun cycle81Start () Real
+  0.0)
+(define-fun cycle81Duration () Real
+  400.0)
+(define-fun cycle80Start () Real
+  0.0)
+(define-fun cycle80Duration () Real
+  400.0)
+(define-fun cycle79Start () Real
+  0.0)
+(define-fun cycle79Duration () Real
+  400.0)
+(define-fun cycle78Start () Real
+  0.0)
+(define-fun cycle78Duration () Real
+  400.0)
+(define-fun cycle77Start () Real
+  0.0)
+(define-fun cycle77Duration () Real
+  400.0)
+(define-fun cycle76Start () Real
+  0.0)
+(define-fun cycle76Duration () Real
+  400.0)
+(define-fun cycle75Start () Real
+  0.0)
+(define-fun cycle75Duration () Real
+  400.0)
+(define-fun cycle74Start () Real
+  0.0)
+(define-fun cycle74Duration () Real
+  400.0)
+(define-fun cycle73Start () Real
+  0.0)
+(define-fun cycle73Duration () Real
+  400.0)
+(define-fun cycle72Start () Real
+  0.0)
+(define-fun cycle72Duration () Real
+  400.0)
+(define-fun cycleOfswitch5Start () Real
+  0.0)
+(define-fun cycleOfswitch5Duration () Real
+  400.0)
+(define-fun cycle70Start () Real
+  2001.0)
+(define-fun cycle70Duration () Real
+  400.0)
+(define-fun cycle69Start () Real
+  2001.0)
+(define-fun cycle69Duration () Real
+  400.0)
+(define-fun cycle68Start () Real
+  2001.0)
+(define-fun cycle68Duration () Real
+  400.0)
+(define-fun cycle67Start () Real
+  2001.0)
+(define-fun cycle67Duration () Real
+  400.0)
+(define-fun cycle66Start () Real
+  2001.0)
+(define-fun cycle66Duration () Real
+  400.0)
+(define-fun cycle65Start () Real
+  2001.0)
+(define-fun cycle65Duration () Real
+  400.0)
+(define-fun cycle64Start () Real
+  2001.0)
+(define-fun cycle64Duration () Real
+  400.0)
+(define-fun cycle63Start () Real
+  2001.0)
+(define-fun cycle63Duration () Real
+  400.0)
+(define-fun cycle62Start () Real
+  2001.0)
+(define-fun cycle62Duration () Real
+  400.0)
+(define-fun cycle61Start () Real
+  2001.0)
+(define-fun cycle61Duration () Real
+  400.0)
+(define-fun cycle60Start () Real
+  2001.0)
+(define-fun cycle60Duration () Real
+  400.0)
+(define-fun cycle59Start () Real
+  2001.0)
+(define-fun cycle59Duration () Real
+  400.0)
+(define-fun cycle58Start () Real
+  2001.0)
+(define-fun cycle58Duration () Real
+  400.0)
+(define-fun cycleOfswitch4Start () Real
+  2001.0)
+(define-fun cycleOfswitch4Duration () Real
+  400.0)
+(define-fun cycle56Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle56Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle55Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle55Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle54Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle54Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle53Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle53Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle52Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle52Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle51Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle51Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle50Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle50Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle49Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle49Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle48Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle48Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle47Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle47Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle46Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle46Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle45Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle45Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle44Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycle44Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycleOfswitch3Start () Real
+  (/ 2799255186493271609073.0 2090000000000000000.0))
+(define-fun cycleOfswitch3Duration () Real
+  (/ 8001.0 20.0))
+(define-fun cycle42Start () Real
+  0.0)
+(define-fun cycle42Duration () Real
+  400.0)
+(define-fun cycle41Start () Real
+  0.0)
+(define-fun cycle41Duration () Real
+  400.0)
+(define-fun cycle40Start () Real
+  0.0)
+(define-fun cycle40Duration () Real
+  400.0)
+(define-fun cycle39Start () Real
+  0.0)
+(define-fun cycle39Duration () Real
+  400.0)
+(define-fun cycle38Start () Real
+  0.0)
+(define-fun cycle38Duration () Real
+  400.0)
+(define-fun cycle37Start () Real
+  0.0)
+(define-fun cycle37Duration () Real
+  400.0)
+(define-fun cycle36Start () Real
+  0.0)
+(define-fun cycle36Duration () Real
+  400.0)
+(define-fun cycle35Start () Real
+  0.0)
+(define-fun cycle35Duration () Real
+  400.0)
+(define-fun cycle34Start () Real
+  0.0)
+(define-fun cycle34Duration () Real
+  400.0)
+(define-fun cycle33Start () Real
+  0.0)
+(define-fun cycle33Duration () Real
+  400.0)
+(define-fun cycle32Start () Real
+  0.0)
+(define-fun cycle32Duration () Real
+  400.0)
+(define-fun cycle31Start () Real
+  0.0)
+(define-fun cycle31Duration () Real
+  400.0)
+(define-fun cycle30Start () Real
+  0.0)
+(define-fun cycle30Duration () Real
+  400.0)
+(define-fun cycleOfswitch2Start () Real
+  0.0)
+(define-fun cycleOfswitch2Duration () Real
+  400.0)
+(define-fun cycle28Start () Real
+  0.0)
+(define-fun cycle28Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle27Start () Real
+  0.0)
+(define-fun cycle27Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle26Start () Real
+  0.0)
+(define-fun cycle26Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle25Start () Real
+  0.0)
+(define-fun cycle25Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle24Start () Real
+  0.0)
+(define-fun cycle24Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle23Start () Real
+  0.0)
+(define-fun cycle23Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle22Start () Real
+  0.0)
+(define-fun cycle22Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle21Start () Real
+  0.0)
+(define-fun cycle21Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle20Start () Real
+  0.0)
+(define-fun cycle20Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle19Start () Real
+  0.0)
+(define-fun cycle19Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle18Start () Real
+  0.0)
+(define-fun cycle18Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle17Start () Real
+  0.0)
+(define-fun cycle17Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle16Start () Real
+  0.0)
+(define-fun cycle16Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycleOfswitch1Start () Real
+  0.0)
+(define-fun cycleOfswitch1Duration () Real
+  (/ 2080357016953933782643.0 4180000000000000000.0))
+(define-fun cycle14Start () Real
+  0.0)
+(define-fun cycle14Duration () Real
+  400.0)
+(define-fun cycle13Start () Real
+  0.0)
+(define-fun cycle13Duration () Real
+  400.0)
+(define-fun cycle12Start () Real
+  0.0)
+(define-fun cycle12Duration () Real
+  400.0)
+(define-fun cycle11Start () Real
+  0.0)
+(define-fun cycle11Duration () Real
+  400.0)
+(define-fun cycle10Start () Real
+  0.0)
+(define-fun cycle10Duration () Real
+  400.0)
+(define-fun cycle9Start () Real
+  0.0)
+(define-fun cycle9Duration () Real
+  400.0)
+(define-fun cycle8Start () Real
+  0.0)
+(define-fun cycle8Duration () Real
+  400.0)
+(define-fun cycle7Start () Real
+  0.0)
+(define-fun cycle7Duration () Real
+  400.0)
+(define-fun cycle6Start () Real
+  0.0)
+(define-fun cycle6Duration () Real
+  400.0)
+(define-fun cycle5Start () Real
+  0.0)
+(define-fun cycle5Duration () Real
+  400.0)
+(define-fun cycle4Start () Real
+  0.0)
+(define-fun cycle4Duration () Real
+  400.0)
+(define-fun cycle3Start () Real
+  0.0)
+(define-fun cycle3Duration () Real
+  400.0)
+(define-fun cycle2Start () Real
+  0.0)
+(define-fun cycle2Duration () Real
+  400.0)
+(define-fun cycleOfswitch0Start () Real
+  0.0)
+(define-fun cycleOfswitch0Duration () Real
+  400.0)
+Model generated.
+
+
+
+
+>>>> INFORMATION OF SWITCH: switch1 <<<<
+    Cycle start:    0.0
+    Cycle duration: 497.69305
+    Priorities used - 
+        Port name:       switch1Port9
+        Connects to:     dev5
+        Fragments:       flow1Fragment5, 
+        Priority number: 1
+        Slot start:      448.74515
+        Slot duration:   48.947914
+        ------------------------
+        Port name:       switch1Port10
+        Connects to:     dev6
+        Fragments:       flow1Fragment6, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   35.273663
+        ------------------------
+        Port name:       switch1Port11
+        Connects to:     dev7
+        Fragments:       flow1Fragment7, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   49.98098
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch3 <<<<
+    Cycle start:    1339.3566
+    Cycle duration: 400.05
+    Priorities used - 
+        Port name:       switch3Port1
+        Connects to:     switch1
+        Fragments:       flow1Fragment3, 
+        Priority number: 1
+        Slot start:      381.48636
+        Slot duration:   18.563637
+        ------------------------
+        Port name:       switch3Port5
+        Connects to:     switch6
+        Fragments:       flow1Fragment4, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   50.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch4 <<<<
+    Cycle start:    2001.0
+    Cycle duration: 400.0
+    Priorities used - 
+        Port name:       switch4Port3
+        Connects to:     switch3
+        Fragments:       flow1Fragment1, 
+        Priority number: 1
+        Slot start:      111.679276
+        Slot duration:   19.327272
+        ------------------------
+        Port name:       switch4Port7
+        Connects to:     switch8
+        Fragments:       flow1Fragment2, 
+        Priority number: 1
+        Slot start:      242.83864
+        Slot duration:   50.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch6 <<<<
+    Cycle start:    0.0
+    Cycle duration: 995.4545
+    Priorities used - 
+        Port name:       switch6Port9
+        Connects to:     dev30
+        Fragments:       flow1Fragment8, 
+        Priority number: 1
+        Slot start:      0.6363636
+        Slot duration:   50.0
+        ------------------------
+        Port name:       switch6Port10
+        Connects to:     dev31
+        Fragments:       flow1Fragment9, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   50.0
+        ------------------------
+        Port name:       switch6Port11
+        Connects to:     dev32
+        Fragments:       flow1Fragment10, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   50.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch8 <<<<
+    Cycle start:    674.7841
+    Cycle duration: 499.80908
+    Priorities used - 
+        Port name:       switch8Port9
+        Connects to:     dev40
+        Fragments:       flow1Fragment11, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   18.727272
+        ------------------------
+        Port name:       switch8Port10
+        Connects to:     dev41
+        Fragments:       flow1Fragment12, 
+        Priority number: 1
+        Slot start:      0.0
+        Slot duration:   15.163636
+        ------------------------
+        Port name:       switch8Port11
+        Connects to:     dev42
+        Fragments:       flow1Fragment13, 
+        Priority number: 1
+        Slot start:      484.3909
+        Slot duration:   15.418181
+        ------------------------
+
+
+
+>>>> INFORMATION OF FLOW0 <<<<
+
+    Path tree of the flow:
+        Path to dev5: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment5), dev5, 
+        Path to dev6: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment6), dev6, 
+        Path to dev7: dev23, switch4(flow1Fragment1), switch3(flow1Fragment3), switch1(flow1Fragment7), dev7, 
+        Path to dev30: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment8), dev30, 
+        Path to dev31: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment9), dev31, 
+        Path to dev32: dev23, switch4(flow1Fragment1), switch3(flow1Fragment4), switch6(flow1Fragment10), dev32, 
+        Path to dev40: dev23, switch4(flow1Fragment2), switch8(flow1Fragment11), dev40, 
+        Path to dev41: dev23, switch4(flow1Fragment2), switch8(flow1Fragment12), dev41, 
+        Path to dev42: dev23, switch4(flow1Fragment2), switch8(flow1Fragment13), dev42, 
+
+
+    Packets heading to dev5:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2950.2104
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4966.5024
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6944.701
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8941.027
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10949.247
+       Calculated average Latency: 950.3377
+       Method average Latency: 950.3377
+       Method average Jitter: 6.4659057
+
+    Packets heading to dev6:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2999.1584
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4990.058
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6991.681
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8993.749
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10984.521
+       Calculated average Latency: 991.8336
+       Method average Latency: 991.8336
+       Method average Jitter: 3.6960692
+
+    Packets heading to dev7:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2999.1584
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4999.176
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6999.222
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  9000.0
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10999.229
+       Calculated average Latency: 999.35706
+       Method average Latency: 999.35706
+       Method average Jitter: 0.25725096
+
+    Packets heading to dev30:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  3000.0
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4999.364
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6999.364
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8999.363
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10999.363
+       Calculated average Latency: 999.49084
+       Method average Latency: 999.49084
+       Method average Jitter: 0.20368652
+
+    Packets heading to dev31:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2999.3635
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4999.364
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6999.364
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8999.363
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  11000.0
+       Calculated average Latency: 999.49084
+       Method average Latency: 999.49084
+       Method average Jitter: 0.20363769
+
+    Packets heading to dev32:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2999.3635
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4999.364
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6999.364
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  9000.0
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10999.363
+       Calculated average Latency: 999.49084
+       Method average Latency: 999.49084
+       Method average Jitter: 0.20363769
+
+    Packets heading to dev40:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2687.0205
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4686.3843
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6685.6206
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8687.0205
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10689.693
+       Calculated average Latency: 687.1478
+       Method average Latency: 687.1478
+       Method average Jitter: 1.0181885
+
+    Packets heading to dev41:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2687.0205
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4686.257
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6686.257
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8686.257
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10686.13
+       Calculated average Latency: 686.38416
+       Method average Latency: 686.38416
+       Method average Jitter: 0.2545166
+
+    Packets heading to dev42:
+       Flow firstDepartureTime of packet 0: 2000.0
+       Flow lastScheduledTime of packet 0:  2671.6023
+       Flow firstDepartureTime of packet 1: 4000.0
+       Flow lastScheduledTime of packet 1:  4670.966
+       Flow firstDepartureTime of packet 2: 6000.0
+       Flow lastScheduledTime of packet 2:  6670.966
+       Flow firstDepartureTime of packet 3: 8000.0
+       Flow lastScheduledTime of packet 3:  8670.966
+       Flow firstDepartureTime of packet 4: 10000.0
+       Flow lastScheduledTime of packet 4:  10670.966
+       Calculated average Latency: 671.09314
+       Method average Latency: 671.09314
+       Method average Jitter: 0.20368652
+
+    Calculated average latency of all devices: 887.18066
+Execution time: 50.49415 seconds
+ 
+Flow 0 average latency: 887.18066
+Flow 0 average jitter: 1.3896201
+
+Number of nodes in the network: 5 
+Number of flows in the network: 1 
+Number of subscribers in the network: 9 
+Overall average latency: 887.18066
+Overall average jitter: 1.3896201
