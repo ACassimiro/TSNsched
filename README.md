@@ -152,6 +152,12 @@ switch.createPort(Switch switchB, Cycle cycle2);
 // Creating a unicast flow:
 Flow flow = new Flow(Flow.UNICAST);
 
+// Setting start device, path and end device of a unicast flow
+flow.setStartDevice(Device devA);
+flow.addToPath(Switch switchA);
+flow.addToPath(Switch switchB);
+flow.setEndDevice(Device devB);
+	
 // Creating a publish subscribe flow:
 Flow flow = new Flow(Flow.PUBLISH_SUBSCRIBE);
 
