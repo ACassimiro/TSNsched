@@ -2,6 +2,7 @@ package schedule_generator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import com.microsoft.z3.*;
 
@@ -96,6 +97,30 @@ public class Flow {
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx) {
+        
+        this.flowPriority = ctx.mkIntConst(this.name + "Priority");
+        
+        // AVOID USING THE ARRAY LIST
+        // TODO: REMOVE OPTION TO DISTINGUISH BETWEEN UNICAST AND MULTICAST LATER
+        if(this.type == UNICAST) {
+            LinkedList<PathNode> nodeList;
+
+            PathTree pathTree = new PathTree();
+            PathNode pathNode;
+            pathNode = pathTree.addRoot(this.startDevice);            
+            pathNode = pathNode.addChild(path.get(0));
+            nodeList = new LinkedList<PathNode>();
+            nodeList.add(pathNode);
+            for(int i = 1;  i < path.size(); i++) {
+                nodeList.add(nodeList.removeFirst().addChild(path.get(i)));
+            }
+            nodeList.getFirst().addChild(this.endDevice);
+            nodeList.removeFirst();
+            this.setPathTree(pathTree);
+            
+            this.type = PUBLISH_SUBSCRIBE;
+        }
+        
         
         if(this.type == UNICAST) { // If flow is unicast
 
@@ -228,7 +253,8 @@ public class Flow {
                 }
                 
                 // Setting z3 properties of the flow fragment
-                flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority"));
+//                flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority"));
+                flowFrag.setFlowPriority(this.flowPriority);
                 flowFrag.setPacketPeriodicity(startDevice.getPacketPeriodicityZ3());
                 flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
                 
