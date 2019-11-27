@@ -714,6 +714,11 @@ public class Port {
         for(int i = 0; i < this.packetUpperBoundRange; i++) {
             for(int j = 0; j < this.packetUpperBoundRange; j++) {
                 for(FlowFragment auxFlowFrag : this.flowFragments) {
+                    
+                    if((flowFrag.equals(auxFlowFrag) && i == j)) {
+                		continue;
+                	} 
+                   
                     solver.add(
                         ctx.mkImplies(
                             ctx.mkAnd(
@@ -728,7 +733,7 @@ public class Port {
                             ),
                             ctx.mkLe(
                                 this.scheduledTime(ctx, i, flowFrag),
-                                ctx.mkAdd(
+                                ctx.mkSub(
                                         this.scheduledTime(ctx, j, auxFlowFrag),
                                         this.transmissionTimeZ3
                                 )
