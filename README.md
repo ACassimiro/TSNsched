@@ -6,28 +6,31 @@ This repository is a result of research conducted at [fortiss](https://www.forti
 
 ## Table of Contents
 
-* Quickstart Guide
-* Requirements
-* Command Line Usage
-    * The input
-    * Executing the program
-    * The output
-* Using as a Library
-    * Setting up the network
-    * Executing the program
-    * The output
-* Generating Topologies
-* Overview of Classes
-    * Device
-    * Flow
-    * FlowFragment
-    * Switch
-    * TSNSwitch
-    * Network
-    * PathNode
-    * PathTree
-    * Cycle
-    * Port
+- [Quickstart Guide](#quickstart-guide)
+- [Requirements](#requirements)
+- [Command Line Usage](#command-line-usage)
+  * [The Input](#the-input)
+  * [Executing the program](#executing-the-program)
+  * [The output](#the-output)
+- [Using as a Library](#using-as-a-library)
+  * [Setting up the network](#setting-up-the-network)
+  * [Executing the program](#executing-the-program-1)
+  * [The output](#the-output-1)
+- [Generating topologies](#generating-topologies)
+  * [Repository files:](#repository-files-)
+  * [Execution instructions for the Z3 code](#execution-instructions-for-the-z3-code)
+- [Overview of Classes](#overview-of-classes)
+  * [Device](#device)
+  * [Flow](#flow)
+  * [FlowFragment](#flowfragment)
+  * [Switch](#switch)
+  * [TSNSwitch](#tsnswitch)
+  * [Network](#network)
+  * [PathNode](#pathnode)
+  * [PathTree](#pathtree)
+  * [Cycle](#cycle)
+  * [Port](#port)
+  * [ScheduleGenerator](#schedulegenerator)
 
 ## Quickstart Guide
 
