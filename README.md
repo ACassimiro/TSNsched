@@ -1,8 +1,8 @@
-# **TSNSched**
+# TSNSched
 
-TSNSched is a java tool which uses the [Z3 theorem solver][z3Git] in order to generate traffic schedules for TSN networks.
+> TSNSched uses the [Z3 theorem solver](https://github.com/Z3Prover/z3) to generate traffic schedules for [Time Sensitive Networking (TSN)](https://en.wikipedia.org/wiki/Time-Sensitive_Networking).
 
-This repository contains code, packages and documents generated and obtained through research in order to develop a Time-Aware Shaper for Time Sensitive Networking systems. 
+This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. 
 
 ## Table of Contents
 
@@ -275,13 +275,6 @@ The output file (GeneratedCode.java which contains the topology) will be generat
 * Press the "run" button
 * The output will be printed bellow the editor
 -->
-
-
-[//]: # 
-
-
-   [z3]: <https://rise4fun.com/z3>
-   [z3Git]: <https://github.com/Z3Prover/z3>
 
 
 ## Overview of Classes
