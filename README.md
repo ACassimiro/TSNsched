@@ -2,7 +2,8 @@
 
 > TSNSched uses the [Z3 theorem solver](https://github.com/Z3Prover/z3) to generate traffic schedules for [Time Sensitive Networking (TSN)](https://en.wikipedia.org/wiki/Time-Sensitive_Networking).
 
-This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. 
+This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. The theoretic basis of this implementation has been published in a paper called **TSNsched: Automated Schedule Generation for
+Time Sensitive Networking**.
 
 ## Table of Contents
 
@@ -34,14 +35,21 @@ This repository is a result of research conducted at [fortiss](https://www.forti
 
 ## Quickstart Guide
 
-TSNSched can be started by a prepared script:
+
+On Linux simply run the shell script as root to set up all necessary dependencies and generate an example output of TSNSched.
 
 ```
-cd /home/cav/tsnsched_artifact/Script/
+sudo ./install-dependencies.sh
+```
+
+If you already have all dependencies installed, run the following commands for an example output. 
+
+```
+cd Script/
 ./generateSchedule.sh example.java
 ```
 
-The input java file (example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
+The example [example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
 
     P -> SW1 -> SW2 -> Sub1
          |       |
@@ -53,18 +61,45 @@ The input java file (example.java) describes a network topology (10 switches, 50
          V
         Sub4
 
-The generated TSN schedule can be found in the output directory in the file output/example.java.log and output/example.java.out.
+
+The generated TSN schedule can be found in the [output directory](Script/output).
+
+output/example.java.log
+output/example.java.out
+
 The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the output/example.java.out file.
 
 You can find the java files with the network topologies described in the submitted paper in the following folder:
 
-/home/cav/tsnsched_artifact/TestCasesPaper
+[TestCases](TestCases/)
 
-You can also generate other topologies using our flow generator. How to use this generator is shown in section "Generating Topologies".
+You can also generate other topologies using our flow generator. How to use this generator is shown in section [Generating topologies](#generating-topologies).
 
-Have fun testing :-) 
 
 ## Requirements
+
+* Java Version 1.8.0_181
+* Z3 package version 4.8.0.0
+* GNU bash version 4.4.19(1)-release (x86_64-pc-linux-gnu)
+* Eclipse IDE 4.8.0
+
+<!-- TSNSched and Z3 libraries must be part of the Java project build path in order to use the classes without any errors, if used as a library. If used in the command line, these same files must be part of the classpath.  -->
+
+<!-- ### Manual installation of Z3 libary
+
+```
+git clone https://github.com/Z3Prover/z3.git
+python scripts/mk_make.py --java
+cd build
+make
+sudo make install
+``` -->
+
+
+
+ 
+
+<!-- ## Requirements
 
 It is recommended that the user runs the code using Java Version 1.8.0_181 and the Z3 package version 4.8.0.0. Both TSNSched and Z3 libraries must be part of the Java project build path in order to use the classes without any errors, if used as a library. If used in the command line, these same files must be part of the classpath. 
 
@@ -78,7 +113,7 @@ make
 sudo make install
 ```
 
-The tests of both eclipse project and command line versions were run on a machine with Ubuntu 18.04.1 LTS as its operational system. The GNU bash version used was the 4.4.19(1)-release (x86_64-pc-linux-gnu). The Eclipse IDE version used was the Photon Release (4.8.0).
+The tests of both eclipse project and command line versions were run on a machine with Ubuntu 18.04.1 LTS as its operational system. The GNU bash version used was the 4.4.19(1)-release (x86_64-pc-linux-gnu). The Eclipse IDE version used was the Photon Release (4.8.0). -->
 
 ## Command Line Usage
 
