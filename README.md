@@ -2,8 +2,8 @@
 
 > TSNSched uses the [Z3 theorem solver](https://github.com/Z3Prover/z3) to generate traffic schedules for [Time Sensitive Networking (TSN)](https://en.wikipedia.org/wiki/Time-Sensitive_Networking).
 
-This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. The theoretic basis of this implementation has been published in a paper called **TSNsched: Automated Schedule Generation for
-Time Sensitive Networking**.
+This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. The theoretic basis of this implementation has been published in a paper called [**TSNsched: Automated Schedule Generation for
+Time Sensitive Networking**](2019_10_FMCAD2019_TSNsched_Santos_Schneider_Nigam.pdf).
 
 ## Table of Contents
 
@@ -49,7 +49,7 @@ cd Script/
 ./generateSchedule.sh example.java
 ```
 
-The example [example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
+[example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
 
     P -> SW1 -> SW2 -> Sub1
          |       |
@@ -64,14 +64,9 @@ The example [example.java](Script/example.java) describes a network topology (10
 
 The generated TSN schedule can be found in the [output directory](Script/output).
 
-output/example.java.log
-output/example.java.out
+The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the [output/example.java.out](Script/output/example.java.out) file.
 
-The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the output/example.java.out file.
-
-You can find the java files with the network topologies described in the submitted paper in the following folder:
-
-[TestCases](TestCases/)
+You can find the network topologies described in the submitted paper in [TestCases](TestCases/).
 
 You can also generate other topologies using our flow generator. How to use this generator is shown in section [Generating topologies](#generating-topologies).
 
