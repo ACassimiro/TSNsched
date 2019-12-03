@@ -78,37 +78,9 @@ You can also generate other topologies using our flow generator. [Generating top
 * GNU bash version 4.4.19(1)-release (x86_64-pc-linux-gnu)
 * Eclipse IDE 4.8.0
 
-<!-- TSNsched and Z3 libraries must be part of the Java project build path in order to use the classes without any errors, if used as a library. If used in the command line, these same files must be part of the classpath.  -->
 
-<!-- ### Manual installation of Z3 libary
+# === TEXT BELOW IS UNIMPROVED ===
 
-```
-git clone https://github.com/Z3Prover/z3.git
-python scripts/mk_make.py --java
-cd build
-make
-sudo make install
-``` -->
-
-
-
- 
-
-<!-- ## Requirements
-
-It is recommended that the user runs the code using Java Version 1.8.0_181 and the Z3 package version 4.8.0.0. Both TSNsched and Z3 libraries must be part of the Java project build path in order to use the classes without any errors, if used as a library. If used in the command line, these same files must be part of the classpath. 
-
-In order to be able to use the Z3 library, you need to add a few dependencies to your system by installing it from source like follows:
-
-```
-git clone https://github.com/Z3Prover/z3.git
-python scripts/mk_make.py --java
-cd build
-make
-sudo make install
-```
-
-The tests of both eclipse project and command line versions were run on a machine with Ubuntu 18.04.1 LTS as its operational system. The GNU bash version used was the 4.4.19(1)-release (x86_64-pc-linux-gnu). The Eclipse IDE version used was the Photon Release (4.8.0). -->
 
 ## Command Line Usage
 
