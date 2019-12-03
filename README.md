@@ -36,20 +36,20 @@ Time Sensitive Networking**](2019_10_FMCAD2019_TSNsched_Santos_Schneider_Nigam.p
 ## Quickstart Guide
 
 
-On Linux simply run the shell script as root to set up all necessary dependencies and generate an example output of TSNSched.
+On Linux run the shell script as root to set up all necessary dependencies. The script will also generate an example schedule.
 
 ```
 sudo ./install-dependencies.sh
 ```
 
-If you already have all dependencies installed, run the following commands for an example output. 
+If you already have all dependencies installed, run the following commands for an example schedule. 
 
 ```
 cd Script/
 ./generateSchedule.sh example.java
 ```
 
-[example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
+[example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow (4 subscribers and 3 switches in the path tree):
 
     P -> SW1 -> SW2 -> Sub1
          |       |
@@ -62,13 +62,13 @@ cd Script/
         Sub4
 
 
-The generated TSN schedule can be found in the [output directory](Script/output).
+TSNsched writes the generated TSN schedule to the [output directory](Script/output).
 
-The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the [output/example.java.out](Script/output/example.java.out) file.
+The total execution time, average latency and average jitter of the topology can be found at the end of the [output/example.java.out](Script/output/example.java.out) file.
 
 You can find the network topologies described in the submitted paper in [TestCases](TestCases/).
 
-You can also generate other topologies using our flow generator. How to use this generator is shown in section [Generating topologies](#generating-topologies).
+You can also generate other topologies using our flow generator. [Generating topologies](#generating-topologies) explains how to use this generator.
 
 
 ## Requirements
