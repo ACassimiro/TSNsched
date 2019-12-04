@@ -1,44 +1,55 @@
-# **TSNSched**
+# TSNsched
 
-TSNSched is a java tool which uses the [Z3 theorem solver][z3Git] in order to generate traffic schedules for TSN networks.
+> TSNsched uses the [Z3 theorem solver](https://github.com/Z3Prover/z3) to generate traffic schedules for [Time Sensitive Networking (TSN)](https://en.wikipedia.org/wiki/Time-Sensitive_Networking).
 
-This repository contains code, packages and documents generated and obtained through research in order to develop a Time-Aware Shaper for Time Sensitive Networking systems. 
+This repository is a result of research conducted at [fortiss](https://www.fortiss.org/en/) to develop a Time-Aware Shaper for TSN systems. The theoretic basis of this implementation has been published in a paper called [**TSNsched: Automated Schedule Generation for
+Time Sensitive Networking**](2019_10_FMCAD2019_TSNsched_Santos_Schneider_Nigam.pdf).
 
 ## Table of Contents
 
-* Quickstart Guide
-* Requirements
-* Command Line Usage
-    * The input
-    * Executing the program
-    * The output
-* Using as a Library
-    * Setting up the network
-    * Executing the program
-    * The output
-* Generating Topologies
-* Overview of Classes
-    * Device
-    * Flow
-    * FlowFragment
-    * Switch
-    * TSNSwitch
-    * Network
-    * PathNode
-    * PathTree
-    * Cycle
-    * Port
+- [Quickstart Guide](#quickstart-guide)
+- [Requirements](#requirements)
+- [Command Line Usage](#command-line-usage)
+  * [The Input](#the-input)
+  * [Executing the program](#executing-the-program)
+  * [The output](#the-output)
+- [Using as a Library](#using-as-a-library)
+  * [Setting up the network](#setting-up-the-network)
+  * [Executing the program](#executing-the-program-1)
+  * [The output](#the-output-1)
+- [Generating topologies](#generating-topologies)
+  * [Repository files:](#repository-files-)
+  * [Execution instructions for the Z3 code](#execution-instructions-for-the-z3-code)
+- [Overview of Classes](#overview-of-classes)
+  * [Device](#device)
+  * [Flow](#flow)
+  * [FlowFragment](#flowfragment)
+  * [Switch](#switch)
+  * [TSNSwitch](#tsnswitch)
+  * [Network](#network)
+  * [PathNode](#pathnode)
+  * [PathTree](#pathtree)
+  * [Cycle](#cycle)
+  * [Port](#port)
+  * [ScheduleGenerator](#schedulegenerator)
 
 ## Quickstart Guide
 
-TSNSched can be started by a prepared script:
+
+On Linux run the shell script as root to set up all necessary dependencies. The script will also generate an example schedule.
 
 ```
-cd /home/cav/tsnsched_artifact/Script/
+sudo ./install-dependencies.sh
+```
+
+If you already have all dependencies installed, run the following commands for an example schedule. 
+
+```
+cd Script/
 ./generateSchedule.sh example.java
 ```
 
-The input java file (example.java) describes a network topology (10 switches, 50 devices) with one small flow 4 subscribers and 3 switches in the path tree as illustrated below:
+[example.java](Script/example.java) describes a network topology (10 switches, 50 devices) with one small flow (4 subscribers and 3 switches in the path tree):
 
     P -> SW1 -> SW2 -> Sub1
          |       |
@@ -50,32 +61,26 @@ The input java file (example.java) describes a network topology (10 switches, 50
          V
         Sub4
 
-The generated TSN schedule can be found in the output directory in the file output/example.java.log and output/example.java.out.
-The total execution time, average latency and average jitter of the topology the scheduler solved can be found at the end of the output/example.java.out file.
 
-You can find the java files with the network topologies described in the submitted paper in the following folder:
+TSNsched writes the generated TSN schedule to the [output directory](Script/output).
 
-/home/cav/tsnsched_artifact/TestCasesPaper
+The total execution time, average latency and average jitter of the topology can be found at the end of the [output/example.java.out](Script/output/example.java.out) file.
 
-You can also generate other topologies using our flow generator. How to use this generator is shown in section "Generating Topologies".
+You can find the network topologies described in the submitted paper in [TestCases](TestCases/).
 
-Have fun testing :-) 
+You can also generate other topologies using our flow generator. [Generating topologies](#generating-topologies) explains how to use this generator.
+
 
 ## Requirements
 
-It is recommended that the user runs the code using Java Version 1.8.0_181 and the Z3 package version 4.8.0.0. Both TSNSched and Z3 libraries must be part of the Java project build path in order to use the classes without any errors, if used as a library. If used in the command line, these same files must be part of the classpath. 
+* Java Version 1.8.0_181
+* Z3 package version 4.8.0.0
+* GNU bash version 4.4.19(1)-release (x86_64-pc-linux-gnu)
+* Eclipse IDE 4.8.0
 
-In order to be able to use the Z3 library, you need to add a few dependencies to your system by installing it from source like follows:
 
-```
-git clone https://github.com/Z3Prover/z3.git
-python scripts/mk_make.py --java
-cd build
-make
-sudo make install
-```
+# === TEXT BELOW IS UNIMPROVED ===
 
-The tests of both eclipse project and command line versions were run on a machine with Ubuntu 18.04.1 LTS as its operational system. The GNU bash version used was the 4.4.19(1)-release (x86_64-pc-linux-gnu). The Eclipse IDE version used was the Photon Release (4.8.0).
 
 ## Command Line Usage
 
@@ -83,7 +88,7 @@ The files for the command line usage of this project are all stored in the folde
 
 ### The Input
 
-For the input of the command line version of this project, the user must provide a java file with a method called "runTestCase()". This function must implement the network and call the generateSchedule(Network net) method from a TSNSched object. The user can then call methods of the flows and cycles to evaluate the latency, jitter, cycle duration, cycle start, etc.
+For the input of the command line version of this project, the user must provide a java file with a method called "runTestCase()". This function must implement the network and call the generateSchedule(Network net) method from a TSNsched object. The user can then call methods of the flows and cycles to evaluate the latency, jitter, cycle duration, cycle start, etc.
 
 If the user is not interested in building his own network, we also make available a topology generator, discussed later in this file. The output of this generator is already in the format accepted by the execution script. Samples generated by this tool can be found in the folder "TestCase" and are indentified by the .java extension.
 
@@ -99,7 +104,7 @@ Once the input file is placed in the same folder of the script, the user must ex
 ./generateSchedule.sh example.java
 ```
 
-For practical reasons, the given file will be duplicated, renamed, parsed by the script in order to adapt the code. Then, the files will be compiled and executed with references to the Z3 and TSNSched libraries, placed on the subfolder "libs". The 2 output files will be generated and placed on the folder "output" under the the same name of the argument given in the execution of the switch, but now with the extra extensions .out and .log.   
+For practical reasons, the given file will be duplicated, renamed, parsed by the script in order to adapt the code. Then, the files will be compiled and executed with references to the Z3 and TSNsched libraries, placed on the subfolder "libs". The 2 output files will be generated and placed on the folder "output" under the the same name of the argument given in the execution of the switch, but now with the extra extensions .out and .log.   
 
 ### The output
 
@@ -117,12 +122,12 @@ Currently, the scheduler is building the schedule for 5 packets sent by each flo
 
 ## Using as a Library
 
-This tool also can be imported as a library allowing the user to aggregate TSNSched functionalities to other projects. With this, not only the topology can be handled as the developer wishes, the values generated by the scheduler will be stored in the cycle and flow objects in the program, allowing users to manipulate data without waiting for an output of a program external to their projects.
+This tool also can be imported as a library allowing the user to aggregate TSNsched functionalities to other projects. With this, not only the topology can be handled as the developer wishes, the values generated by the scheduler will be stored in the cycle and flow objects in the program, allowing users to manipulate data without waiting for an output of a program external to their projects.
 
 
 ### Setting up the network
 
-After adding the TSNSched and Z3 packages to the Java build path, one only needs to import the classes in order to be able to make use of it:
+After adding the TSNsched and Z3 packages to the Java build path, one only needs to import the classes in order to be able to make use of it:
 
 ```
 import schedule_generator.*;
@@ -183,7 +188,7 @@ net.addFlow(Flow flowB);
 
 ### Executing the program
 
-The user must add both Z3 and TSNSched packages to the classpath of the project. These two files can be found in the "libs" folder of this repository.
+The user must add both Z3 and TSNsched packages to the classpath of the project. These two files can be found in the "libs" folder of this repository.
 
 Most of the sofisticated IDEs can do this just by adding external libraries as JAR files on the configuration of the projects.
 
@@ -237,7 +242,7 @@ cycle.getSlotDuration(int prt);     // Index of a priority
 
 ## Generating topologies
 
-To aid in the generation of topologies for the testing of TSNSched, a generator of Java files containing the specification of a network was created. It can be found in the folder "ScenarioGenerator" of this repository.
+To aid in the generation of topologies for the testing of TSNsched, a generator of Java files containing the specification of a network was created. It can be found in the folder "ScenarioGenerator" of this repository.
 
 Basically, given certain properties of a network as variables, they can be set in order to generate a topology according to the user's needs. The number of devices, switches, flows and constructor parameters are set, and then the file is written.
 
@@ -275,13 +280,6 @@ The output file (GeneratedCode.java which contains the topology) will be generat
 * Press the "run" button
 * The output will be printed bellow the editor
 -->
-
-
-[//]: # 
-
-
-   [z3]: <https://rise4fun.com/z3>
-   [z3Git]: <https://github.com/Z3Prover/z3>
 
 
 ## Overview of Classes
