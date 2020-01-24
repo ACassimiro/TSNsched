@@ -141,9 +141,15 @@ Device dev = new Device(float packetPeriodicity,  //  Periodicity of the packet
                         float hardConstraint);    //  Maximum latency tolerated by this device (Hard constraint)
 
 // Creating a switch
-TSNSwitch switch = new TSNSwitch(float timeToTravel,      // Time taken to travel on the medium connected to this switch
-                                 float transmissionTime);  // Time taken to transmit a packet inside this switch
-                                 
+TSNSwitch switch = new TSNSwitch(String name,   	 // Identifier of the switch
+				 float maxPacketSize,    // Maximum size of the packet supported by the switch (currently disabled)
+			         float timeToTravel,     // Time taken to travel on the medium connected to this switch
+			         float transmissionTime, // Time taken to transmit a packet inside this switch
+			         float portSpeed,        // Transmission speed of the port (currently disabled)
+			         float gbSize,           // Size of the guardband used in the port in time units
+			         float cycleDurationLowerBound, // Minimum duration of the cycle of the ports
+			         float cycleDurationUpperBound) // Maximum duration of the cycle of the ports
+				 
 // Creating a cycle
 Cycle cycle = new Cycle(float upperBoundCycleTime,    // Maximum duration of the cycle
                         float lowerBoundCycleTime,    // Minimum duration of the cycle
