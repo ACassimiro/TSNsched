@@ -147,6 +147,7 @@ public class ScheduleGenerator {
 	    */
 	   public void writePathTree(PathNode pathNode, Model model, Context ctx, PrintWriter out) {
 	       Switch swt;
+	       IntExpr indexZ3 = null;
 	    
 	       if((pathNode.getNode() instanceof Device) && (pathNode.getParent() != null)) {
 	           out.println("    [END OF BRANCH]");
@@ -171,28 +172,40 @@ public class ScheduleGenerator {
                        out.println("        Fragment node: " + ffrag.getNodeName());
                        out.println("        Fragment next hop: " + ffrag.getNextHop());
                        out.println("        Fragment priority: " + model.eval(ffrag.getFlowPriority(), false));
-                       out.println("        Fragment slot start: " 
-                                           + this.stringToFloat(
-                                                   model.eval(((TSNSwitch) child.getNode())
-                                                          .getPortOf(ffrag.getNextHop())
-                                                          .getCycle()
-                                                          .slotStartZ3(ctx, ffrag.getFlowPriority()) 
-                                                          , false).toString()
-                                               ));
-                       out.println("        Fragment slot duration: " 
-                                            + this.stringToFloat(
-                                                model.eval(((TSNSwitch) child.getNode())
-                                                           .getPortOf(ffrag.getNextHop())
-                                                           .getCycle()
-                                                           .slotDurationZ3(ctx, ffrag.getFlowPriority()) 
-                                                           , false).toString()));
+                       for(int index = 0; index < ((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getNumOfSlots(); index++) {
+                    	   indexZ3 = ctx.mkInt(index);
+                    	   out.println("        Fragment slot start " + index + ": " 
+                                   + this.stringToFloat(
+                                           model.eval(((TSNSwitch) child.getNode())
+                                                  .getPortOf(ffrag.getNextHop())
+                                                  .getCycle()
+                                                  .slotStartZ3(ctx, ffrag.getFlowPriority(), indexZ3) 
+                                                  , false).toString()
+                                       ));
+                    	   out.println("        Fragment slot duration " + index + " : " 
+                                    + this.stringToFloat(
+                                        model.eval(((TSNSwitch) child.getNode())
+                                                   .getPortOf(ffrag.getNextHop())
+                                                   .getCycle()
+                                                   .slotDurationZ3(ctx, ffrag.getFlowPriority(), indexZ3) 
+                                                   , false).toString()));
+                
+                       }
                        
                        out.println("        Fragment times-");
-                       for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-                           out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
-                           out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).arrivalTime(ctx, i, ffrag) , false).toString()));
-                           out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) , false).toString()));
-                           out.println("          ----------------------------");
+                       ffrag.getParent().addToTotalNumOfPackets(ffrag.getNumOfPacketsSent());
+                       
+                       for(int i = 0; i < ffrag.getParent().getNumOfPacketsSent(); i++) {
+                    	   System.out.println(((TSNSwitch)child.getNode()).departureTime(ctx, i, ffrag));
+                    	   System.out.println(((TSNSwitch)child.getNode()).arrivalTime(ctx, i, ffrag));
+                    	   System.out.println(((TSNSwitch)child.getNode()).scheduledTime(ctx, i, ffrag));
+                           
+                    	   if(i < ffrag.getNumOfPacketsSent()) {
+		                	   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
+		                	   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).arrivalTime(ctx, i, ffrag) , false).toString()));
+		                       out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) , false).toString()));
+		                       out.println("          ----------------------------");
+                    	   }
                            
                            ffrag.addDepartureTime(
                                this.stringToFloat(
@@ -220,16 +233,31 @@ public class ScheduleGenerator {
                                continue;
                            }
 
-                           port.getCycle().addSlotUsed(
+                           ArrayList<Float> listOfStart = new ArrayList<Float>();
+                    	   ArrayList<Float> listOfDuration = new ArrayList<Float>();
+                    	
+                           
+                           for(int index = 0; index < ((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getNumOfSlots(); index++) {
+                        	   indexZ3 = ctx.mkInt(index);
+                        	   
+                    		   listOfStart.add(
+                				   this.stringToFloat(model.eval( 
+                                       ((TSNSwitch) child.getNode())
+                                       .getPortOf(ffrag.getNextHop())
+                                       .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority(), indexZ3) , false).toString())
+            				   );
+                    		   listOfDuration.add(
+                				   this.stringToFloat(model.eval( 
+                                       ((TSNSwitch) child.getNode())
+                                       .getPortOf(ffrag.getNextHop())
+                                       .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority(), indexZ3) , false).toString())
+            				   );
+                           }
+                    	   
+                    	   port.getCycle().addSlotUsed(
                                (int) this.stringToFloat(model.eval(ffrag.getFlowPriority(), false).toString()), 
-                               this.stringToFloat(model.eval( 
-                                       ((TSNSwitch) child.getNode())
-                                       .getPortOf(ffrag.getNextHop())
-                                       .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority()) , false).toString()), 
-                               this.stringToFloat(model.eval( 
-                                       ((TSNSwitch) child.getNode())
-                                       .getPortOf(ffrag.getNextHop())
-                                       .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority()) , false).toString())
+                               listOfStart, 
+                               listOfDuration
                            );
                        }
                        
@@ -278,10 +306,18 @@ public class ScheduleGenerator {
 	       }
 	       */
 	       
-//	       Pattern[] pats = new Pattern[] {ctx.mkInt(1)};
+	       // Pattern[] pats = new Pattern[] {ctx.mkInt(1)};
 	       
 	       
+	       for(Flow flw : net.getFlows()) {
+	    	   flw.convertUnicastFlow();
+	    	   flw.setUpPeriods(flw.getPathTree().getRoot());
+	       }
 	       
+	       for(Switch swt : net.getSwitches()) {
+	    	   TSNSwitch auxSwt = (TSNSwitch) swt;
+	    	   auxSwt.setUpCycleSize(solver, ctx);
+	       }
 	       
 	       
 	       // On all network flows: Data given by the user will be converted to z3 values 
@@ -307,8 +343,6 @@ public class ScheduleGenerator {
            // duration
            RealExpr switch1CycDuration = switch1.getCycle(0).getCycleDurationZ3();
            
-              
-           // TODO [Priority - Medium]: Randomize t11 (make it forall)
            
 	       /* find model for the constraints above */
 	       Model model = null;
@@ -342,9 +376,9 @@ public class ScheduleGenerator {
                            out.println("    Port speed: " + auxSwt.getPortSpeed());
                            out.println("    Time to Travel: " + auxSwt.getTimeToTravel());
 	                       out.println("    Transmission time: " + auxSwt.getTransmissionTime());
-	                       out.println("    Cycle information -");
-	                       out.println("        First cycle start: " + model.eval(((TSNSwitch)auxSwt).getCycleStart(), false));
-	                       out.println("        Cycle duration: " + model.eval(((TSNSwitch)auxSwt).getCycleDuration(), false));
+//	                       out.println("    Cycle information -");
+//	                       out.println("        First cycle start: " + model.eval(((TSNSwitch)auxSwt).getCycleStart(), false));
+//	                       out.println("        Cycle duration: " + model.eval(((TSNSwitch)auxSwt).getCycleDuration(), false));
                            out.println("");
 	                       /*
 	                       for (Port port : ((TSNSwitch)auxSwt).getPorts()) {
@@ -404,84 +438,85 @@ public class ScheduleGenerator {
                            in each case.
 	                       */
 	                       if(f.getType() == Flow.UNICAST) {
-	                           out.println("    Flow type: Unicast");
-	                           out.print("    Path: ");
-	                           for(Switch s : f.getPath()) {
-	                               out.print(s.getName() + ",");
-	                           }
-	                           out.println("");
-	                           
-	                           
-	                           for(FlowFragment ffrag : f.getFlowFragments()) {
-	                               out.println("    Fragment name: " + ffrag.getName());
-	                               out.println("        Fragment node: " + ffrag.getNodeName());
-	                               out.println("        Fragment next hop: " + ffrag.getNextHop());
-                                   out.println("        Fragment priority: " + model.eval(ffrag.getFlowPriority(), false));
-	                               out.println("        Fragment slot start: " 
-	                                                   + model.eval(((TSNSwitch) f.getPath()
-	                                                                  .get(f.getFlowFragments().indexOf(ffrag)))
-	                                                                  .getPortOf(ffrag.getNextHop())
-	                                                                  .getCycle()
-	                                                                  .slotStartZ3(ctx, ffrag.getFlowPriority()) 
-	                                                                  , false));
-	                               out.println("        Fragment slot duration: " 
-	                                                    + model.eval(((TSNSwitch) f.getPath()
-	                                                                   .get(f.getFlowFragments().indexOf(ffrag)))
-	                                                                   .getPortOf(ffrag.getNextHop())
-	                                                                   .getCycle()
-	                                                                   .slotDurationZ3(ctx, ffrag.getFlowPriority()) 
-	                                                                   , false));
-	                               
-	                               for (Switch swt : f.getPath()) {
-	                                   for (Port port : ((TSNSwitch) swt).getPorts()) {
-	                                       if(!port.getFlowFragments().contains(ffrag)) {
-	                                           continue;
-	                                       }
-	                                       
-	                                       port.getCycle().addSlotUsed(
-	                                           (int) this.stringToFloat(model.eval(ffrag.getFlowPriority(), false).toString()), 
-	                                           this.stringToFloat(model.eval( 
-	                                                   ((TSNSwitch) f.getPath()
-	                                                   .get(f.getFlowFragments().indexOf(ffrag)))
-	                                                   .getPortOf(ffrag.getNextHop())
-	                                                   .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority()) , false).toString()), 
-	                                           this.stringToFloat(model.eval( 
-	                                                   ((TSNSwitch) f.getPath().
-	                                                   get(f.getFlowFragments().indexOf(ffrag)))
-	                                                   .getPortOf(ffrag.getNextHop())
-	                                                   .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority()) , false).toString())
-	                                       );
-	                                   }
-	                               }
-	                               
-	                               
-	                               out.println("        Fragment times-");
-	                               for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-	                                   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false));
-	                                   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false));
-	                                   out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false));
-	                                   out.println("          ----------------------------");
-	                                   
-	                                   ffrag.addDepartureTime(
-	                                       this.stringToFloat(
-	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false).toString()   
-	                                       )
-	                                   );
-	                                   ffrag.addArrivalTime(
-	                                       this.stringToFloat(
-	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false).toString()   
-	                                       )
-	                                   );
-	                                   ffrag.addScheduledTime(
-	                                       this.stringToFloat(
-	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false).toString()   
-	                                       )
-	                                   );
-	                                   
-	                               }
-	                               
-	                               
-	                           }
+//	                           out.println("    Flow type: Unicast");
+//	                           out.print("    Path: ");
+//	                           for(Switch s : f.getPath()) {
+//	                               out.print(s.getName() + ",");
+//	                           }
+//	                           out.println("");
+//	                           
+//	                           
+//	                           for(FlowFragment ffrag : f.getFlowFragments()) {
+//	                               out.println("    Fragment name: " + ffrag.getName());
+//	                               out.println("        Fragment node: " + ffrag.getNodeName());
+//	                               out.println("        Fragment next hop: " + ffrag.getNextHop());
+//                                   out.println("        Fragment priority: " + model.eval(ffrag.getFlowPriority(), false));
+//	                               out.println("        Fragment slot start: " 
+//	                                                   + model.eval(((TSNSwitch) f.getPath()
+//	                                                                  .get(f.getFlowFragments().indexOf(ffrag)))
+//	                                                                  .getPortOf(ffrag.getNextHop())
+//	                                                                  .getCycle()
+//	                                                                  .slotStartZ3(ctx, ffrag.getFlowPriority()) 
+//	                                                                  , false));
+//	                               out.println("        Fragment slot duration: " 
+//	                                                    + model.eval(((TSNSwitch) f.getPath()
+//	                                                                   .get(f.getFlowFragments().indexOf(ffrag)))
+//	                                                                   .getPortOf(ffrag.getNextHop())
+//	                                                                   .getCycle()
+//	                                                                   .slotDurationZ3(ctx, ffrag.getFlowPriority()) 
+//	                                                                   , false));
+//	                               
+//	                               for (Switch swt : f.getPath()) {
+//	                                   for (Port port : ((TSNSwitch) swt).getPorts()) {
+//	                                       if(!port.getFlowFragments().contains(ffrag)) {
+//	                                           continue;
+//	                                       }
+//	                                       
+//	                                       port.getCycle().addSlotUsed(
+//	                                           (int) this.stringToFloat(model.eval(ffrag.getFlowPriority(), false).toString()), 
+//	                                           this.stringToFloat(model.eval( 
+//	                                                   ((TSNSwitch) f.getPath()
+//	                                                   .get(f.getFlowFragments().indexOf(ffrag)))
+//	                                                   .getPortOf(ffrag.getNextHop())
+//	                                                   .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority()) , false).toString()), 
+//	                                           this.stringToFloat(model.eval( 
+//	                                                   ((TSNSwitch) f.getPath().
+//	                                                   get(f.getFlowFragments().indexOf(ffrag)))
+//	                                                   .getPortOf(ffrag.getNextHop())
+//	                                                   .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority()) , false).toString())
+//	                                       );
+//	                                   }
+//	                               }
+//	                               
+//	                               
+//	                               out.println("        Fragment times-");
+//	                               for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
+//	                                   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false));
+//	                                   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false));
+//	                                   out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false));
+//	                                   out.println("          ----------------------------");
+//	                                   
+//	                                   ffrag.addDepartureTime(
+//	                                       this.stringToFloat(
+//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false).toString()   
+//	                                       )
+//	                                   );
+//	                                   ffrag.addArrivalTime(
+//	                                       this.stringToFloat(
+//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false).toString()   
+//	                                       )
+//	                                   );
+//	                                   ffrag.addScheduledTime(
+//	                                       this.stringToFloat(
+//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false).toString()   
+//	                                       )
+//	                                   );
+//	                                   
+//	                               }
+//	                               
+//	                               
+//	                           }
+	                    	   ;
 	                       } else if(f.getType() == Flow.PUBLISH_SUBSCRIBE) { //IF FLOW IS PUB-SUB
 	                           
 	                           /*

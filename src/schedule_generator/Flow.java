@@ -23,8 +23,10 @@ public class Flow {
     static int instanceCounter = 0;
     protected String name;
     private int type = 0;
+    private int totalNumOfPackets = 0;
 
-    //Specifying the type of the flow:
+
+	//Specifying the type of the flow:
     public static int UNICAST = 0;
     public static int PUBLISH_SUBSCRIBE = 1;
     
@@ -38,9 +40,10 @@ public class Flow {
     protected IntExpr flowPriority; // In the future, priority might be fixed
     protected Device startDevice;
     protected Device endDevice; 
+    
+    private int numOfPacketsSent = 0;
 
-
-    /**
+	/**
      * [Method]: Flow
      * [Usage]: Default constructor method for flow objects.
      * Must be explicit due to call on child class.
@@ -89,17 +92,14 @@ public class Flow {
     }
     
     /**
-     * [Method]: toZ3
-     * [Usage]: After setting all the numeric input values of the class,
-     * generates the z3 equivalent of these values and creates any extra
-     * variable needed.
+     * [Method]: convertUnicastFlows
+     * [Usage]: Most of the unicast functionalities are not supported anymore.
+     * At the beginning of the scheduling process, convert the to a multicast
+     * structure without a branching path.
      * 
-     * @param ctx      Context variable containing the z3 environment used
      */
-    public void toZ3(Context ctx) {
-        
-        this.flowPriority = ctx.mkIntConst(this.name + "Priority");
-        
+    
+    public void convertUnicastFlow() {
         // AVOID USING THE ARRAY LIST
         // TODO: REMOVE OPTION TO DISTINGUISH BETWEEN UNICAST AND MULTICAST LATER
         if(this.type == UNICAST) {
@@ -120,6 +120,20 @@ public class Flow {
             
             this.type = PUBLISH_SUBSCRIBE;
         }
+    }
+    
+    
+    /**
+     * [Method]: toZ3
+     * [Usage]: After setting all the numeric input values of the class,
+     * generates the z3 equivalent of these values and creates any extra
+     * variable needed.
+     * 
+     * @param ctx      Context variable containing the z3 environment used
+     */
+    public void toZ3(Context ctx) {
+        
+        this.flowPriority = ctx.mkIntConst(this.name + "Priority");
         
         
         if(this.type == UNICAST) { // If flow is unicast
@@ -164,6 +178,7 @@ public class Flow {
      */
     public void nodeToZ3(Context ctx, PathNode node) {
         FlowFragment flowFrag; 
+        int numberOfPackets = Network.PACKETUPPERBOUNDRANGE;
         
         // If, by chance, the given node has no child, then its a leaf
         if(node.getChildren().size() == 0) 
@@ -184,10 +199,27 @@ public class Flow {
                 // Create a new flow fragment
                 flowFrag = new FlowFragment(this);
                 
+                // Setting next hop
+                if(n.getNode() instanceof TSNSwitch) {
+                    flowFrag.setNextHop(
+                        ((TSNSwitch) n.getNode()).getName()
+                    );
+                } else {
+                    flowFrag.setNextHop(
+                        ((Device) n.getNode()).getName()
+                    );
+                }
+                
+                if(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).checkIfAutomatedCycleSize()) {
+                	numberOfPackets = (int) (((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize()/this.startDevice.getPacketPeriodicity());
+                	flowFrag.setNumOfPacketsSent(numberOfPackets);
+                	
+                }                
+                
                 if(auxN.getParent().getParent() == null) { //First flow fragment, fragment first departure = device's first departure
                     flowFrag.setNodeName(((Switch)auxN.getNode()).getName());
                     
-                    for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
+                    for (int i = 0; i < numberOfPackets; i++) {
                         /*
                         flowFrag.setDepartureTimeZ3(
                             this.startDevice.getFirstT1TimeZ3(),
@@ -196,12 +228,11 @@ public class Flow {
                         */
 
                         /**/
-                        flowFrag.setDepartureTimeZ3(
+                        flowFrag.addDepartureTimeZ3(
                             (RealExpr) ctx.mkAdd(
                                 this.startDevice.getFirstT1TimeZ3(),
                                 ctx.mkReal(Float.toString(this.startDevice.getPacketPeriodicity() * i))
-                            ),
-                            i
+                            )
                         );
                         /**/
                     }
@@ -224,39 +255,31 @@ public class Flow {
                     /**/
                     
                     /**/
-                    for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-                        flowFrag.setDepartureTimeZ3(
+                    for (int i = 0; i < numberOfPackets; i++) {
+                    	
+                        flowFrag.addDepartureTimeZ3( // Flow fragment link constraint
                             ((TSNSwitch) auxN.getParent().getNode())
                                 .scheduledTime(
                                     ctx,
                                     i,
                                     auxN.getParent().getFlowFragments().get(auxN.getParent().getChildren().indexOf(auxN))
-                            ),  
-                            i
+                            )
                         );
                         
                     }
                     /**/
                     
                     flowFrag.setNodeName(((TSNSwitch) auxN.getNode()).getName());
+                    
                 } 
                 
-                // Setting next hop
-                if(n.getNode() instanceof TSNSwitch) {
-                    flowFrag.setNextHop(
-                        ((TSNSwitch) n.getNode()).getName()
-                    );
-                } else {
-                    flowFrag.setNextHop(
-                        ((Device) n.getNode()).getName()
-                    );
-                }
                 
                 // Setting z3 properties of the flow fragment
-//                flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority"));
-                flowFrag.setFlowPriority(this.flowPriority);
-                flowFrag.setPacketPeriodicity(startDevice.getPacketPeriodicityZ3());
+                flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
+                // flowFrag.setFlowPriority(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
+                flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
                 flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
+                flowFrag.setStartDevice(this.startDevice);
                 
                 //Adding fragment to the fragment list and to the switch's fragment list
                 auxN.addFlowFragment(flowFrag);
@@ -295,19 +318,17 @@ public class Flow {
             // If no flowFragment has been added to the path, flowPriority is null, so initiate it
             //flowFrag.setNodeName(this.startDevice.getName());
             for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-                flowFrag.setDepartureTimeZ3(
+                flowFrag.addDepartureTimeZ3( // Packet departure constraint
                     (RealExpr) ctx.mkAdd(
                         this.startDevice.getFirstT1TimeZ3(),
                         ctx.mkReal(Float.toString(this.startDevice.getPacketPeriodicity() * i))
-                    ),
-                    i
+                    )
                 );
             }
         } else { 
             for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-                flowFrag.setDepartureTimeZ3(
-                    ((TSNSwitch) path.get(currentSwitchIndex - 1)).scheduledTime(ctx, i, flowFragments.get(flowFragments.size() - 1)),
-                    i
+                flowFrag.addDepartureTimeZ3(
+                    ((TSNSwitch) path.get(currentSwitchIndex - 1)).scheduledTime(ctx, i, flowFragments.get(flowFragments.size() - 1))
                 );
             }
         } 
@@ -315,7 +336,7 @@ public class Flow {
         
         // Setting extra flow properties
         flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority"));
-        flowFrag.setPacketPeriodicity(startDevice.getPacketPeriodicityZ3());
+        flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
         flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
         
         /*
@@ -455,11 +476,49 @@ public class Flow {
     public float getDepartureTime(int hop, int packetNum) {
         float time;
         
-        System.out.println(this.getFlowFragments().size());
         
         time = this.getFlowFragments().get(hop).getDepartureTime(packetNum);
         
         return time;
+    }
+    
+    
+    /**
+     * [Method]: setUpPeriods
+     * [Usage]: Iterate over the switches in the path of the flow. 
+     * Adds its periodicity to the periodicity list in the switch.
+     * This will be used for the automated application cycles.
+     */
+    
+    public void setUpPeriods(PathNode node) {
+    	if(node.getChildren().isEmpty()) {
+			return;
+    	} else if (node.getNode() instanceof Device) {
+    		for(PathNode child : node.getChildren()) {
+    			this.setUpPeriods(child);
+    		}
+    	} else {
+    		TSNSwitch swt = (TSNSwitch) node.getNode(); //no good. Need the port
+    		Port port = null;
+    		
+    		for(PathNode child : node.getChildren()) {
+    			if(child.getNode() instanceof Device) {
+        			port = swt.getPortOf(((Device) child.getNode()).getName());    	
+    				this.setUpPeriods(child);			
+    			} else if (child.getNode() instanceof TSNSwitch) {
+        			port = swt.getPortOf(((TSNSwitch) child.getNode()).getName());  
+    				this.setUpPeriods(child);
+    			} else {
+    				System.out.println("Unrecognized node");
+    				return;
+    			}
+    			
+    			if(!port.getListOfPeriods().contains(this.startDevice.getPacketPeriodicity())) {
+    				port.addToListOfPeriods(this.startDevice.getPacketPeriodicity());
+    			}
+    		}
+    		
+    	}
     }
     
     
@@ -760,13 +819,13 @@ public class Flow {
         
         ArrayList<FlowFragment> fragments = this.getFlowFromRootToNode(dev);
         
-        for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
+        for(int i = 0; i < fragments.get(0).getParent().getNumOfPacketsSent(); i++) {
             averageLatency += 
                     this.getScheduledTime(dev, fragments.size() - 1, i) -
                     this.getDepartureTime(dev, 0, i);
         }
         
-        averageLatency = averageLatency / (Network.PACKETUPPERBOUNDRANGE);
+        averageLatency = averageLatency / (fragments.get(0).getParent().getNumOfPacketsSent());
         
         
         return averageLatency;
@@ -824,8 +883,9 @@ public class Flow {
         float averageJitter = 0;
         float averageLatency = this.getAverageLatencyToDevice(dev);   
 
+        ArrayList<FlowFragment> fragments = this.getFlowFromRootToNode(dev);
         
-        for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
+        for(int i = 0; i < fragments.get(0).getNumOfPacketsSent(); i++) {
             averageJitter += 
                     Math.abs(
                         this.getScheduledTime(dev, this.getFlowFromRootToNode(dev).size() - 1, i) -
@@ -834,7 +894,7 @@ public class Flow {
                     ); 
         }
         
-        averageJitter = averageJitter/Network.PACKETUPPERBOUNDRANGE;
+        averageJitter = averageJitter/fragments.get(0).getNumOfPacketsSent();
         
         return averageJitter;
     }
@@ -986,13 +1046,13 @@ public class Flow {
     public RealExpr getAvgLatency(Solver solver, Context ctx) {
         if(this.type == UNICAST) {
             return (RealExpr) ctx.mkDiv(
-                getSumOfLatencyZ3(solver, ctx, Network.PACKETUPPERBOUNDRANGE - 1), 
-                ctx.mkReal(Network.PACKETUPPERBOUNDRANGE)
+                getSumOfLatencyZ3(solver, ctx, this.numOfPacketsSent - 1), 
+                ctx.mkReal(this.numOfPacketsSent)
             );
         } else if (this.type == PUBLISH_SUBSCRIBE) {
                 return (RealExpr) ctx.mkDiv(
-                    getSumOfAllDevLatencyZ3(solver, ctx, Network.PACKETUPPERBOUNDRANGE - 1), 
-                    ctx.mkReal((Network.PACKETUPPERBOUNDRANGE) * this.pathTree.getLeaves().size())
+                    getSumOfAllDevLatencyZ3(solver, ctx, this.numOfPacketsSent - 1), 
+                    ctx.mkReal((this.numOfPacketsSent) * this.pathTree.getLeaves().size())
                 );
         } else {
             // TODO: THROW ERROR
@@ -1004,8 +1064,8 @@ public class Flow {
     public RealExpr getAvgLatency(Device dev, Solver solver, Context ctx) {
         
         return (RealExpr) ctx.mkDiv(
-            this.getSumOfLatencyZ3(dev, solver, ctx, Network.PACKETUPPERBOUNDRANGE - 1), 
-            ctx.mkReal(Network.PACKETUPPERBOUNDRANGE)
+            this.getSumOfLatencyZ3(dev, solver, ctx, this.numOfPacketsSent - 1), 
+            ctx.mkReal(this.numOfPacketsSent)
         );
         
      }
@@ -1147,6 +1207,38 @@ public class Flow {
         return sumValue;
     }
     
+    
+    /**
+     * [Method]: setNumberOfPacketsSent
+     * [Usage]: Search through the flow fragments in order to find the highest
+     * number of packets scheduled in a fragment. This is useful to set the hard
+     * constraint for all packets scheduled within the flow.
+     */
+    
+    public void setNumberOfPacketsSent(PathNode node) {
+    	
+    	if(node.getNode() instanceof Device && (node.getChildren().size() == 0)) {
+			return;
+		} else if (node.getNode() instanceof Device) {
+			for(PathNode child : node.getChildren()) {
+				this.setNumberOfPacketsSent(child);
+			}
+		} else {
+			int index = 0;
+			for(FlowFragment frag : node.getFlowFragments()) {
+				if(this.numOfPacketsSent < frag.getNumOfPacketsSent()) {
+					this.numOfPacketsSent = frag.getNumOfPacketsSent();
+				}
+				
+				this.setNumberOfPacketsSent(node.getChildren().get(index));
+				index = index + 1;
+			}
+		}
+		
+    	
+    }
+    
+    
     /*
      * GETTERS AND SETTERS:
      */
@@ -1208,6 +1300,7 @@ public class Flow {
     }
 
     public void setPathTree(PathTree pathTree) {
+    	this.startDevice = (Device) pathTree.getRoot().getNode();
         this.pathTree = pathTree;
     }
     
@@ -1218,5 +1311,25 @@ public class Flow {
     public void setType(int type) {
         this.type = type;
     }
+	
+    public int getNumOfPacketsSent() {
+		return numOfPacketsSent;
+	}
 
+	public void setNumOfPacketsSent(int numOfPacketsSent) {
+		this.numOfPacketsSent = numOfPacketsSent;
+	}
+
+    public int getTotalNumOfPackets() {
+		return totalNumOfPackets;
+	}
+
+	public void setTotalNumOfPackets(int totalNumOfPackets) {
+		this.totalNumOfPackets = totalNumOfPackets;
+	}
+	
+	public void addToTotalNumOfPackets(int num) {
+		this.totalNumOfPackets = this.totalNumOfPackets + num;
+	}
+	
 }

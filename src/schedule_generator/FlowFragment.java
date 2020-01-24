@@ -16,13 +16,15 @@ import com.microsoft.z3.*;
  * 
  */
 public class FlowFragment extends Flow {
+	private Flow parent;
     private RealExpr packetSize;
-    private RealExpr packetPeriodicity;
-    private RealExpr departureTimeZ3[];
+    private RealExpr packetPeriodicityZ3;
+    private ArrayList<RealExpr> departureTimeZ3 = new ArrayList<RealExpr>();
     private IntExpr flowPriority;
     private String nodeName;
     private String nextHopName;
-
+    private int numOfPacketsSent = Network.PACKETUPPERBOUNDRANGE;
+    
     private ArrayList<Float> departureTime = new ArrayList<Float>();
     private ArrayList<Float> arrivalTime = new ArrayList<Float>();
     private ArrayList<Float> scheduledTime = new ArrayList<Float>();
@@ -36,6 +38,8 @@ public class FlowFragment extends Flow {
      * @param parent    Flow object to whom this fragment belongs to
      */
     public FlowFragment(Flow parent) {
+    	this.setParent(parent);
+    	
         /*
          * Every time this constructor is called, the parent is also called
          * making instanceCounter++, even though it counts only the number
@@ -57,9 +61,7 @@ public class FlowFragment extends Flow {
         } else {
             // Throw error
         }
-        
-        departureTimeZ3 = new RealExpr[Network.PACKETUPPERBOUNDRANGE];
-        
+                
     }
     
     /*
@@ -71,19 +73,23 @@ public class FlowFragment extends Flow {
     }
     
     public RealExpr getDepartureTimeZ3(int index) {
-        return departureTimeZ3[index];
+        return departureTimeZ3.get(index);
     }
     
     public void setDepartureTimeZ3(RealExpr dTimeZ3, int index) {
-        this.departureTimeZ3[index] = dTimeZ3;
+        this.departureTimeZ3.set(index, dTimeZ3);
     }
     
-    public RealExpr getPacketPeriodicity() {
-        return packetPeriodicity;
+    public void addDepartureTimeZ3(RealExpr dTimeZ3) {
+        this.departureTimeZ3.add(dTimeZ3);
     }
     
-    public void setPacketPeriodicity(RealExpr packetPeriodicity) {
-        this.packetPeriodicity = packetPeriodicity;
+    public RealExpr getPacketPeriodicityZ3() {
+        return packetPeriodicityZ3;
+    }
+    
+    public void setPacketPeriodicityZ3(RealExpr packetPeriodicity) {
+        this.packetPeriodicityZ3 = packetPeriodicity;
     }
     
     public RealExpr getPacketSize() {
@@ -154,5 +160,20 @@ public class FlowFragment extends Flow {
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
+    
+    public int getNumOfPacketsSent() {
+        return numOfPacketsSent;
+    }
 
+    public void setNumOfPacketsSent(int numOfPacketsSent) {
+        this.numOfPacketsSent = numOfPacketsSent;
+    }
+
+	public Flow getParent() {
+		return parent;
+	}
+
+	public void setParent(Flow parent) {
+		this.parent = parent;
+	}
 }

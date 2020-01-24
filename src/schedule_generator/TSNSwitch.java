@@ -123,7 +123,7 @@ public class TSNSwitch extends Switch {
         this.cycleStart = ctx.mkRealConst("cycleOf" + this.name + "Start");
         
 
-        // Creating the cycle setting up the bounds for the duration
+        // Creating the cycle setting up the bounds for the duration (Cycle duration constraint)
         solver.add(
             ctx.mkGe(this.cycleDuration, this.cycleDurationLowerBoundZ3)
         );
@@ -132,8 +132,8 @@ public class TSNSwitch extends Switch {
         );
         
         // A cycle must start on a point in time, so it must be greater than 0
-        solver.add(
-                ctx.mkGe(this.cycleStart, ctx.mkInt(0))
+        solver.add( // No negative cycle values constraint
+            ctx.mkGe(this.cycleStart, ctx.mkInt(0))
         );
 
                 
@@ -141,28 +141,39 @@ public class TSNSwitch extends Switch {
             port.toZ3(ctx);
             
             for(FlowFragment frag : port.getFlowFragments()) {
-                solver.add(
+                solver.add( // Maximum cycle start constraint
                     ctx.mkLe(
-                        this.cycleStart, 
+                        port.getCycle().getFirstCycleStartZ3(), 
                         this.arrivalTime(ctx, 0, frag)
                     )
                 );
             }
-            
-            // The cycle of every port must have the same duration
-            solver.add(ctx.mkEq(
+
+            solver.add( // No negative cycle values constraint
+        		ctx.mkGe(port.getCycle().getFirstCycleStartZ3(), ctx.mkInt(0))
+    		);
+        
+            /* The cycle of every port must have the same duration
+            solver.add(ctx.mkEq( // Equal cycle constraints
                 this.cycleDuration, 
                 port.getCycle().getCycleDurationZ3()
             ));
-            
+            /**/
 
             // The cycle of every port must have the same starting point
-            solver.add(ctx.mkEq(
+            /*
+            solver.add(ctx.mkEq( // Equal cycle constraints
                 this.cycleStart, 
                 port.getCycle().getFirstCycleStartZ3()
             ));
+            /**/
             
         }
+        
+//        solver.add(ctx.mkEq(
+//            this.cycleStart, 
+//            ctx.mkInt(0)
+//        ));
         
     }
     
@@ -274,14 +285,15 @@ public class TSNSwitch extends Switch {
         int index = this.connectsTo.indexOf(flowFrag.getNextHop());
         
         /*
-        
-        System.out.println(flowFrag.getNodeName());
-        System.out.println(flowFrag.getNextHop());
-        
+        System.out.println("Current node: " + flowFrag.getNodeName());
+        System.out.println("Next hop: " + flowFrag.getNextHop());
+        System.out.println("Index of port: " + index);	
+        System.out.print("Connects to: ");
         for(String connect : this.connectsTo) {
-            System.out.println(connect);
+            System.out.print(connect + ", ");
         }
         
+        System.out.println("");
         System.out.println("------------------");
         
         /**/
@@ -306,6 +318,20 @@ public class TSNSwitch extends Switch {
         return port;        
     }
     
+    /**
+     * [Method]: setUpCycleSize
+     * [Usage]: Iterate over its ports. The ones using automated application
+     * periods will calculate their cycle size.
+     * 
+     * @param solver        z3 solver object used to discover the variables' values
+     * @param ctx           z3 context which specify the environment of constants, functions and variables
+     */
+    public void setUpCycleSize(Solver solver, Context ctx) {
+    	for(Port port : this.ports) {
+    		port.setUpCycle(solver, ctx);
+    	}
+    }
+        
     
     /**
      * [Method]: arrivalTime
@@ -322,7 +348,7 @@ public class TSNSwitch extends Switch {
         IntExpr index = ctx.mkInt(auxIndex);
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
 
-        return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, index, flowFrag);
+        return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, auxIndex, flowFrag);
      }
     
     
@@ -336,11 +362,12 @@ public class TSNSwitch extends Switch {
      * @param auxIndex      Index of the packet of the flow fragment as a z3 variable
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the arrival time of the desired packet
-     */
+     *
     public RealExpr arrivalTime(Context ctx, IntExpr index, FlowFragment flowFrag){
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
         return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, index, flowFrag);
     }
+    /**/
     
     /**
      * [Method]: departureTime
@@ -357,7 +384,8 @@ public class TSNSwitch extends Switch {
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
         return (RealExpr) this.ports.get(portIndex).departureTime(ctx, index, flowFrag);
     }
-   
+    /**/
+    
     /**
      * [Method]: departureTime
      * [Usage]: Retrieves the departure time of a packet from a flow fragment
@@ -386,11 +414,12 @@ public class TSNSwitch extends Switch {
      * @param index         Index of the packet of the flow fragment as a z3 variable
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the scheduled time of the desired packet
-     */
+     *
     public RealExpr scheduledTime(Context ctx, IntExpr index, FlowFragment flowFrag){
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
         return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, index, flowFrag);
     }
+    /**/
     
     /**
      * [Method]: scheduledTime
@@ -404,11 +433,11 @@ public class TSNSwitch extends Switch {
      * @return              Returns the z3 variable for the scheduled time of the desired packet
      */
     public RealExpr scheduledTime(Context ctx, int auxIndex, FlowFragment flowFrag){
-        IntExpr index = ctx.mkInt(auxIndex);
+        // IntExpr index = ctx.mkInt(auxIndex);
         
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
         
-        return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, index, flowFrag);
+        return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, auxIndex, flowFrag);
     }
     
     /*

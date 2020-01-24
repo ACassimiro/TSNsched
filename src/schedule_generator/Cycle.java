@@ -38,7 +38,8 @@ import com.microsoft.z3.*;
  * 
  */
 public class Cycle {
-    static int instanceCounter = 0;
+	private String portName = "";
+	static int instanceCounter = 0;
     private float upperBoundCycleTime;
     private float lowerBoundCycleTime;
     private float firstCycleStart;
@@ -46,19 +47,35 @@ public class Cycle {
 
     private float cycleDuration;
     private float cycleStart;
-    private ArrayList<Integer> slotsUsed = new ArrayList<Integer>();
-    private ArrayList<Float> slotStart = new ArrayList<Float>();
-    private ArrayList<Float> slotDuration = new ArrayList<Float>();
+
+    private ArrayList<ArrayList<RealExpr>> slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
+	private ArrayList<ArrayList<RealExpr>> slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
     
-//    private RealExpr upperBoundCycleTimeZ3;
-//    private RealExpr lowerBoundCycleTimeZ3;
+    private ArrayList<Integer> slotsUsed = new ArrayList<Integer>();
+    private ArrayList<ArrayList<Float>> slotStart = new ArrayList<ArrayList<Float>>();
+    private ArrayList<ArrayList<Float>> slotDuration = new ArrayList<ArrayList<Float>>();
+    
+    // private RealExpr upperBoundCycleTimeZ3;
+    // private RealExpr lowerBoundCycleTimeZ3;
     private RealExpr cycleDurationZ3;
     private RealExpr firstCycleStartZ3;
     private RealExpr maximumSlotDurationZ3;
-    private int numOfSlots = 8;
+    private int numOfPrts = 8;
+    
+    private int numOfSlots = 1;
     
     
-    /**
+    public int getNumOfSlots() {
+		return numOfSlots;
+	}
+
+
+	public void setNumOfSlots(int numOfSlots) {
+		this.numOfSlots = numOfSlots;
+	}
+
+
+	/**
      * [Method]: Cycle
      * [Usage]: Overloaded method of this class. Will create 
      * an object setting up the minimum and maximum cycle time,
@@ -128,8 +145,8 @@ public class Cycle {
                  RealExpr lowerBoundCycleTimeZ3, 
                  RealExpr firstCycleStartZ3,
                  RealExpr maximumSlotDurationZ3) {
-//        this.upperBoundCycleTimeZ3 = upperBoundCycleTimeZ3;
-//        this.lowerBoundCycleTimeZ3 = lowerBoundCycleTimeZ3;
+        // this.upperBoundCycleTimeZ3 = upperBoundCycleTimeZ3;
+        // this.lowerBoundCycleTimeZ3 = lowerBoundCycleTimeZ3;
         this.firstCycleStartZ3 = firstCycleStartZ3;
         //this.guardBandSizeZ3 = guardBandSize;
         this.maximumSlotDurationZ3 = maximumSlotDurationZ3;
@@ -152,9 +169,20 @@ public class Cycle {
 //        this.upperBoundCycleTimeZ3 = ctx.mkRealConst("cycleUpperBound" + Integer.toString(instanceCounter));
 //        this.lowerBoundCycleTimeZ3 = ctx.mkRealConst("cycleLowerBound" + Integer.toString(instanceCounter));
         this.firstCycleStartZ3 = ctx.mkRealConst("cycle" + Integer.toString(instanceCounter) + "Start");
+//        this.firstCycleStartZ3 = ctx.mkReal(Float.toString(0));
         //this.firstCycleStartZ3 = ctx.mkReal(Float.toString(firstCycleStart));
         //this.guardBandSizeZ3 = guardBandSize;
         this.maximumSlotDurationZ3 = ctx.mkReal(Float.toString(maximumSlotDuration));
+        
+        
+        for(int i = 0; i < this.numOfPrts; i++) {
+        	this.slotStartZ3.add(new ArrayList<RealExpr>());
+        	this.slotDurationZ3.add(new ArrayList<RealExpr>());
+        	for(int j = 0; j < this.numOfSlots; j++) {
+        		this.slotStartZ3.get(i).add(ctx.mkRealConst("cycleOfPort" + this.portName + "prt" + (i+1) + "slot" + (j+1)));
+        	}
+        }
+        
     }
     
     
@@ -212,7 +240,7 @@ public class Cycle {
      * @param sStart        Slot start of the slot to be added
      * @param sDuration     Slot duration of the slot to be added
      */
-    public void addSlotUsed(int prt, float sStart, float sDuration) {
+    public void addSlotUsed(int prt, ArrayList<Float> sStart, ArrayList<Float> sDuration) {
         
         if(!this.slotsUsed.contains(prt)) {
             this.slotsUsed.add(prt);
@@ -279,23 +307,25 @@ public class Cycle {
     }
 
     
-    public RealExpr slotStartZ3(Context ctx, IntExpr index) {
-        return ctx.mkRealConst("slot" + index.toString() + "Start");
+    public RealExpr slotStartZ3(Context ctx, IntExpr prt, IntExpr index) {
+        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Start");
     }
     
-    public RealExpr slotStartZ3(Context ctx, int auxIndex) {
+    public RealExpr slotStartZ3(Context ctx, int auxPrt, int auxIndex) {
         IntExpr index = ctx.mkInt(auxIndex);
-        return ctx.mkRealConst("slot" + index.toString() + "Start");
+        IntExpr prt = ctx.mkInt(auxPrt);
+        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Start");
     }
     
    
-    public RealExpr slotDurationZ3(Context ctx, IntExpr index) {
-        return ctx.mkRealConst("slot" + index.toString() + "Duration");
+    public RealExpr slotDurationZ3(Context ctx, IntExpr prt, IntExpr index) {
+        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Duration");
     }
     
-    public RealExpr slotDurationZ3(Context ctx, int auxIndex) {
+    public RealExpr slotDurationZ3(Context ctx, int auxPrt, int auxIndex) {
         IntExpr index = ctx.mkInt(auxIndex);
-        return ctx.mkRealConst("slot" + index.toString() + "Duration");
+        IntExpr prt = ctx.mkInt(auxPrt);
+        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Duration");
     }
      
     /*
@@ -332,12 +362,12 @@ public class Cycle {
         this.firstCycleStartZ3 = firstCycleStart;
     }
     
-    public int getNumOfSlots() {
-        return this.numOfSlots;
+    public int getNumOfPrts() {
+        return this.numOfPrts;
     }
     
-    public void setNumOfSlots(int numOfSlots) {
-        this.numOfSlots = numOfSlots;
+    public void setNumOfPrts(int numOfPrts) {
+        this.numOfPrts = numOfPrts;
     }
 
     
@@ -353,13 +383,28 @@ public class Cycle {
         return this.slotsUsed;
     }
     
-    public float getSlotStart(int prt) {
-        return this.slotStart.get(this.slotsUsed.indexOf(prt));
+    public float getSlotStart(int prt, int index) {
+        return this.slotStart.get(this.slotsUsed.indexOf(prt)).get(index);
     }
     
-    public float getSlotDuration(int prt) {
-        return this.slotDuration.get(this.slotsUsed.indexOf(prt));
+    public float getSlotDuration(int prt, int index) {
+        return this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(index);
     }
+	
+    public String getPortName() {
+		return portName;
+	}
 
-    
+
+	public void setPortName(String portName) {
+		this.portName = portName;
+	}
+
+	public RealExpr getSlotStartZ3(int prt, int slotNum) {
+		return this.slotStartZ3.get(prt-1).get(slotNum-1);
+	}
+	
+	public RealExpr getSlotDurationZ3(int prt, int slotNum) {
+		return this.slotDurationZ3.get(prt-1).get(slotNum-1);
+	}
 }

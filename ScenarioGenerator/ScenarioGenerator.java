@@ -95,6 +95,7 @@ public class ScenarioGenerator {
 
 		try {
 			PrintWriter out = new PrintWriter("/home/asus/git/tsn-scheduler/src/schedule_generator/GeneratedCode.java");
+			// PrintWriter out = new PrintWriter("GeneratedCode.java");
 
 			out.println("package schedule_generator;");
 
@@ -310,7 +311,8 @@ public class ScenarioGenerator {
 				"\t\tlong startTime = System.nanoTime();\n" + 
 				"\t\tscheduleGenerator.generateSchedule(net);\n"+
 				"\t\tlong endTime   = System.nanoTime();\n" +
-				"\t\tlong totalTime = endTime - startTime;"
+				"\t\tlong totalTime = endTime - startTime;\n" +
+				"\t\tint numOfFramesScheduled = 0;" 
 			);
 
 			out.println("");
@@ -348,17 +350,18 @@ public class ScenarioGenerator {
 				"\t\t\t}\n" +
 
 				"\t\t\tSystem.out.println(\"\\n\\n>>>> INFORMATION OF SWITCH: \" + auxSwt.getName() + \" <<<<\");\n" +
-				"\t\t\tSystem.out.println(\"    Cycle start:    \" + auxSwt.getPorts().get(0).getCycle().getCycleStart());\n" +
-				"\t\t\tSystem.out.println(\"    Cycle duration: \" + auxSwt.getPorts().get(0).getCycle().getCycleDuration());\n" +
-				"\t\t\tSystem.out.println(\"    Priorities used - \");\n" +
+				// "\t\t\tSystem.out.println(\"    Cycle start:    \" + auxSwt.getPorts().get(0).getCycle().getCycleStart());\n" +
+				// "\t\t\tSystem.out.println(\"    Cycle duration: \" + auxSwt.getPorts().get(0).getCycle().getCycleDuration());\n" +
+				"\t\t\tSystem.out.println(\"    Port list - \");\n" +
 					
 				"\t\t\t\tfor(Port port : auxSwt.getPorts()) {\n" +
 				"\t\t\t\t\tif(port.getCycle().getSlotsUsed().size() == 0) {\n" +
 				"\t\t\t\t\t\tcontinue;\n" +
 				"\t\t\t\t\t}\n" +
-				"\t\t\t\t\tSystem.out.println(\"        Port name:       \" + port.getName());\n" +
+				"\t\t\t\t\tSystem.out.println(\"        => Port name:       \" + port.getName());\n" +
 				"\t\t\t\t\tSystem.out.println(\"        Connects to:     \" + port.getConnectsTo());\n\n" +
-
+				"\t\t\t\t\tSystem.out.println(\"        Cycle start:    \" + port.getCycle().getCycleStart());\n" +
+				"\t\t\t\t\tSystem.out.println(\"        Cycle duration: \" + port.getCycle().getCycleDuration());\n" +
 				"\t\t\t\t\tSystem.out.print(\"        Fragments:       \");\n" + 
 				"\t\t\t\t\tfor(FlowFragment ffrag : port.getFlowFragments()) {\n" +
 				"\t\t\t\t\t\tSystem.out.print(ffrag.getName() + \", \");\n" +
@@ -367,12 +370,21 @@ public class ScenarioGenerator {
 
 
 				"\t\t\t\t\tauxCycle = port.getCycle();\n" +
-						
+				"\t\t\t\t\tSystem.out.println(\"        Slots per prt:   \" +  auxCycle.getNumOfSlots());\n" +
+
 				"\t\t\t\tfor(int i = 0; i < auxCycle.getSlotsUsed().size(); i++) {\n" +
 				"\t\t\t\t\tSystem.out.println(\"        Priority number: \" + auxCycle.getSlotsUsed().get(i));\n" +
-				"\t\t\t\t\tSystem.out.println(\"        Slot start:      \" + auxCycle.getSlotStart(auxCycle.getSlotsUsed().get(i)));\n" +
-				"\t\t\t\t\tSystem.out.println(\"        Slot duration:   \" + auxCycle.getSlotDuration(auxCycle.getSlotsUsed().get(i)));\n" +
+
+				"\t\t\t\t\tfor(int j = 0; j < auxCycle.getNumOfSlots(); j++) {\n" + 
+
+				"\t\t\t\t\t\tSystem.out.println(\"          Index \" + j + \" Slot start:      \" + auxCycle.getSlotStart(auxCycle.getSlotsUsed().get(i), j));\n" +
+				"\t\t\t\t\t\tSystem.out.println(\"          Index \" + j + \" Slot duration:   \" + auxCycle.getSlotDuration(auxCycle.getSlotsUsed().get(i), j));\n" +
+				
+				"\t\t\t\t\t}" +
+
 				"\t\t\t\t\tSystem.out.println(\"        ------------------------\");\n" +
+
+
 				"\t\t\t\t}\n" +
 						
 				"\t\t\t}\n" +
@@ -387,6 +399,8 @@ public class ScenarioGenerator {
 				"\t\tint flowCounter = 0;\n" +
 				"\t\tfor(Flow flw : net.getFlows()){\n" +
 				"\n\n\t\t\tSystem.out.println(\"\\n\\n>>>> INFORMATION OF FLOW\" + flowCounter++ + \" <<<<\\n\");\n\n" +
+				"\t\t\tSystem.out.println(\"    Total number of packets scheduled: \" + flw.getTotalNumOfPackets());\n" +
+				"\t\t\tnumOfFramesScheduled = numOfFramesScheduled + flw.getTotalNumOfPackets();\n" +
 
 				"\t\t\tSystem.out.println(\"    Path tree of the flow:\");\n" +  
 				"\t\t\tfor(PathNode node : flw.getPathTree().getLeaves()) {\n" +
@@ -405,8 +419,8 @@ public class ScenarioGenerator {
 				"\t\t\t\tSystem.out.println(\"\");\n" +
 				"\t\t\t}\n\n\n" +
 				
-				"\t\t\tSystem.out.println();" +
-				"\t\t\tSystem.out.println();" +
+				"\t\t\tSystem.out.println();\n" +
+				"\t\t\tSystem.out.println();\n" +
 
 
 				"\t\t\tfor(PathNode node : flw.getPathTree().getLeaves()) {\n" +
@@ -415,14 +429,14 @@ public class ScenarioGenerator {
 				"\t\t\t\tsumOfLatencies = 0;\n" +
 				"\t\t\t\tSystem.out.println(\"    Packets heading to \" + dev.getName() + \":\");\n\n" +
 						
-				"\t\t\t\tfor(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {\n"+
+				"\t\t\t\tfor(int i = 0; i < flw.getNumOfPacketsSent(); i++) {\n"+
 				"\t\t\t\t\tSystem.out.println(\"       Flow firstDepartureTime of packet \" + i + \": \" + flw.getDepartureTime(dev, 0, i));\n" +
 				"\t\t\t\t\tSystem.out.println(\"       Flow lastScheduledTime of packet \" + i + \":  \" + flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i));\n" +
 				"\t\t\t\t\tsumOfLatencies += flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i) - flw.getDepartureTime(dev, 0, i);\n" +
 				"\t\t\t\t}\n\n" +
 						
-				"\t\t\t\tsumOfAvgLatencies += sumOfLatencies/Network.PACKETUPPERBOUNDRANGE;\n" +
-				"\t\t\t\tSystem.out.println(\"       Calculated average Latency: \" + (sumOfLatencies/Network.PACKETUPPERBOUNDRANGE));\n" +
+				"\t\t\t\tsumOfAvgLatencies += sumOfLatencies/flw.getNumOfPacketsSent();\n" +
+				"\t\t\t\tSystem.out.println(\"       Calculated average Latency: \" + (sumOfLatencies/flw.getNumOfPacketsSent()));\n" +
 				"\t\t\t\tSystem.out.println(\"       Method average Latency: \" + flw.getAverageLatencyToDevice(dev));\n"+
 				"\t\t\t\tSystem.out.println(\"       Method average Jitter: \" + flw.getAverageJitterToDevice(dev));\n"+
 				"\t\t\t\tSystem.out.println(\"\");\n\n" +
@@ -462,6 +476,9 @@ public class ScenarioGenerator {
 				"\t\tSystem.out.println(\"Number of subscribers in the network: " + totalNumberOfSubscribers + " \");"
 			);
 			out.println(
+				"\t\tSystem.out.println(\"Total number of scheduled packets: \" +  numOfFramesScheduled);"
+			);
+			out.println(
 				"\t\tSystem.out.println(\"Overall average latency: \" + overallAverageLatency);\n" +
 				"\t\tSystem.out.println(\"Overall average jitter: \" + overallAverageJitter);"
 			);
@@ -472,8 +489,6 @@ public class ScenarioGenerator {
 		} catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
-
-
 
 	}
 }

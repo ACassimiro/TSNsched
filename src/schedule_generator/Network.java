@@ -28,6 +28,9 @@ public class Network {
     
     public static int PACKETUPPERBOUNDRANGE = 5; // Limits the applications of rules to the packets
     public static int CYCLEUPPERBOUNDRANGE = 25; // Limits the applications of rules to the cycles
+    // public static int PACKETUPPERBOUNDRANGE = 50; // Limits the applications of rules to the packets
+    // public static int CYCLEUPPERBOUNDRANGE = 250; // Limits the applications of rules to the cycles
+    
     
     private float jitterUpperBoundRange = -1;
     RealExpr jitterUpperBoundRangeZ3;
@@ -110,14 +113,15 @@ public class Network {
          */
         
         for(Flow flw : this.getFlows()) {
-            
-            solver.add(
+        	flw.setNumberOfPacketsSent(flw.getPathTree().getRoot());
+        	
+            solver.add( // No negative cycle values constraint
                 ctx.mkGe(
                     flw.getStartDevice().getFirstT1TimeZ3(),
                     ctx.mkReal(0)
                 )
             );
-            solver.add(
+            solver.add( // Maximum transmission offset constraint
                 ctx.mkLe(
                     flw.getStartDevice().getFirstT1TimeZ3(),
                     flw.getStartDevice().getPacketPeriodicityZ3() 
@@ -133,7 +137,7 @@ public class Network {
                 
                 
                 //Make sure that HC is respected
-                for(int i = 0; i < PACKETUPPERBOUNDRANGE; i++) {
+                for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
                     solver.add(
                             ctx.mkLe(
                                 ctx.mkSub(
@@ -159,12 +163,12 @@ public class Network {
                     
                     
                     // Set the maximum allowed jitter
-                    for(int index = 0; index < PACKETUPPERBOUNDRANGE; index++) {
-                        solver.add(
+                    for(int index = 0; index < flw.getNumOfPacketsSent(); index++) {
+                    	solver.add( // Maximum allowed jitter constraint
                             ctx.mkLe(
                                 flw.getJitterZ3((Device) leaf.getNode(), solver, ctx, index),
                                 this.jitterUpperBoundRangeZ3 
-                            )                            
+                            )
                         );
                     }
                     
@@ -173,8 +177,8 @@ public class Network {
                 // Iterate over the flows of each leaf parent, assert HC
                 for(PathNode parent : parents) {
                     for(FlowFragment ffrag : parent.getFlowFragments()) {
-                        for(int i = 0; i < PACKETUPPERBOUNDRANGE; i++) {
-                            solver.add(
+                    	for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
+                            solver.add( // Maximum Allowed Latency constraint
                                 ctx.mkLe(
                                     ctx.mkSub(
                                         ((TSNSwitch) parent.getNode()).scheduledTime(ctx, i, ffrag),
@@ -218,8 +222,8 @@ public class Network {
                     
                     this.avgLatencyPerDev.add(
                         (RealExpr) ctx.mkDiv(
-                            flw.getSumOfJitterZ3(endDev, solver, ctx, Network.PACKETUPPERBOUNDRANGE - 1),
-                            ctx.mkInt(Network.PACKETUPPERBOUNDRANGE)
+                            flw.getSumOfJitterZ3(endDev, solver, ctx, flw.getNumOfPacketsSent() - 1),
+                            ctx.mkInt(flw.getNumOfPacketsSent())
                         )
                     );
                     

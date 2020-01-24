@@ -373,11 +373,11 @@ public class GeneratedCode {
 		Flow flow0 = new Flow(Flow.PUBLISH_SUBSCRIBE);
 		PathTree pathTree0 = new PathTree();
 		PathNode pathNode0;
-		pathNode0 = pathTree0.addRoot(dev4);
-		pathNode0 = pathNode0.addChild(switch0);
+		pathNode0 = pathTree0.addRoot(dev48);
+		pathNode0 = pathNode0.addChild(switch9);
 		nodeList = new LinkedList<PathNode>();
 		nodeList.add(pathNode0);
-		nodeList.add(nodeList.removeFirst().addChild(switch4));
+		nodeList.add(nodeList.removeFirst().addChild(switch0));
 		nodeList.add(nodeList.removeFirst().addChild(switch3));
 		nodeList.getFirst().addChild(dev15);
 		nodeList.getFirst().addChild(dev16);
@@ -390,36 +390,70 @@ public class GeneratedCode {
 		Flow flow1 = new Flow(Flow.PUBLISH_SUBSCRIBE);
 		PathTree pathTree1 = new PathTree();
 		PathNode pathNode1;
-		pathNode1 = pathTree1.addRoot(dev21);
-		pathNode1 = pathNode1.addChild(switch4);
+		pathNode1 = pathTree1.addRoot(dev27);
+		pathNode1 = pathNode1.addChild(switch5);
 		nodeList = new LinkedList<PathNode>();
 		nodeList.add(pathNode1);
-		nodeList.add(nodeList.removeFirst().addChild(switch7));
-		nodeList.add(nodeList.removeFirst().addChild(switch6));
-		nodeList.getFirst().addChild(dev30);
-		nodeList.getFirst().addChild(dev31);
-		nodeList.getFirst().addChild(dev32);
-		nodeList.getFirst().addChild(dev33);
-		nodeList.getFirst().addChild(dev34);
+		nodeList.add(nodeList.removeFirst().addChild(switch0));
+		nodeList.add(nodeList.removeFirst().addChild(switch9));
+		nodeList.getFirst().addChild(dev45);
+		nodeList.getFirst().addChild(dev46);
+		nodeList.getFirst().addChild(dev47);
+		nodeList.getFirst().addChild(dev48);
+		nodeList.getFirst().addChild(dev49);
 		nodeList.removeFirst();
 		flow1.setPathTree(pathTree1);
 
 		Flow flow2 = new Flow(Flow.PUBLISH_SUBSCRIBE);
 		PathTree pathTree2 = new PathTree();
 		PathNode pathNode2;
-		pathNode2 = pathTree2.addRoot(dev39);
-		pathNode2 = pathNode2.addChild(switch7);
+		pathNode2 = pathTree2.addRoot(dev44);
+		pathNode2 = pathNode2.addChild(switch8);
 		nodeList = new LinkedList<PathNode>();
 		nodeList.add(pathNode2);
-		nodeList.add(nodeList.removeFirst().addChild(switch1));
-		nodeList.add(nodeList.removeFirst().addChild(switch2));
-		nodeList.getFirst().addChild(dev10);
-		nodeList.getFirst().addChild(dev11);
-		nodeList.getFirst().addChild(dev12);
-		nodeList.getFirst().addChild(dev13);
-		nodeList.getFirst().addChild(dev14);
+		nodeList.add(nodeList.getFirst().addChild(switch1));
+		nodeList.add(nodeList.removeFirst().addChild(switch7));
+		nodeList.getFirst().addChild(dev5);
+		nodeList.getFirst().addChild(dev6);
+		nodeList.removeFirst();
+		nodeList.getFirst().addChild(dev35);
+		nodeList.getFirst().addChild(dev36);
 		nodeList.removeFirst();
 		flow2.setPathTree(pathTree2);
+
+		Flow flow3 = new Flow(Flow.PUBLISH_SUBSCRIBE);
+		PathTree pathTree3 = new PathTree();
+		PathNode pathNode3;
+		pathNode3 = pathTree3.addRoot(dev26);
+		pathNode3 = pathNode3.addChild(switch5);
+		nodeList = new LinkedList<PathNode>();
+		nodeList.add(pathNode3);
+		nodeList.add(nodeList.getFirst().addChild(switch3));
+		nodeList.add(nodeList.removeFirst().addChild(switch8));
+		nodeList.getFirst().addChild(dev15);
+		nodeList.getFirst().addChild(dev16);
+		nodeList.removeFirst();
+		nodeList.getFirst().addChild(dev40);
+		nodeList.getFirst().addChild(dev41);
+		nodeList.removeFirst();
+		flow3.setPathTree(pathTree3);
+
+		Flow flow4 = new Flow(Flow.PUBLISH_SUBSCRIBE);
+		PathTree pathTree4 = new PathTree();
+		PathNode pathNode4;
+		pathNode4 = pathTree4.addRoot(dev24);
+		pathNode4 = pathNode4.addChild(switch4);
+		nodeList = new LinkedList<PathNode>();
+		nodeList.add(pathNode4);
+		nodeList.add(nodeList.getFirst().addChild(switch1));
+		nodeList.add(nodeList.removeFirst().addChild(switch7));
+		nodeList.getFirst().addChild(dev5);
+		nodeList.getFirst().addChild(dev6);
+		nodeList.removeFirst();
+		nodeList.getFirst().addChild(dev35);
+		nodeList.getFirst().addChild(dev36);
+		nodeList.removeFirst();
+		flow4.setPathTree(pathTree4);
 
 
 		/* 
@@ -439,6 +473,8 @@ public class GeneratedCode {
 		net.addFlow(flow0);
 		net.addFlow(flow1);
 		net.addFlow(flow2);
+		net.addFlow(flow3);
+		net.addFlow(flow4);
 
 
 		ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
@@ -576,12 +612,20 @@ public class GeneratedCode {
 		System.out.println("Flow 2 average jitter: " + flow2.getAverageJitter());
 		overallAverageLatency += flow2.getAverageLatency(); 
 		overallAverageJitter += flow2.getAverageJitter();
-		overallAverageLatency = overallAverageLatency/3;
-		overallAverageJitter = overallAverageJitter/3;
+		System.out.println("Flow 3 average latency: " + flow3.getAverageLatency());
+		System.out.println("Flow 3 average jitter: " + flow3.getAverageJitter());
+		overallAverageLatency += flow3.getAverageLatency(); 
+		overallAverageJitter += flow3.getAverageJitter();
+		System.out.println("Flow 4 average latency: " + flow4.getAverageLatency());
+		System.out.println("Flow 4 average jitter: " + flow4.getAverageJitter());
+		overallAverageLatency += flow4.getAverageLatency(); 
+		overallAverageJitter += flow4.getAverageJitter();
+		overallAverageLatency = overallAverageLatency/5;
+		overallAverageJitter = overallAverageJitter/5;
 
 		System.out.println("\nNumber of nodes in the network: 3 ");
-		System.out.println("Number of flows in the network: 3 ");
-		System.out.println("Number of subscribers in the network: 15 ");
+		System.out.println("Number of flows in the network: 5 ");
+		System.out.println("Number of subscribers in the network: 22 ");
 		System.out.println("Total number of scheduled packets: " +  numOfFramesScheduled);
 		System.out.println("Overall average latency: " + overallAverageLatency);
 		System.out.println("Overall average jitter: " + overallAverageJitter);

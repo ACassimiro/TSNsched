@@ -17,8 +17,8 @@ public class Device {
     private float hardConstraintTime;
     private float softConstraintTime;
     private float packetSize;
-    
-    private static int indexCounter = 0;        
+
+    private static int indexCounter = -1;        
     private RealExpr packetPeriodicityZ3;
 	private RealExpr firstT1TimeZ3;
 	private RealExpr hardConstraintTimeZ3;
@@ -54,7 +54,7 @@ public class Device {
         this.hardConstraintTime = hardConstraintTime;
         this.softConstraintTime = 0;
         this.packetSize = 0;        
-        this.name = "dev" + indexCounter++;
+        this.name = "dev" + ++indexCounter;
     }
     
     /**
@@ -80,7 +80,7 @@ public class Device {
         this.hardConstraintTime = hardConstraintTime;
         this.softConstraintTime = softConstraintTime;
         this.packetSize = packetSize;        
-        this.name = "dev" + indexCounter++;
+        this.name = "dev" + ++indexCounter;
     }
 	
     /**
@@ -107,7 +107,8 @@ public class Device {
 		this.hardConstraintTimeZ3 = hardConstraintTimeZ3;
 		this.softConstraintTimeZ3 = softConstraintTimeZ3;
 		this.packetSizeZ3 = packetSizeZ3;
-		this.flowPriority = flowPriority;
+		this.flowPriority = flowPriority;  
+        this.name = "dev" + indexCounter++;
 	}
    
 	/**
@@ -121,7 +122,7 @@ public class Device {
 	public void toZ3(Context ctx) {
 	    this.packetPeriodicityZ3 = ctx.mkReal(Float.toString(this.packetPeriodicity));
 	    //this.firstT1TimeZ3 = ctx.mkReal(Float.toString(this.firstT1Time)); // In case of fixed firstT1Time
-	    this.firstT1TimeZ3 = ctx.mkRealConst("dev" + Integer.toString(indexCounter) + "FirstT1Time");
+	    this.firstT1TimeZ3 = ctx.mkRealConst(this.name + "FirstT1Time");
 	    this.hardConstraintTimeZ3 = ctx.mkReal(Float.toString(this.hardConstraintTime));
 	    this.softConstraintTimeZ3 = ctx.mkReal(Float.toString(this.softConstraintTime));
 	    this.packetSizeZ3 = ctx.mkReal(Float.toString(this.packetSize));
@@ -231,4 +232,6 @@ public class Device {
         this.flowPriority = flowPriority;
     }
 	
+
+
 }

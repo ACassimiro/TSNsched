@@ -373,53 +373,19 @@ public class GeneratedCode {
 		Flow flow0 = new Flow(Flow.PUBLISH_SUBSCRIBE);
 		PathTree pathTree0 = new PathTree();
 		PathNode pathNode0;
-		pathNode0 = pathTree0.addRoot(dev4);
-		pathNode0 = pathNode0.addChild(switch0);
+		pathNode0 = pathTree0.addRoot(dev23);
+		pathNode0 = pathNode0.addChild(switch4);
 		nodeList = new LinkedList<PathNode>();
 		nodeList.add(pathNode0);
-		nodeList.add(nodeList.removeFirst().addChild(switch4));
-		nodeList.add(nodeList.removeFirst().addChild(switch3));
-		nodeList.getFirst().addChild(dev15);
-		nodeList.getFirst().addChild(dev16);
-		nodeList.getFirst().addChild(dev17);
-		nodeList.getFirst().addChild(dev18);
-		nodeList.getFirst().addChild(dev19);
+		nodeList.add(nodeList.removeFirst().addChild(switch6));
+		nodeList.add(nodeList.removeFirst().addChild(switch5));
+		nodeList.getFirst().addChild(dev25);
+		nodeList.getFirst().addChild(dev26);
+		nodeList.getFirst().addChild(dev27);
+		nodeList.getFirst().addChild(dev28);
+		nodeList.getFirst().addChild(dev29);
 		nodeList.removeFirst();
 		flow0.setPathTree(pathTree0);
-
-		Flow flow1 = new Flow(Flow.PUBLISH_SUBSCRIBE);
-		PathTree pathTree1 = new PathTree();
-		PathNode pathNode1;
-		pathNode1 = pathTree1.addRoot(dev21);
-		pathNode1 = pathNode1.addChild(switch4);
-		nodeList = new LinkedList<PathNode>();
-		nodeList.add(pathNode1);
-		nodeList.add(nodeList.removeFirst().addChild(switch7));
-		nodeList.add(nodeList.removeFirst().addChild(switch6));
-		nodeList.getFirst().addChild(dev30);
-		nodeList.getFirst().addChild(dev31);
-		nodeList.getFirst().addChild(dev32);
-		nodeList.getFirst().addChild(dev33);
-		nodeList.getFirst().addChild(dev34);
-		nodeList.removeFirst();
-		flow1.setPathTree(pathTree1);
-
-		Flow flow2 = new Flow(Flow.PUBLISH_SUBSCRIBE);
-		PathTree pathTree2 = new PathTree();
-		PathNode pathNode2;
-		pathNode2 = pathTree2.addRoot(dev39);
-		pathNode2 = pathNode2.addChild(switch7);
-		nodeList = new LinkedList<PathNode>();
-		nodeList.add(pathNode2);
-		nodeList.add(nodeList.removeFirst().addChild(switch1));
-		nodeList.add(nodeList.removeFirst().addChild(switch2));
-		nodeList.getFirst().addChild(dev10);
-		nodeList.getFirst().addChild(dev11);
-		nodeList.getFirst().addChild(dev12);
-		nodeList.getFirst().addChild(dev13);
-		nodeList.getFirst().addChild(dev14);
-		nodeList.removeFirst();
-		flow2.setPathTree(pathTree2);
 
 
 		/* 
@@ -437,8 +403,6 @@ public class GeneratedCode {
 		net.addSwitch(switch8);
 		net.addSwitch(switch9);
 		net.addFlow(flow0);
-		net.addFlow(flow1);
-		net.addFlow(flow2);
 
 
 		ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
@@ -568,20 +532,12 @@ public class GeneratedCode {
 		System.out.println("Flow 0 average jitter: " + flow0.getAverageJitter());
 		overallAverageLatency += flow0.getAverageLatency(); 
 		overallAverageJitter += flow0.getAverageJitter();
-		System.out.println("Flow 1 average latency: " + flow1.getAverageLatency());
-		System.out.println("Flow 1 average jitter: " + flow1.getAverageJitter());
-		overallAverageLatency += flow1.getAverageLatency(); 
-		overallAverageJitter += flow1.getAverageJitter();
-		System.out.println("Flow 2 average latency: " + flow2.getAverageLatency());
-		System.out.println("Flow 2 average jitter: " + flow2.getAverageJitter());
-		overallAverageLatency += flow2.getAverageLatency(); 
-		overallAverageJitter += flow2.getAverageJitter();
-		overallAverageLatency = overallAverageLatency/3;
-		overallAverageJitter = overallAverageJitter/3;
+		overallAverageLatency = overallAverageLatency/1;
+		overallAverageJitter = overallAverageJitter/1;
 
 		System.out.println("\nNumber of nodes in the network: 3 ");
-		System.out.println("Number of flows in the network: 3 ");
-		System.out.println("Number of subscribers in the network: 15 ");
+		System.out.println("Number of flows in the network: 1 ");
+		System.out.println("Number of subscribers in the network: 5 ");
 		System.out.println("Total number of scheduled packets: " +  numOfFramesScheduled);
 		System.out.println("Overall average latency: " + overallAverageLatency);
 		System.out.println("Overall average jitter: " + overallAverageJitter);
