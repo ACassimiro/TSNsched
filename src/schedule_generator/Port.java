@@ -30,8 +30,8 @@ import com.microsoft.z3.Solver;
  * anything else does not matter at this point.
  */
 public class Port {
-    private static Boolean useMicroCycles = true;
-    private static Boolean useHyperCycle = false;
+    private static Boolean useMicroCycles = false;
+    private static Boolean useHyperCycle = true;
     
     private ArrayList<Float> listOfPeriods = new ArrayList<Float>();
     private float definedHyperCycleSize = -1;
