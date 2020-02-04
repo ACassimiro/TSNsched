@@ -1,4 +1,6 @@
 package schedule_generator;
+import java.io.Serializable;
+
 import com.microsoft.z3.*;
 
 // CLASS WHERE DEVICE PROPERTIES AND CONDITIONS ARE SPECIFIED
@@ -10,8 +12,10 @@ import com.microsoft.z3.*;
  * They can be used as sending devices and receiving devices.
  * Their properties specify part of the core of a flow.
  */
-public class Device {
-    private String name;
+public class Device implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private String name;
     private float packetPeriodicity;
     private float firstT1Time;
     private float hardConstraintTime;
@@ -19,12 +23,12 @@ public class Device {
     private float packetSize;
 
     private static int indexCounter = -1;        
-    private RealExpr packetPeriodicityZ3;
-	private RealExpr firstT1TimeZ3;
-	private RealExpr hardConstraintTimeZ3;
-	private RealExpr softConstraintTimeZ3;
-    private RealExpr packetSizeZ3;
-    private IntExpr flowPriority;
+    private transient RealExpr packetPeriodicityZ3;
+	private transient RealExpr firstT1TimeZ3;
+	private transient RealExpr hardConstraintTimeZ3;
+	private transient RealExpr softConstraintTimeZ3;
+    private transient RealExpr packetSizeZ3;
+    private transient IntExpr flowPriority;
 
     /**
      * [Method]: Device

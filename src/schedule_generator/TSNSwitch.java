@@ -1,4 +1,5 @@
 package schedule_generator;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.microsoft.z3.*;
@@ -13,19 +14,21 @@ import com.microsoft.z3.*;
  * are able to organize a sequence of ports that connect the
  * switch to other nodes in the network.
  */
-public class TSNSwitch extends Switch {
-    // private Cycle cycle;
+public class TSNSwitch extends Switch implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	// private Cycle cycle;
     private ArrayList<String> connectsTo;
     private ArrayList<Port> ports;
     private float cycleDurationUpperBound;
     private float cycleDurationLowerBound;
     
     private float gbSize;
-    private RealExpr gbSizeZ3; // Size of the guardBand
-    private RealExpr cycleDuration;
-    private RealExpr cycleStart;
-    private RealExpr cycleDurationUpperBoundZ3;
-    private RealExpr cycleDurationLowerBoundZ3;
+    private transient RealExpr gbSizeZ3; // Size of the guardBand
+    private transient RealExpr cycleDuration;
+    private transient RealExpr cycleStart;
+    private transient RealExpr cycleDurationUpperBoundZ3;
+    private transient RealExpr cycleDurationLowerBoundZ3;
     private int portNum = 0;
 
     private static int indexCounter = 0; 
@@ -231,6 +234,8 @@ public class TSNSwitch extends Switch {
                     this.gbSize,
                     cycle
                 );
+            
+            newPort.setPortNum(this.portNum);
             
             this.ports.add(newPort);
         }
@@ -439,6 +444,31 @@ public class TSNSwitch extends Switch {
         
         return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, auxIndex, flowFrag);
     }
+    
+    
+    public void loadZ3(Context ctx, Solver solver) {
+    	/*
+    	solver.add(
+			ctx.mkEq(
+				this.cycleDurationUpperBoundZ3,
+				ctx.mkReal(Float.toString(this.cycleDurationUpperBound))
+			)	
+		);
+    	
+    	solver.add(
+			ctx.mkEq(
+				this.cycleDurationLowerBoundZ3,
+				ctx.mkReal(Float.toString(this.cycleDurationLowerBound))
+			)	
+		);
+    	*/
+    	
+    	for(Port port : this.ports) {
+    		port.loadZ3(ctx, solver);    		
+    	}
+    	
+    }
+    
     
     /*
      *  GETTERS AND SETTERS

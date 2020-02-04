@@ -1,5 +1,7 @@
 package schedule_generator;
 
+import java.io.Serializable;
+
 /**
  * [Class]: Switch
  * [Usage]: Contains most of the properties of a normal
@@ -12,8 +14,10 @@ package schedule_generator;
  * project in the future.
  * 
  */
-public class Switch {
-    protected String name;
+public class Switch implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	protected String name;
     protected float maxPacketSize;
     protected float timeToTravel;
     protected float transmissionTime;

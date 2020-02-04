@@ -1,5 +1,6 @@
 package schedule_generator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -11,8 +12,10 @@ import java.util.ArrayList;
  * fragment for each children in case of being a switch.
  * 
  */
-public class PathNode {
-    private PathNode parent; // The parent of the current FlowNode
+public class PathNode implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private PathNode parent; // The parent of the current FlowNode
     private Object node;
     private ArrayList<PathNode> children; // The children of the current FlowNode
     private ArrayList<FlowFragment> flowFragments;

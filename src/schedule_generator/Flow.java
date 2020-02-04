@@ -1,5 +1,6 @@
 package schedule_generator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,11 +17,12 @@ import com.microsoft.z3.*;
  * 
  */
 
-public class Flow {
+public class Flow implements Serializable {
 
     // TODO: CHECK FUNCTIONS FOR UNICAST FLOWS
-    
-    static int instanceCounter = 0;
+
+	private static final long serialVersionUID = 1L;
+	static int instanceCounter = 0;
     protected String name;
     private int type = 0;
     private int totalNumOfPackets = 0;
@@ -37,11 +39,11 @@ public class Flow {
     
     protected int pathTreeCount = 0;
 
-    protected IntExpr flowPriority; // In the future, priority might be fixed
+    protected transient IntExpr flowPriority; // In the future, priority might be fixed
     protected Device startDevice;
     protected Device endDevice; 
     
-    private int numOfPacketsSent = 0;
+    private int numOfPacketsSentInFragment = 0;
 
 	/**
      * [Method]: Flow
@@ -180,6 +182,7 @@ public class Flow {
         FlowFragment flowFrag; 
         int numberOfPackets = Network.PACKETUPPERBOUNDRANGE;
         
+        
         // If, by chance, the given node has no child, then its a leaf
         if(node.getChildren().size() == 0) 
             return;
@@ -191,7 +194,7 @@ public class Flow {
             // If child is a device, then its a leaf. Do nothing
             if(auxN.getNode() instanceof Device) {
                 continue;
-            }
+            } 
             
             // For each grand children of the current child node
             for(PathNode n : auxN.getChildren()) {
@@ -210,14 +213,14 @@ public class Flow {
                     );
                 }
                 
-                if(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).checkIfAutomatedCycleSize()) {
+                if(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).checkIfAutomatedApplicationPeriod()) {
                 	numberOfPackets = (int) (((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize()/this.startDevice.getPacketPeriodicity());
                 	flowFrag.setNumOfPacketsSent(numberOfPackets);
                 	
                 }                
                 
                 if(auxN.getParent().getParent() == null) { //First flow fragment, fragment first departure = device's first departure
-                    flowFrag.setNodeName(((Switch)auxN.getNode()).getName());
+                	flowFrag.setNodeName(((Switch)auxN.getNode()).getName());
                     
                     for (int i = 0; i < numberOfPackets; i++) {
                         /*
@@ -275,7 +278,7 @@ public class Flow {
                 
                 
                 // Setting z3 properties of the flow fragment
-                flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
+                flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
                 // flowFrag.setFlowPriority(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
                 flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
                 flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
@@ -335,7 +338,7 @@ public class Flow {
         flowFrag.setNodeName(((TSNSwitch) path.get(currentSwitchIndex)).getName());            
         
         // Setting extra flow properties
-        flowFrag.setFlowPriority(ctx.mkIntConst(flowFrag.getName() + "Priority"));
+        flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority"));
         flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
         flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
         
@@ -1046,13 +1049,13 @@ public class Flow {
     public RealExpr getAvgLatency(Solver solver, Context ctx) {
         if(this.type == UNICAST) {
             return (RealExpr) ctx.mkDiv(
-                getSumOfLatencyZ3(solver, ctx, this.numOfPacketsSent - 1), 
-                ctx.mkReal(this.numOfPacketsSent)
+                getSumOfLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1), 
+                ctx.mkReal(this.numOfPacketsSentInFragment)
             );
         } else if (this.type == PUBLISH_SUBSCRIBE) {
                 return (RealExpr) ctx.mkDiv(
-                    getSumOfAllDevLatencyZ3(solver, ctx, this.numOfPacketsSent - 1), 
-                    ctx.mkReal((this.numOfPacketsSent) * this.pathTree.getLeaves().size())
+                    getSumOfAllDevLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1), 
+                    ctx.mkReal((this.numOfPacketsSentInFragment) * this.pathTree.getLeaves().size())
                 );
         } else {
             // TODO: THROW ERROR
@@ -1064,8 +1067,8 @@ public class Flow {
     public RealExpr getAvgLatency(Device dev, Solver solver, Context ctx) {
         
         return (RealExpr) ctx.mkDiv(
-            this.getSumOfLatencyZ3(dev, solver, ctx, this.numOfPacketsSent - 1), 
-            ctx.mkReal(this.numOfPacketsSent)
+            this.getSumOfLatencyZ3(dev, solver, ctx, this.numOfPacketsSentInFragment - 1), 
+            ctx.mkReal(this.numOfPacketsSentInFragment)
         );
         
      }
@@ -1226,8 +1229,8 @@ public class Flow {
 		} else {
 			int index = 0;
 			for(FlowFragment frag : node.getFlowFragments()) {
-				if(this.numOfPacketsSent < frag.getNumOfPacketsSent()) {
-					this.numOfPacketsSent = frag.getNumOfPacketsSent();
+				if(this.numOfPacketsSentInFragment < frag.getNumOfPacketsSent()) {
+					this.numOfPacketsSentInFragment = frag.getNumOfPacketsSent();
 				}
 				
 				this.setNumberOfPacketsSent(node.getChildren().get(index));
@@ -1267,7 +1270,7 @@ public class Flow {
         this.path = path;
     }
     
-    public IntExpr getFlowPriority() {
+    public IntExpr getFragmentPriorityZ3() {
         return flowPriority;
     }
     
@@ -1313,11 +1316,11 @@ public class Flow {
     }
 	
     public int getNumOfPacketsSent() {
-		return numOfPacketsSent;
+		return numOfPacketsSentInFragment;
 	}
 
 	public void setNumOfPacketsSent(int numOfPacketsSent) {
-		this.numOfPacketsSent = numOfPacketsSent;
+		this.numOfPacketsSentInFragment = numOfPacketsSent;
 	}
 
     public int getTotalNumOfPackets() {

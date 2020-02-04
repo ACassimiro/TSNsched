@@ -1,5 +1,6 @@
 package schedule_generator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.microsoft.z3.*;
@@ -37,7 +38,8 @@ import com.microsoft.z3.*;
  * and such.
  * 
  */
-public class Cycle {
+public class Cycle implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String portName = "";
 	static int instanceCounter = 0;
     private float upperBoundCycleTime;
@@ -48,8 +50,8 @@ public class Cycle {
     private float cycleDuration;
     private float cycleStart;
 
-    private ArrayList<ArrayList<RealExpr>> slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
-	private ArrayList<ArrayList<RealExpr>> slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
+    private transient ArrayList<ArrayList<RealExpr>> slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
+	private transient ArrayList<ArrayList<RealExpr>> slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
     
     private ArrayList<Integer> slotsUsed = new ArrayList<Integer>();
     private ArrayList<ArrayList<Float>> slotStart = new ArrayList<ArrayList<Float>>();
@@ -57,9 +59,9 @@ public class Cycle {
     
     // private RealExpr upperBoundCycleTimeZ3;
     // private RealExpr lowerBoundCycleTimeZ3;
-    private RealExpr cycleDurationZ3;
-    private RealExpr firstCycleStartZ3;
-    private RealExpr maximumSlotDurationZ3;
+    private transient RealExpr cycleDurationZ3;
+    private transient RealExpr firstCycleStartZ3;
+    private transient RealExpr maximumSlotDurationZ3;
     private int numOfPrts = 8;
     
     private int numOfSlots = 1;
@@ -174,6 +176,8 @@ public class Cycle {
         //this.guardBandSizeZ3 = guardBandSize;
         this.maximumSlotDurationZ3 = ctx.mkReal(Float.toString(maximumSlotDuration));
         
+        this.slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
+        this.slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
         
         for(int i = 0; i < this.numOfPrts; i++) {
         	this.slotStartZ3.add(new ArrayList<RealExpr>());
@@ -250,7 +254,52 @@ public class Cycle {
         
     }
     
-    
+    public void loadZ3(Context ctx, Solver solver) {
+    	// maximumSlotDurationZ3 already started on toZ3;
+    	
+    	solver.add(
+			ctx.mkEq(
+				this.cycleDurationZ3,
+				ctx.mkReal(Float.toString(this.cycleDuration))
+			)
+		);
+    	
+    	solver.add(
+			ctx.mkEq(
+				this.firstCycleStartZ3,
+				ctx.mkReal(Float.toString(this.firstCycleStart))
+			)
+		);
+    	    	
+
+    	for(int prt : this.getSlotsUsed()) {
+    		
+    		// Where are the slot duration per priority instantiated? Must do it before loading
+    		
+    		for(int slotIndex = 0; slotIndex < this.numOfSlots; slotIndex++) {
+    			solver.add(
+					ctx.mkEq(
+						this.slotStartZ3.get(prt).get(slotIndex),
+						ctx.mkReal(Float.toString(this.slotStart.get(this.slotsUsed.indexOf(prt)).get(slotIndex)))	
+					)
+				);
+    		}
+    		
+    		/*
+    		for(int slotIndex = 0; slotIndex < this.numOfSlots; slotIndex++) {
+    			solver.add(
+					ctx.mkEq(
+						this.slotDurationZ3.get(prt).get(slotIndex),
+						ctx.mkReal(Float.toString(this.slotDuration.get(prt).get(slotIndex)))	
+					)
+				);
+    		}
+    		*/
+    	}
+    	
+    	
+    	
+    }
     
     /*
      *  GETTERS AND SETTERS
@@ -327,24 +376,6 @@ public class Cycle {
         IntExpr prt = ctx.mkInt(auxPrt);
         return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Duration");
     }
-     
-    /*
-    public RealExpr getUpperBoundCycleTimeZ3() {
-        return upperBoundCycleTimeZ3;
-    }
-
-    public void setUpperBoundCycleTimeZ3(RealExpr upperBoundCycleTime) {
-        this.upperBoundCycleTimeZ3 = upperBoundCycleTime;
-    }
-
-    public RealExpr getLowerBoundCycleTimeZ3() {
-        return lowerBoundCycleTimeZ3;
-    }
-
-    public void setLowerBoundCycleTimeZ3(RealExpr lowerBoundCycleTime) {
-        this.lowerBoundCycleTimeZ3 = lowerBoundCycleTime;
-    }
-    */
 
     public RealExpr getCycleDurationZ3() {
         return cycleDurationZ3;
@@ -401,10 +432,12 @@ public class Cycle {
 	}
 
 	public RealExpr getSlotStartZ3(int prt, int slotNum) {
-		return this.slotStartZ3.get(prt-1).get(slotNum-1);
+		return this.slotStartZ3.get(prt).get(slotNum);
 	}
 	
+	/*
 	public RealExpr getSlotDurationZ3(int prt, int slotNum) {
-		return this.slotDurationZ3.get(prt-1).get(slotNum-1);
+		return this.slotDurationZ3.get(prt).get(slotNum);
 	}
+	*/
 }

@@ -16,12 +16,15 @@ import com.microsoft.z3.*;
  * 
  */
 public class FlowFragment extends Flow {
+	private static final long serialVersionUID = 1L;
 	private Flow parent;
-    private RealExpr packetSize;
-    private RealExpr packetPeriodicityZ3;
-    private ArrayList<RealExpr> departureTimeZ3 = new ArrayList<RealExpr>();
-    private IntExpr flowPriority;
-    private String nodeName;
+    private transient RealExpr packetSize;
+    private transient RealExpr packetPeriodicityZ3;
+    private transient ArrayList<RealExpr> departureTimeZ3 = new ArrayList<RealExpr>();
+    private transient IntExpr fragmentPriorityZ3;
+
+    private int fragmentPriority;
+	private String nodeName;
     private String nextHopName;
     private int numOfPacketsSent = Network.PACKETUPPERBOUNDRANGE;
     
@@ -84,6 +87,10 @@ public class FlowFragment extends Flow {
         this.departureTimeZ3.add(dTimeZ3);
     }
     
+    public void createNewDepartureTimeZ3List() {
+    	this.departureTimeZ3 = new ArrayList<RealExpr>();
+    }
+    
     public RealExpr getPacketPeriodicityZ3() {
         return packetPeriodicityZ3;
     }
@@ -100,12 +107,12 @@ public class FlowFragment extends Flow {
         this.packetSize = packetSize;
     }
     
-    public IntExpr getFlowPriority() {
-        return flowPriority;
+    public IntExpr getFragmentPriorityZ3() {
+        return fragmentPriorityZ3;
     }
 
-    public void setFlowPriority(IntExpr flowPriority) {
-        this.flowPriority = flowPriority;
+    public void setFragmentPriorityZ3(IntExpr flowPriority) {
+        this.fragmentPriorityZ3 = flowPriority;
     }
     
     
@@ -161,10 +168,12 @@ public class FlowFragment extends Flow {
         this.nodeName = nodeName;
     }
     
+    @Override
     public int getNumOfPacketsSent() {
         return numOfPacketsSent;
     }
 
+    @Override
     public void setNumOfPacketsSent(int numOfPacketsSent) {
         this.numOfPacketsSent = numOfPacketsSent;
     }
@@ -176,4 +185,13 @@ public class FlowFragment extends Flow {
 	public void setParent(Flow parent) {
 		this.parent = parent;
 	}
+
+	public int getFragmentPriority() {
+		return fragmentPriority;
+	}
+
+	public void setFragmentPriority(int fragmentPriority) {
+		this.fragmentPriority = fragmentPriority;
+	}
+
 }

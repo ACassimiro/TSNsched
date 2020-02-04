@@ -1,5 +1,6 @@
 package schedule_generator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,8 +10,10 @@ import java.util.ArrayList;
  * simple and classic tree methods.
  * 
  */
-public class PathTree {
-    private PathNode root;
+public class PathTree implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private PathNode root;
     private ArrayList<PathNode> leaves;
 
     /**

@@ -1,8 +1,8 @@
 package schedule_generator;
 
 import java.io.*;
+
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 import java.time.LocalTime;
 import java.util.*;
@@ -50,7 +50,11 @@ public class ScheduleGenerator {
 	           result = val1.divide(val2, MathContext.DECIMAL128).floatValue();
 
 	       } else {
-	           result = Float.parseFloat(str);
+	    	   try{
+ 	    		    result = Float.parseFloat(str);
+	    	    }catch(NumberFormatException e){
+	    	        result = -1;
+	    	    }
 	       }
 	       
 	       return result;
@@ -171,7 +175,7 @@ public class ScheduleGenerator {
                        out.println("    Fragment name: " + ffrag.getName());
                        out.println("        Fragment node: " + ffrag.getNodeName());
                        out.println("        Fragment next hop: " + ffrag.getNextHop());
-                       out.println("        Fragment priority: " + model.eval(ffrag.getFlowPriority(), false));
+                       out.println("        Fragment priority: " + model.eval(ffrag.getFragmentPriorityZ3(), false));
                        for(int index = 0; index < ((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getNumOfSlots(); index++) {
                     	   indexZ3 = ctx.mkInt(index);
                     	   out.println("        Fragment slot start " + index + ": " 
@@ -179,7 +183,7 @@ public class ScheduleGenerator {
                                            model.eval(((TSNSwitch) child.getNode())
                                                   .getPortOf(ffrag.getNextHop())
                                                   .getCycle()
-                                                  .slotStartZ3(ctx, ffrag.getFlowPriority(), indexZ3) 
+                                                  .slotStartZ3(ctx, ffrag.getFragmentPriorityZ3(), indexZ3) 
                                                   , false).toString()
                                        ));
                     	   out.println("        Fragment slot duration " + index + " : " 
@@ -187,7 +191,7 @@ public class ScheduleGenerator {
                                         model.eval(((TSNSwitch) child.getNode())
                                                    .getPortOf(ffrag.getNextHop())
                                                    .getCycle()
-                                                   .slotDurationZ3(ctx, ffrag.getFlowPriority(), indexZ3) 
+                                                   .slotDurationZ3(ctx, ffrag.getFragmentPriorityZ3(), indexZ3) 
                                                    , false).toString()));
                 
                        }
@@ -196,9 +200,9 @@ public class ScheduleGenerator {
                        ffrag.getParent().addToTotalNumOfPackets(ffrag.getNumOfPacketsSent());
                        
                        for(int i = 0; i < ffrag.getParent().getNumOfPacketsSent(); i++) {
-                    	   System.out.println(((TSNSwitch)child.getNode()).departureTime(ctx, i, ffrag));
-                    	   System.out.println(((TSNSwitch)child.getNode()).arrivalTime(ctx, i, ffrag));
-                    	   System.out.println(((TSNSwitch)child.getNode()).scheduledTime(ctx, i, ffrag));
+                    	   // System.out.println(((TSNSwitch)child.getNode()).departureTime(ctx, i, ffrag));
+                    	   // System.out.println(((TSNSwitch)child.getNode()).arrivalTime(ctx, i, ffrag));
+                    	   // System.out.println(((TSNSwitch)child.getNode()).scheduledTime(ctx, i, ffrag));
                            
                     	   if(i < ffrag.getNumOfPacketsSent()) {
 		                	   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
@@ -207,6 +211,12 @@ public class ScheduleGenerator {
 		                       out.println("          ----------------------------");
                     	   }
                            
+                    	   ffrag.setFragmentPriority(
+                			   Integer.parseInt(
+                    			   model.eval(ffrag.getFragmentPriorityZ3(), false).toString()
+        					   )
+            			   );
+                    	   
                            ffrag.addDepartureTime(
                                this.stringToFloat(
                                    model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()   
@@ -244,18 +254,18 @@ public class ScheduleGenerator {
                 				   this.stringToFloat(model.eval( 
                                        ((TSNSwitch) child.getNode())
                                        .getPortOf(ffrag.getNextHop())
-                                       .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority(), indexZ3) , false).toString())
+                                       .getCycle().slotStartZ3(ctx, ffrag.getFragmentPriorityZ3(), indexZ3) , false).toString())
             				   );
                     		   listOfDuration.add(
                 				   this.stringToFloat(model.eval( 
                                        ((TSNSwitch) child.getNode())
                                        .getPortOf(ffrag.getNextHop())
-                                       .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority(), indexZ3) , false).toString())
+                                       .getCycle().slotDurationZ3(ctx, ffrag.getFragmentPriorityZ3(), indexZ3) , false).toString())
             				   );
                            }
                     	   
                     	   port.getCycle().addSlotUsed(
-                               (int) this.stringToFloat(model.eval(ffrag.getFlowPriority(), false).toString()), 
+                               (int) this.stringToFloat(model.eval(ffrag.getFragmentPriorityZ3(), false).toString()), 
                                listOfStart, 
                                listOfDuration
                            );
@@ -270,46 +280,8 @@ public class ScheduleGenerator {
 	   }
 	   
 	   
-	   
-	   
-	   
-	   /**
-	    * [Method]: generateSchedule
-	    * [Usage]: After creating a network, setting up the 
-	    * flows and switches, the user now can call this 
-	    * function in order calculate the schedule values
-	    * using z3 
-	    * 
-	    * @param net   Network used as base to generate the schedule
-	    */
-	   public void generateSchedule(Network net) 
-	   {
-		   Context ctx = this.createContext(); //Creating the z3 context
-	       Solver solver = ctx.mkSolver();     //Creating the solver to generate unknown values based on the given context
-	       
-	       
-	       /*
-	       IntExpr x = ctx.mkIntConst("x");
-	       IntExpr y;
-	       
-	       Sort I = ctx.getIntSort();
-	       FuncDecl f = ctx.mkFuncDecl("f", new Sort[] { I, I }, I);
-	       
-	       Expr[] xs = new Expr[5];
-	       Symbol[] names = new Symbol[5];
-	       Sort[] types = new Sort[5];
-	       
-	       for(int i = 0; i < 5; i++) {
-	           types[i] = ctx.getIntSort();
-	           names[i] = ctx.mkSymbol("x_" + Integer.toString(i));
-	           xs[i] = ctx.mkBound(i, types[i]); 
-	       }
-	       */
-	       
-	       // Pattern[] pats = new Pattern[] {ctx.mkInt(1)};
-	       
-	       
-	       for(Flow flw : net.getFlows()) {
+	   public void configureNetwork(Network net, Context ctx, Solver solver) {
+		   for(Flow flw : net.getFlows()) {
 	    	   flw.convertUnicastFlow();
 	    	   flw.setUpPeriods(flw.getPathTree().getRoot());
 	       }
@@ -332,7 +304,27 @@ public class ScheduleGenerator {
            
            // Sets up the hard constraint for each individual flow in the network
            net.setJitterUpperBoundRangeZ3(ctx, 25);
-           net.secureHC(solver, ctx);
+	       net.secureHC(solver, ctx);
+	   }
+	   
+	   
+	   /**
+	    * [Method]: generateSchedule
+	    * [Usage]: After creating a network, setting up the 
+	    * flows and switches, the user now can call this 
+	    * function in order calculate the schedule values
+	    * using z3 
+	    * 
+	    * @param net   Network used as base to generate the schedule
+	    */
+	   public void generateSchedule(Network net) 
+	   {
+		   Context ctx = this.createContext(); //Creating the z3 context
+	       Solver solver = ctx.mkSolver();     //Creating the solver to generate unknown values based on the given context
+	       
+	       
+	        this.configureNetwork(net, ctx, solver);
+	       // net.loadNetwork(ctx, solver);
 	       
 
 	       // A switch is picked in order to evaluate the unknown values
@@ -438,85 +430,8 @@ public class ScheduleGenerator {
                            in each case.
 	                       */
 	                       if(f.getType() == Flow.UNICAST) {
-//	                           out.println("    Flow type: Unicast");
-//	                           out.print("    Path: ");
-//	                           for(Switch s : f.getPath()) {
-//	                               out.print(s.getName() + ",");
-//	                           }
-//	                           out.println("");
-//	                           
-//	                           
-//	                           for(FlowFragment ffrag : f.getFlowFragments()) {
-//	                               out.println("    Fragment name: " + ffrag.getName());
-//	                               out.println("        Fragment node: " + ffrag.getNodeName());
-//	                               out.println("        Fragment next hop: " + ffrag.getNextHop());
-//                                   out.println("        Fragment priority: " + model.eval(ffrag.getFlowPriority(), false));
-//	                               out.println("        Fragment slot start: " 
-//	                                                   + model.eval(((TSNSwitch) f.getPath()
-//	                                                                  .get(f.getFlowFragments().indexOf(ffrag)))
-//	                                                                  .getPortOf(ffrag.getNextHop())
-//	                                                                  .getCycle()
-//	                                                                  .slotStartZ3(ctx, ffrag.getFlowPriority()) 
-//	                                                                  , false));
-//	                               out.println("        Fragment slot duration: " 
-//	                                                    + model.eval(((TSNSwitch) f.getPath()
-//	                                                                   .get(f.getFlowFragments().indexOf(ffrag)))
-//	                                                                   .getPortOf(ffrag.getNextHop())
-//	                                                                   .getCycle()
-//	                                                                   .slotDurationZ3(ctx, ffrag.getFlowPriority()) 
-//	                                                                   , false));
-//	                               
-//	                               for (Switch swt : f.getPath()) {
-//	                                   for (Port port : ((TSNSwitch) swt).getPorts()) {
-//	                                       if(!port.getFlowFragments().contains(ffrag)) {
-//	                                           continue;
-//	                                       }
-//	                                       
-//	                                       port.getCycle().addSlotUsed(
-//	                                           (int) this.stringToFloat(model.eval(ffrag.getFlowPriority(), false).toString()), 
-//	                                           this.stringToFloat(model.eval( 
-//	                                                   ((TSNSwitch) f.getPath()
-//	                                                   .get(f.getFlowFragments().indexOf(ffrag)))
-//	                                                   .getPortOf(ffrag.getNextHop())
-//	                                                   .getCycle().slotStartZ3(ctx, ffrag.getFlowPriority()) , false).toString()), 
-//	                                           this.stringToFloat(model.eval( 
-//	                                                   ((TSNSwitch) f.getPath().
-//	                                                   get(f.getFlowFragments().indexOf(ffrag)))
-//	                                                   .getPortOf(ffrag.getNextHop())
-//	                                                   .getCycle().slotDurationZ3(ctx, ffrag.getFlowPriority()) , false).toString())
-//	                                       );
-//	                                   }
-//	                               }
-//	                               
-//	                               
-//	                               out.println("        Fragment times-");
-//	                               for(int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
-//	                                   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false));
-//	                                   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false));
-//	                                   out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false));
-//	                                   out.println("          ----------------------------");
-//	                                   
-//	                                   ffrag.addDepartureTime(
-//	                                       this.stringToFloat(
-//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).departureTime(ctx, i, ffrag) , false).toString()   
-//	                                       )
-//	                                   );
-//	                                   ffrag.addArrivalTime(
-//	                                       this.stringToFloat(
-//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).arrivalTime(ctx, i, ffrag) , false).toString()   
-//	                                       )
-//	                                   );
-//	                                   ffrag.addScheduledTime(
-//	                                       this.stringToFloat(
-//	                                           model.eval(((TSNSwitch) f.getPath().get(f.getFlowFragments().indexOf(ffrag))).scheduledTime(ctx, i, ffrag) , false).toString()   
-//	                                       )
-//	                                   );
-//	                                   
-//	                               }
-//	                               
-//	                               
-//	                           }
-	                    	   ;
+	                           // TODO: Throw error. UNICAST data structure are not allowed at this point
+	                    	   // Everything should had been converted into the multicast model.
 	                       } else if(f.getType() == Flow.PUBLISH_SUBSCRIBE) { //IF FLOW IS PUB-SUB
 	                           
 	                           /*
@@ -565,23 +480,7 @@ public class ScheduleGenerator {
                                out.println("");
                                
 	                           //Start the data storing and log printing process from the root
-	                           this.writePathTree(pathNode, model, ctx, out); 
-	                       
-	                           
-	                           
-	                           /*
-	                           System.out.println("");
-	                           FlowFragment test = net.getFlows().get(0).getPathTree().getRoot().getChildren().get(0).getFlowFragments().get(0);
-                               Port testPort = ((TSNSwitch) net.getFlows().get(0).getPathTree().getRoot().getChildren().get(0).getNode()).getPortOf(test.getNextHop());
-	                           System.out.println("*** CHECKING VALUES ***:");
-                               System.out.println("Flow fragment name: " + test.getName());
-                               System.out.println("Cycle index 1: " + model.eval(testPort.getCycleOfScheduledTime(ctx, test, 0), false));
-                               System.out.println("Cycle index 2: " + model.eval(testPort.getCycleOfScheduledTime(ctx, test, 1), false));
-                               System.out.println("Cycle index 3: " + model.eval(testPort.getCycleOfScheduledTime(ctx, test, 2), false));
-                               System.out.println(" ");
-                               /**/
-
-                               
+	                           this.writePathTree(pathNode, model, ctx, out);                                
 	                       }
 	                       
 	                       out.println("");
@@ -604,5 +503,41 @@ public class ScheduleGenerator {
 	       }
 	       
 	       this.closeContext(ctx);
+	 
+//	       this.serializeNetwork(net, "network.ser");
 	   }
+
+
+	   public void serializeNetwork(Network net, String path) {
+		   
+	    	try {
+	            FileOutputStream fileOut = new FileOutputStream("network.ser");
+	            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	            out.writeObject(net);
+	            out.close();
+	            fileOut.close();
+	    		System.out.printf("Serialized data is saved in network.ser");
+	         } catch (Exception i) {
+	            i.printStackTrace();
+	         }
+	    }
+	   
+	   public Network deserializeNetwork(String path) {
+		   Network net = null;
+		   
+		   try {
+	           FileInputStream fileIn = new FileInputStream(path);
+	           ObjectInputStream in = new ObjectInputStream(fileIn);
+	           net = (Network) in.readObject();
+	           in.close();
+	           fileIn.close();			   
+		   } catch (Exception i) {
+ 	           i.printStackTrace();
+	           return null;
+	       } 		   
+		   return net;
+	   }
+
+
+
 }

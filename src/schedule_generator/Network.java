@@ -1,5 +1,6 @@
 package schedule_generator;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -13,17 +14,21 @@ import com.microsoft.z3.*;
  * flows and switches setting up the scheduling rules.
  *
  */
-public class Network {
+public class Network implements Serializable {
     
-    //TODO: Remove debugging variables:
-    public RealExpr avgOfAllLatency;
-    public ArrayList<RealExpr> avgLatencyPerDev = new ArrayList<RealExpr>();
+	private static final long serialVersionUID = 1L;
+	String db_name;
+	String file_id;
+	
+	//TODO: Remove debugging variables:
+    public transient RealExpr avgOfAllLatency;
+    public transient ArrayList<RealExpr> avgLatencyPerDev = new ArrayList<RealExpr>();
     
     
     private ArrayList<Switch> switches;
     private ArrayList<Flow> flows;
     private float timeToTravel;
-    public ArrayList<RealExpr> allSumOfJitter = new ArrayList<RealExpr>();
+    public transient ArrayList<RealExpr> allSumOfJitter = new ArrayList<RealExpr>();
     public ArrayList<Integer> numberOfNodes = new ArrayList<Integer>();
     
     public static int PACKETUPPERBOUNDRANGE = 5; // Limits the applications of rules to the packets
@@ -33,7 +38,7 @@ public class Network {
     
     
     private float jitterUpperBoundRange = -1;
-    RealExpr jitterUpperBoundRangeZ3;
+    transient RealExpr jitterUpperBoundRangeZ3;
     
 
     /**
@@ -237,6 +242,44 @@ public class Network {
         }
         
     }
+    
+    
+    public void loadNetwork(Context ctx, Solver solver) {
+    	
+    	// TODO: Don't forget to load the values of this class
+    	
+    	// On all network flows: Data given by the user will be converted to z3 values 
+       for(Flow flw : this.flows) {
+           // flw.toZ3(ctx);
+    	   flw.flowPriority = ctx.mkIntConst(flw.name + "Priority");
+    	   ((Device) flw.getPathTree().getRoot().getNode()).toZ3(ctx);
+       }
+	       
+       // On all network switches: Data given by the user will be converted to z3 values
+        for(Switch swt : this.switches) {
+        	if(swt instanceof TSNSwitch) {
+        		for(Port port : ((TSNSwitch) swt).getPorts()) {
+        			for(FlowFragment frag : port.getFlowFragments()) {
+        				frag.createNewDepartureTimeZ3List();
+        				frag.addDepartureTimeZ3(ctx.mkReal(Float.toString(frag.getDepartureTime(0))));
+        			}
+        		}
+        		((TSNSwitch) swt).toZ3(ctx, solver);
+        		((TSNSwitch) swt).loadZ3(ctx, solver);
+        	}
+        }
+        
+    	/*
+    	for(Switch swt : this.getSwitches()) {
+    		if(swt instanceof TSNSwitch) {
+    			((TSNSwitch) swt).loadZ3(ctx, solver);    			
+    		}    		
+    	}
+    	*/
+    	
+    	
+    }
+    
     
     /*
      * GETTERS AND SETTERS
