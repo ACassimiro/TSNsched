@@ -32,9 +32,9 @@ import com.microsoft.z3.Solver;
  */
 public class Port implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private Boolean useMicroCycles = true;
-    private Boolean useHyperCycle = false;
+    private static final long serialVersionUID = 1L;
+    private Boolean useMicroCycles = false;
+    private Boolean useHyperCycle = true;
     
     private ArrayList<Float> listOfPeriods = new ArrayList<Float>();
     private float definedHyperCycleSize = -1;
