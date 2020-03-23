@@ -9,71 +9,72 @@ public class GeneratedCode {
 		/* 
 		* GENERATING DEVICES
 		*/
-		Device dev0 = new Device(2000, 0, 1000, 0, 100);
-		Device dev1 = new Device(2000, 0, 1000, 0, 100);
-		Device dev2 = new Device(2000, 0, 1000, 0, 100);
-		Device dev3 = new Device(2000, 0, 1000, 0, 100);
-		Device dev4 = new Device(2000, 0, 1000, 0, 100);
-		Device dev5 = new Device(2000, 0, 1000, 0, 100);
-		Device dev6 = new Device(2000, 0, 1000, 0, 100);
-		Device dev7 = new Device(2000, 0, 1000, 0, 100);
-		Device dev8 = new Device(2000, 0, 1000, 0, 100);
-		Device dev9 = new Device(2000, 0, 1000, 0, 100);
-		Device dev10 = new Device(2000, 0, 1000, 0, 100);
-		Device dev11 = new Device(2000, 0, 1000, 0, 100);
-		Device dev12 = new Device(2000, 0, 1000, 0, 100);
-		Device dev13 = new Device(2000, 0, 1000, 0, 100);
-		Device dev14 = new Device(2000, 0, 1000, 0, 100);
-		Device dev15 = new Device(2000, 0, 1000, 0, 100);
-		Device dev16 = new Device(2000, 0, 1000, 0, 100);
-		Device dev17 = new Device(2000, 0, 1000, 0, 100);
-		Device dev18 = new Device(2000, 0, 1000, 0, 100);
-		Device dev19 = new Device(2000, 0, 1000, 0, 100);
-		Device dev20 = new Device(2000, 0, 1000, 0, 100);
-		Device dev21 = new Device(2000, 0, 1000, 0, 100);
-		Device dev22 = new Device(2000, 0, 1000, 0, 100);
-		Device dev23 = new Device(2000, 0, 1000, 0, 100);
-		Device dev24 = new Device(2000, 0, 1000, 0, 100);
-		Device dev25 = new Device(2000, 0, 1000, 0, 100);
-		Device dev26 = new Device(2000, 0, 1000, 0, 100);
-		Device dev27 = new Device(2000, 0, 1000, 0, 100);
-		Device dev28 = new Device(2000, 0, 1000, 0, 100);
-		Device dev29 = new Device(2000, 0, 1000, 0, 100);
-		Device dev30 = new Device(2000, 0, 1000, 0, 100);
-		Device dev31 = new Device(2000, 0, 1000, 0, 100);
-		Device dev32 = new Device(2000, 0, 1000, 0, 100);
-		Device dev33 = new Device(2000, 0, 1000, 0, 100);
-		Device dev34 = new Device(2000, 0, 1000, 0, 100);
-		Device dev35 = new Device(2000, 0, 1000, 0, 100);
-		Device dev36 = new Device(2000, 0, 1000, 0, 100);
-		Device dev37 = new Device(2000, 0, 1000, 0, 100);
-		Device dev38 = new Device(2000, 0, 1000, 0, 100);
-		Device dev39 = new Device(2000, 0, 1000, 0, 100);
-		Device dev40 = new Device(2000, 0, 1000, 0, 100);
-		Device dev41 = new Device(2000, 0, 1000, 0, 100);
-		Device dev42 = new Device(2000, 0, 1000, 0, 100);
-		Device dev43 = new Device(2000, 0, 1000, 0, 100);
-		Device dev44 = new Device(2000, 0, 1000, 0, 100);
-		Device dev45 = new Device(2000, 0, 1000, 0, 100);
-		Device dev46 = new Device(2000, 0, 1000, 0, 100);
-		Device dev47 = new Device(2000, 0, 1000, 0, 100);
-		Device dev48 = new Device(2000, 0, 1000, 0, 100);
-		Device dev49 = new Device(2000, 0, 1000, 0, 100);
+		Device dev0 = new Device(1000, 0, 1000, 1625);
+		Device dev1 = new Device(1000, 0, 1000, 1625);
+		Device dev2 = new Device(1000, 0, 1000, 1625);
+		Device dev3 = new Device(1000, 0, 1000, 1625);
+		Device dev4 = new Device(1000, 0, 1000, 1625);
+		Device dev5 = new Device(1000, 0, 1000, 1625);
+		Device dev6 = new Device(1000, 0, 1000, 1625);
+		Device dev7 = new Device(1000, 0, 1000, 1625);
+		Device dev8 = new Device(1000, 0, 1000, 1625);
+		Device dev9 = new Device(1000, 0, 1000, 1625);
+		Device dev10 = new Device(1000, 0, 1000, 1625);
+		Device dev11 = new Device(1000, 0, 1000, 1625);
+		Device dev12 = new Device(1000, 0, 1000, 1625);
+		Device dev13 = new Device(1000, 0, 1000, 1625);
+		Device dev14 = new Device(1000, 0, 1000, 1625);
+		Device dev15 = new Device(1000, 0, 1000, 1625);
+		Device dev16 = new Device(1000, 0, 1000, 1625);
+		Device dev17 = new Device(1000, 0, 1000, 1625);
+		Device dev18 = new Device(1000, 0, 1000, 1625);
+		Device dev19 = new Device(1000, 0, 1000, 1625);
+		Device dev20 = new Device(1000, 0, 1000, 1625);
+		Device dev21 = new Device(1000, 0, 1000, 1625);
+		Device dev22 = new Device(1000, 0, 1000, 1625);
+		Device dev23 = new Device(1000, 0, 1000, 1625);
+		Device dev24 = new Device(1000, 0, 1000, 1625);
+		Device dev25 = new Device(1000, 0, 1000, 1625);
+		Device dev26 = new Device(1000, 0, 1000, 1625);
+		Device dev27 = new Device(1000, 0, 1000, 1625);
+		Device dev28 = new Device(1000, 0, 1000, 1625);
+		Device dev29 = new Device(1000, 0, 1000, 1625);
+		Device dev30 = new Device(1000, 0, 1000, 1625);
+		Device dev31 = new Device(1000, 0, 1000, 1625);
+		Device dev32 = new Device(1000, 0, 1000, 1625);
+		Device dev33 = new Device(1000, 0, 1000, 1625);
+		Device dev34 = new Device(1000, 0, 1000, 1625);
+		Device dev35 = new Device(1000, 0, 1000, 1625);
+		Device dev36 = new Device(1000, 0, 1000, 1625);
+		Device dev37 = new Device(1000, 0, 1000, 1625);
+		Device dev38 = new Device(1000, 0, 1000, 1625);
+		Device dev39 = new Device(1000, 0, 1000, 1625);
+		Device dev40 = new Device(1000, 0, 1000, 1625);
+		Device dev41 = new Device(1000, 0, 1000, 1625);
+		Device dev42 = new Device(1000, 0, 1000, 1625);
+		Device dev43 = new Device(1000, 0, 1000, 1625);
+		Device dev44 = new Device(1000, 0, 1000, 1625);
+		Device dev45 = new Device(1000, 0, 1000, 1625);
+		Device dev46 = new Device(1000, 0, 1000, 1625);
+		Device dev47 = new Device(1000, 0, 1000, 1625);
+		Device dev48 = new Device(1000, 0, 1000, 1625);
+		Device dev49 = new Device(1000, 0, 1000, 1625);
 
 
 		/* 
 		* GENERATING SWITCHES
 		*/
-		TSNSwitch switch0 = new TSNSwitch("switch0",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch1 = new TSNSwitch("switch1",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch2 = new TSNSwitch("switch2",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch3 = new TSNSwitch("switch3",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch4 = new TSNSwitch("switch4",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch5 = new TSNSwitch("switch5",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch6 = new TSNSwitch("switch6",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch7 = new TSNSwitch("switch7",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch8 = new TSNSwitch("switch8",100, 1, 13, 100, 1, 400, 3000);
-		TSNSwitch switch9 = new TSNSwitch("switch9",100, 1, 13, 100, 1, 400, 3000);
+		// 1Gbit/s = 125Bytes/microsec. Packet size on packets should be in bytes
+		TSNSwitch switch0 = new TSNSwitch("switch0",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch1 = new TSNSwitch("switch1",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch2 = new TSNSwitch("switch2",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch3 = new TSNSwitch("switch3",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch4 = new TSNSwitch("switch4",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch5 = new TSNSwitch("switch5",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch6 = new TSNSwitch("switch6",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch7 = new TSNSwitch("switch7",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch8 = new TSNSwitch("switch8",100, 1, 125, 1, 400, 3000);
+		TSNSwitch switch9 = new TSNSwitch("switch9",100, 1, 125, 1, 400, 3000);
 
 
 		/* 
@@ -373,19 +374,53 @@ public class GeneratedCode {
 		Flow flow0 = new Flow(Flow.PUBLISH_SUBSCRIBE);
 		PathTree pathTree0 = new PathTree();
 		PathNode pathNode0;
-		pathNode0 = pathTree0.addRoot(dev24);
-		pathNode0 = pathNode0.addChild(switch4);
+		pathNode0 = pathTree0.addRoot(dev4);
+		pathNode0 = pathNode0.addChild(switch0);
 		nodeList = new LinkedList<PathNode>();
 		nodeList.add(pathNode0);
-		nodeList.add(nodeList.getFirst().addChild(switch9));
-		nodeList.add(nodeList.removeFirst().addChild(switch1));
-		nodeList.getFirst().addChild(dev45);
-		nodeList.getFirst().addChild(dev46);
-		nodeList.removeFirst();
-		nodeList.getFirst().addChild(dev5);
-		nodeList.getFirst().addChild(dev6);
+		nodeList.add(nodeList.removeFirst().addChild(switch4));
+		nodeList.add(nodeList.removeFirst().addChild(switch3));
+		nodeList.getFirst().addChild(dev15);
+		nodeList.getFirst().addChild(dev16);
+		nodeList.getFirst().addChild(dev17);
+		nodeList.getFirst().addChild(dev18);
+		nodeList.getFirst().addChild(dev19);
 		nodeList.removeFirst();
 		flow0.setPathTree(pathTree0);
+
+		Flow flow1 = new Flow(Flow.PUBLISH_SUBSCRIBE);
+		PathTree pathTree1 = new PathTree();
+		PathNode pathNode1;
+		pathNode1 = pathTree1.addRoot(dev21);
+		pathNode1 = pathNode1.addChild(switch4);
+		nodeList = new LinkedList<PathNode>();
+		nodeList.add(pathNode1);
+		nodeList.add(nodeList.removeFirst().addChild(switch7));
+		nodeList.add(nodeList.removeFirst().addChild(switch6));
+		nodeList.getFirst().addChild(dev30);
+		nodeList.getFirst().addChild(dev31);
+		nodeList.getFirst().addChild(dev32);
+		nodeList.getFirst().addChild(dev33);
+		nodeList.getFirst().addChild(dev34);
+		nodeList.removeFirst();
+		flow1.setPathTree(pathTree1);
+
+		Flow flow2 = new Flow(Flow.PUBLISH_SUBSCRIBE);
+		PathTree pathTree2 = new PathTree();
+		PathNode pathNode2;
+		pathNode2 = pathTree2.addRoot(dev39);
+		pathNode2 = pathNode2.addChild(switch7);
+		nodeList = new LinkedList<PathNode>();
+		nodeList.add(pathNode2);
+		nodeList.add(nodeList.removeFirst().addChild(switch1));
+		nodeList.add(nodeList.removeFirst().addChild(switch2));
+		nodeList.getFirst().addChild(dev10);
+		nodeList.getFirst().addChild(dev11);
+		nodeList.getFirst().addChild(dev12);
+		nodeList.getFirst().addChild(dev13);
+		nodeList.getFirst().addChild(dev14);
+		nodeList.removeFirst();
+		flow2.setPathTree(pathTree2);
 
 
 		/* 
@@ -403,6 +438,8 @@ public class GeneratedCode {
 		net.addSwitch(switch8);
 		net.addSwitch(switch9);
 		net.addFlow(flow0);
+		net.addFlow(flow1);
+		net.addFlow(flow2);
 
 
 		ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
@@ -532,12 +569,20 @@ public class GeneratedCode {
 		System.out.println("Flow 0 average jitter: " + flow0.getAverageJitter());
 		overallAverageLatency += flow0.getAverageLatency(); 
 		overallAverageJitter += flow0.getAverageJitter();
-		overallAverageLatency = overallAverageLatency/1;
-		overallAverageJitter = overallAverageJitter/1;
+		System.out.println("Flow 1 average latency: " + flow1.getAverageLatency());
+		System.out.println("Flow 1 average jitter: " + flow1.getAverageJitter());
+		overallAverageLatency += flow1.getAverageLatency(); 
+		overallAverageJitter += flow1.getAverageJitter();
+		System.out.println("Flow 2 average latency: " + flow2.getAverageLatency());
+		System.out.println("Flow 2 average jitter: " + flow2.getAverageJitter());
+		overallAverageLatency += flow2.getAverageLatency(); 
+		overallAverageJitter += flow2.getAverageJitter();
+		overallAverageLatency = overallAverageLatency/3;
+		overallAverageJitter = overallAverageJitter/3;
 
 		System.out.println("\nNumber of nodes in the network: 3 ");
-		System.out.println("Number of flows in the network: 1 ");
-		System.out.println("Number of subscribers in the network: 4 ");
+		System.out.println("Number of flows in the network: 3 ");
+		System.out.println("Number of subscribers in the network: 15 ");
 		System.out.println("Total number of scheduled packets: " +  numOfFramesScheduled);
 		System.out.println("Overall average latency: " + overallAverageLatency);
 		System.out.println("Overall average jitter: " + overallAverageJitter);

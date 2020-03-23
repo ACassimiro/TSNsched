@@ -503,15 +503,25 @@ public class ScheduleGenerator {
 	       }
 	       
 	       this.closeContext(ctx);
-	 
-//	       this.serializeNetwork(net, "network.ser");
+	       new XMLExporter(net);
+	       // this.serializeNetwork(net, "network.ser");
 	   }
 
 
+	   /**
+	    * [Method]: serializateNetwork
+	    * [Usage]: Serialize the primitive objects of the network object.
+	    * The serialized file is stored in the path string folder. Can be used
+	    * to store the data of a network and the values of the generated 
+	    * schedule.
+	    * 
+	    * @param net		Network object to be serialized
+	    * @param path		Path of for the serialized object file
+	    */
 	   public void serializeNetwork(Network net, String path) {
 		   
 	    	try {
-	            FileOutputStream fileOut = new FileOutputStream("network.ser");
+	            FileOutputStream fileOut = new FileOutputStream(path);
 	            ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	            out.writeObject(net);
 	            out.close();
@@ -522,6 +532,14 @@ public class ScheduleGenerator {
 	         }
 	    }
 	   
+	   /**
+	    * [Method]: deserializeNetwork
+	    * [Usage]: From a serialized object file, load the primitive
+	    * values of the stored object.
+	    * 
+	    * @param path		Path of the serialized object file
+	    * @return			The network object with all its primitive values
+	    */
 	   public Network deserializeNetwork(String path) {
 		   Network net = null;
 		   

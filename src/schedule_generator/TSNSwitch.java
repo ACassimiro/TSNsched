@@ -108,6 +108,40 @@ public class TSNSwitch extends Switch implements Serializable {
         this.cycleDurationUpperBound = cycleDurationUpperBound;
     }
 
+    /**
+     * [Method]: TSNSwitch
+     * [Usage]: Overloaded constructor method of this class.
+     * Instantiates a new TSNSwitch object setting up its properties
+     * that are given as parameters. There is no transmission time here,
+     * as this method is used when considering that it will be calculated 
+     * by the packet size divided by the port speed 
+     * 
+     * @param name                  Name of the switch
+     * @param maxPacketSize         Maximum packet size supported by the switch
+     * @param timeToTravel          Time that a packet takes to leave its port and reach the destination
+     * @param transmissionTime      Time taken to process the packet inside the switch
+     * @param portSpeed             Transmission speed of the port
+     * @param gbSize                Size of the guard bands used to separate non consecutive time slots
+     */
+    public TSNSwitch(String name,
+                     float maxPacketSize,
+                     float timeToTravel,
+                     float portSpeed,
+                     float gbSize,
+                     float cycleDurationLowerBound,
+                     float cycleDurationUpperBound) {
+        this.name = name;
+        this.maxPacketSize = maxPacketSize;
+        this.timeToTravel = timeToTravel;
+        this.transmissionTime = 0;
+        this.portSpeed = portSpeed;
+        this.gbSize = gbSize;
+        this.ports = new ArrayList<Port>();
+        this.connectsTo = new ArrayList<String>();
+        this.cycleDurationLowerBound = cycleDurationLowerBound;
+        this.cycleDurationUpperBound = cycleDurationUpperBound;
+    }
+    
     
     /**
      * [Method]: toZ3
@@ -213,6 +247,7 @@ public class TSNSwitch extends Switch implements Serializable {
             this.connectsTo.add(((Device)destination).getName());
             this.ports.add(
                 new Port(this.name + "Port" + this.portNum,
+                		 this.portNum,
                          ((Device)destination).getName(),
                          this.maxPacketSize,
                          this.timeToTravel,
@@ -226,6 +261,7 @@ public class TSNSwitch extends Switch implements Serializable {
             this.connectsTo.add(((Switch)destination).getName());
         
             Port newPort = new Port(this.name + "Port" + this.portNum,
+            		this.portNum,
                     ((Switch)destination).getName(),
                     this.maxPacketSize,
                     this.timeToTravel,
@@ -264,6 +300,7 @@ public class TSNSwitch extends Switch implements Serializable {
         
         this.ports.add(
             new Port(this.name + "Port" + this.portNum,
+            		 this.portNum,
                      destination,
                      this.maxPacketSize,
                      this.timeToTravel,

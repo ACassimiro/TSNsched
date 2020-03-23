@@ -33,13 +33,9 @@ public class Network implements Serializable {
     
     public static int PACKETUPPERBOUNDRANGE = 5; // Limits the applications of rules to the packets
     public static int CYCLEUPPERBOUNDRANGE = 25; // Limits the applications of rules to the cycles
-    // public static int PACKETUPPERBOUNDRANGE = 50; // Limits the applications of rules to the packets
-    // public static int CYCLEUPPERBOUNDRANGE = 250; // Limits the applications of rules to the cycles
-    
     
     private float jitterUpperBoundRange = -1;
     transient RealExpr jitterUpperBoundRangeZ3;
-    
 
     /**
      * [Method]: Network
@@ -244,6 +240,15 @@ public class Network implements Serializable {
     }
     
     
+    /**
+     * [Method]: loadNetwork
+     * [Usage]: From the primitive values retrieved in the object
+     * deserialization process, instantiate the z3 objects that represent
+     * the same properties.
+     * 
+     * @param ctx		Context object for the solver
+     * @param solver	Solver object
+     */
     public void loadNetwork(Context ctx, Solver solver) {
     	
     	// TODO: Don't forget to load the values of this class
@@ -276,7 +281,6 @@ public class Network implements Serializable {
     		}    		
     	}
     	*/
-    	
     	
     }
     

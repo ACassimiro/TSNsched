@@ -91,6 +91,31 @@ public class Device implements Serializable {
      * [Method]: Device
      * [Usage]: Overloaded constructor method of a device.
      * Can create a device specifying its properties through
+     * float values. These values will later be converted to
+     * z3 values.
+     * 
+     * @param packetPeriodicity     Periodicity of packet sending
+     * @param firstT1Time           Time where the first packet is sent
+     * @param hardConstraintTime    Maximum latency tolerated by this device
+     * @param packetSize            Size of the packets sent by this device
+     */
+    public Device(float packetPeriodicity,
+                  float firstT1Time,
+                  float hardConstraintTime,
+                  float packetSize) {
+        this.packetPeriodicity = packetPeriodicity;
+        this.firstT1Time = firstT1Time;
+        this.hardConstraintTime = hardConstraintTime;
+        this.softConstraintTime = 0;
+        this.packetSize = packetSize;        
+        this.name = "dev" + ++indexCounter;
+    }
+    
+    
+    /**
+     * [Method]: Device
+     * [Usage]: Overloaded constructor method of a device.
+     * Can create a device specifying its properties through
      * z3 values.
      * 
      * @param packetPeriodicityZ3       Periodicity of packet sending

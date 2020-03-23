@@ -57,8 +57,6 @@ public class Cycle implements Serializable {
     private ArrayList<ArrayList<Float>> slotStart = new ArrayList<ArrayList<Float>>();
     private ArrayList<ArrayList<Float>> slotDuration = new ArrayList<ArrayList<Float>>();
     
-    // private RealExpr upperBoundCycleTimeZ3;
-    // private RealExpr lowerBoundCycleTimeZ3;
     private transient RealExpr cycleDurationZ3;
     private transient RealExpr firstCycleStartZ3;
     private transient RealExpr maximumSlotDurationZ3;
@@ -67,15 +65,6 @@ public class Cycle implements Serializable {
     private int numOfSlots = 1;
     
     
-    public int getNumOfSlots() {
-		return numOfSlots;
-	}
-
-
-	public void setNumOfSlots(int numOfSlots) {
-		this.numOfSlots = numOfSlots;
-	}
-
 
 	/**
      * [Method]: Cycle
@@ -166,14 +155,9 @@ public class Cycle implements Serializable {
         instanceCounter++;
         
         this.cycleDurationZ3 = ctx.mkRealConst("cycle" + Integer.toString(instanceCounter) + "Duration");
-//         this.upperBoundCycleTimeZ3 = ctx.mkReal(Float.toString(upperBoundCycleTime));
-//         this.lowerBoundCycleTimeZ3 = ctx.mkReal(Float.toString(lowerBoundCycleTime));
-//        this.upperBoundCycleTimeZ3 = ctx.mkRealConst("cycleUpperBound" + Integer.toString(instanceCounter));
-//        this.lowerBoundCycleTimeZ3 = ctx.mkRealConst("cycleLowerBound" + Integer.toString(instanceCounter));
         this.firstCycleStartZ3 = ctx.mkRealConst("cycle" + Integer.toString(instanceCounter) + "Start");
-//        this.firstCycleStartZ3 = ctx.mkReal(Float.toString(0));
-        //this.firstCycleStartZ3 = ctx.mkReal(Float.toString(firstCycleStart));
-        //this.guardBandSizeZ3 = guardBandSize;
+        // this.firstCycleStartZ3 = ctx.mkReal(Float.toString(0));
+        // this.firstCycleStartZ3 = ctx.mkReal(Float.toString(firstCycleStart));
         this.maximumSlotDurationZ3 = ctx.mkReal(Float.toString(maximumSlotDuration));
         
         this.slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
@@ -254,6 +238,16 @@ public class Cycle implements Serializable {
         
     }
     
+    
+    /**
+     * [Method]: loadZ3
+     * [Usage]: From the loaded primitive values of the class
+     * obtained in the deserialization process, initialize the
+     * z3 variables.
+     * 
+     * @param ctx		Context object of z3
+     * @param solver	Solver object to add constraints
+     */
     public void loadZ3(Context ctx, Solver solver) {
     	// maximumSlotDurationZ3 already started on toZ3;
     	
@@ -401,6 +395,13 @@ public class Cycle implements Serializable {
         this.numOfPrts = numOfPrts;
     }
 
+    public int getNumOfSlots() {
+		return numOfSlots;
+	}
+
+	public void setNumOfSlots(int numOfSlots) {
+		this.numOfSlots = numOfSlots;
+	}
     
     public RealExpr getMaximumSlotDurationZ3() {
         return maximumSlotDurationZ3;
@@ -412,6 +413,10 @@ public class Cycle implements Serializable {
     
     public ArrayList<Integer> getSlotsUsed (){
         return this.slotsUsed;
+    }
+    
+    public ArrayList<ArrayList<Float>> getSlotDuration() {
+        return slotDuration;
     }
     
     public float getSlotStart(int prt, int index) {

@@ -99,11 +99,12 @@ public class FlowFragment extends Flow {
         this.packetPeriodicityZ3 = packetPeriodicity;
     }
     
-    public RealExpr getPacketSize() {
-        return packetSize;
+    
+    public RealExpr getPacketSizeZ3() {
+        return this.packetSize;
     }
 
-    public void setPacketSize(RealExpr packetSize) {
+    public void setPacketSizeZ3(RealExpr packetSize) {
         this.packetSize = packetSize;
     }
     

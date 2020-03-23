@@ -32,9 +32,9 @@ import com.microsoft.z3.Solver;
  */
 public class Port implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Boolean useMicroCycles = false;
-    private Boolean useHyperCycle = true;
+	private static final long serialVersionUID = 1L;
+	private Boolean useMicroCycles = true;
+    private Boolean useHyperCycle = false;
     
     private ArrayList<Float> listOfPeriods = new ArrayList<Float>();
     private float definedHyperCycleSize = -1;
@@ -80,6 +80,7 @@ public class Port implements Serializable {
      * @param cycle                 Cycle used by the port
      */
     public Port (String name,
+    		int portNum,
             String connectsTo,
             float maxPacketSize,
             float timeToTravel,
@@ -88,6 +89,7 @@ public class Port implements Serializable {
             float gbSize,
             Cycle cycle) {
         this.name = name;
+        this.portNum = portNum;
         this.connectsTo = connectsTo;
         this.maxPacketSize = maxPacketSize;
         this.timeToTravel = timeToTravel;
@@ -365,7 +367,7 @@ public class Port implements Serializable {
             solver.add( // Time to Transmit constraint.
                 ctx.mkGe(
                     this.scheduledTime(ctx, i, flowFrag),
-                    ctx.mkAdd(this.arrivalTime(ctx, i, flowFrag), this.transmissionTimeZ3)
+                    ctx.mkAdd(this.arrivalTime(ctx, i, flowFrag), ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3))
                 )
             );
             
@@ -432,7 +434,7 @@ public class Port implements Serializable {
                                     this.scheduledTime(ctx, j, auxFragment),
                                     ctx.mkAdd(
                                         this.scheduledTime(ctx, i, flowFrag),
-                                        this.transmissionTimeZ3
+                                        ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                     )
                                 )
                             )
@@ -469,7 +471,7 @@ public class Port implements Serializable {
                                                     cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
                                                     cycle.cycleStartZ3(ctx, ctx.mkInt(j))
                                                 ), 
-                                                this.transmissionTimeZ3
+                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                             )
                                         ),
                                         ctx.mkGe(
@@ -484,7 +486,7 @@ public class Port implements Serializable {
                                         this.scheduledTime(ctx, i, flowFrag),
                                         ctx.mkAdd(
                                             this.arrivalTime(ctx, i, flowFrag),
-                                            this.transmissionTimeZ3
+                                            ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                         )
                                     )
                                 )
@@ -524,7 +526,7 @@ public class Port implements Serializable {
                                                     cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
                                                     cycle.cycleStartZ3(ctx, j)
                                                 ),
-                                                this.transmissionTimeZ3
+                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                             )
                                             
                                         )
@@ -549,7 +551,7 @@ public class Port implements Serializable {
                                                 		cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1)),
                                                 		cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1))                                                    
                                             		),
-                                            		this.transmissionTimeZ3
+                                            		ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                         		)                                                
                                             )
                                         ),
@@ -560,7 +562,7 @@ public class Port implements Serializable {
                                                     cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
                                                     cycle.cycleStartZ3(ctx, j)
                                                 ),
-                                                this.transmissionTimeZ3
+                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                             )
                                             
                                         )
@@ -715,7 +717,7 @@ public class Port implements Serializable {
 	                            ctx.mkAdd(
 	                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
 	                                cycle.cycleStartZ3(ctx, j),
-	                                this.transmissionTimeZ3
+	                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
 	                            )      
   	                        ),
 	                        ctx.mkLe(
@@ -743,7 +745,7 @@ public class Port implements Serializable {
                     this.scheduledTime(ctx, i + 1, flowFrag), 
                     ctx.mkAdd(
                             this.scheduledTime(ctx, i, flowFrag),
-                            this.transmissionTimeZ3
+                            ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                     )
                 )
             );
@@ -857,7 +859,7 @@ public class Port implements Serializable {
                                 this.scheduledTime(ctx, i, flowFrag),
                                 ctx.mkSub(
                                     this.scheduledTime(ctx, j, auxFlowFrag),
-                                    this.transmissionTimeZ3
+                                    ctx.mkDiv(auxFlowFrag.getPacketSizeZ3(), this.portSpeedZ3)
                                 )
             				)
                         )
@@ -883,7 +885,14 @@ public class Port implements Serializable {
     }
    
     
-    
+    /**
+     * [Method]: setupBestEffort
+     * [Usage]: Use in order to enable the best effort traffic reservation
+     * constraint.
+     * 
+     * @param solver	Solver object
+     * @param ctx		Context object for the solver
+     */
     public void setupBestEffort(Solver solver, Context ctx) {
         RealExpr []slotStart = new RealExpr[8];
         RealExpr []slotDuration = new RealExpr[8];
@@ -922,7 +931,6 @@ public class Port implements Serializable {
                 );
             }
             /**/
-            
             
         }
         
@@ -997,7 +1005,15 @@ public class Port implements Serializable {
         
     }
     
-
+    /**
+     * [Method]: gcd
+     * [Usage]: Method used to obtain the greatest common
+     * divisor of two values.
+     * 
+     * @param a		First value
+     * @param b		Second value
+     * @return		Greatest common divisor or the two previous parameters
+     */
     static float gcd(float a, float b) { 
         if (a == 0) {
             return b;             
@@ -1007,6 +1023,14 @@ public class Port implements Serializable {
     } 
   
     
+    /**
+     * [Method]: findGCD
+     * [Usage]: Retrieves the value of the greatest common divisor 
+     * of all the values in an array.
+     * 
+     * @param arr	Array of float values
+     * @return		Greatest common divisor of all values of arr
+     */
     static float findGCD(ArrayList<Float> arr) { 
         float gdc = arr.get(0); 
         for (int i = 1; i < arr.size(); i++) {            
@@ -1016,6 +1040,15 @@ public class Port implements Serializable {
         return gdc; 
     } 
     
+    
+    /**
+     * [Method]: findLCM
+     * [Usage]: Retrieves the least common multiple of all values in 
+     * an array.
+     * 
+     * @param arr 		Array of float values
+     * @return			Least common multiple of all values of arr	
+     */
     static float findLCM(ArrayList<Float> arr) {
     	
     	float n = arr.size();
@@ -1055,6 +1088,15 @@ public class Port implements Serializable {
         return res; 
     }
     
+    
+    /**
+     * [Method]: setUpHyperCycle
+     * [Usage]: Set up the cycle duration and number of packets and slots
+     * to be scheduled according to the hyper cycle approach.
+     * 
+     * @param solver	Solver object
+     * @param ctx		Context object for the solver
+     */
     public void setUpHyperCycle(Solver solver, Context ctx) {
         int numOfPacketsScheduled = 0;
         
@@ -1096,7 +1138,14 @@ public class Port implements Serializable {
         
     }
     
-    
+    /**
+     * [Method]: setUpMicroCycles
+     * [Usage]: Set up the cycle duration and number of packets, cycles and slots
+     * to be scheduled according to the micro cycle approach.
+     * 
+     * @param solver	Solver object
+     * @param ctx		Context object for the solver
+     */
     public void setUpMicroCycles(Solver solver, Context ctx) {
         
         /*       
@@ -1127,6 +1176,14 @@ public class Port implements Serializable {
     }
     
     
+    /**
+     * [Method]: bindTimeSlots
+     * [Usage]: IN DEVELOPMENT - Bind timeslots to a fixed name instead
+     * of a variable. 
+     * 
+     * @param solver	Solver object
+     * @param ctx		Context object for the solver
+     */
     public void bindTimeSlots(Solver solver, Context ctx) {
     	
     	// Ideia = se a prioridade de um flow e' igual a um numero, 
@@ -1188,6 +1245,15 @@ public class Port implements Serializable {
     	
     }
     
+    /**
+     * [Method]: zeroOutNonUsedSlots
+     * [Usage]: Iterates over the slots adding a constraint that states that
+     * if no packet its transmitted inside it, its size must be 0. Can be used
+     * to filter out non-used slots and avoid losing bandwidth.
+     * 
+     * @param solver
+     * @param ctx
+     */
     public void zeroOutNonUsedSlots(Solver solver, Context ctx) {
     	BoolExpr exp1;
     	BoolExpr exp2;
@@ -1492,16 +1558,6 @@ public class Port implements Serializable {
         if(auxIndex + 1 > flowFrag.getNumOfPacketsSent()) {
 			cycleNum = (auxIndex - (auxIndex % flowFrag.getNumOfPacketsSent()))/flowFrag.getNumOfPacketsSent();
 
-			/*
-			System.out.println("Frag name: " + flowFrag.getName());
-        	System.out.println("Num packet sent: " + flowFrag.getNumOfPacketsSent());
-        	System.out.println("Num packet req: " + auxIndex );
-        	System.out.println("Cyc: " + this.cycle);
-        	System.out.println("Cyc dur: " + this.definedHyperCycleSize);
-			System.out.println("Cyc dur Z3: " + this.cycle.getCycleDurationZ3());
-        	System.out.println("Cycle Num: " + cycleNum);
-        	/**/
-
         	auxIndex = (auxIndex % flowFrag.getNumOfPacketsSent());
         	index = ctx.mkInt(auxIndex);
         	
@@ -1522,74 +1578,7 @@ public class Port implements Serializable {
         
         return (RealExpr) scheduledTime;
     }
-    
 
-    public IntExpr getCycleOfScheduledTime(Context ctx, FlowFragment f, int index) {
-        IntExpr cycleIndex = null;
-        
-        RealExpr relativeST = (RealExpr) ctx.mkSub(
-                this.scheduledTime(ctx, index, f),
-                this.cycle.getFirstCycleStartZ3()
-        );
-
-        cycleIndex = ctx.mkReal2Int(
-                        (RealExpr) ctx.mkDiv(relativeST, this.cycle.getCycleDurationZ3())
-                     );
-             
-        return cycleIndex;        
-    }
-    
-    
-    public IntExpr getCycleOfTime(Context ctx, RealExpr time) {
-        IntExpr cycleIndex = null;
-        
-        RealExpr relativeST = (RealExpr) ctx.mkSub(
-                time,
-                this.cycle.getFirstCycleStartZ3()
-        );
-
-        cycleIndex = ctx.mkReal2Int(
-                        (RealExpr) ctx.mkDiv(relativeST, this.cycle.getCycleDurationZ3())
-                     );
-             
-        return cycleIndex;        
-    }
-    
-    public RealExpr getScheduledTimeOfPreviousPacket(Context ctx, FlowFragment f, int index) {
-        RealExpr prevPacketST = ctx.mkReal(0);
-        
-        for(FlowFragment auxFrag : this.flowFragments) {
-            
-            for(int i = 0; i < f.getNumOfPacketsSent(); i++) {
-                prevPacketST = (RealExpr)
-                        ctx.mkITE(
-                            ctx.mkAnd(
-                                ctx.mkEq(auxFrag.getFragmentPriorityZ3(), f.getFragmentPriorityZ3()),
-                                ctx.mkLt(
-                                    this.scheduledTime(ctx, i, auxFrag),
-                                    this.scheduledTime(ctx, index, f)
-                                ),
-                                ctx.mkGt(
-                                    this.scheduledTime(ctx, i, auxFrag),
-                                    prevPacketST
-                                )
-                            ),
-                            this.scheduledTime(ctx, i, auxFrag),
-                            prevPacketST
-                            
-                        );
-                
-            }
-           
-        }
-        
-        return (RealExpr)  
-                ctx.mkITE(
-                    ctx.mkEq(prevPacketST, ctx.mkReal(0)),
-                    this.scheduledTime(ctx, index, f),
-                    prevPacketST
-                );
-    }
     
     /**
      * [Method]: checkIfAutomatedApplicationPeriod
@@ -1605,6 +1594,15 @@ public class Port implements Serializable {
     }
     
     
+    /**
+     * [Method]: loadNetwork
+     * [Usage]: From the primitive values retrieved in the object
+     * deserialization process, instantiate the z3 objects that represent
+     * the same properties.
+     * 
+     * @param ctx		Context object for the solver
+     * @param solver	Solver object
+     */
     public void loadZ3(Context ctx, Solver solver) {
     	
     	this.cycle.loadZ3(ctx, solver);
@@ -1783,6 +1781,82 @@ public class Port implements Serializable {
 
     public void setFlowFragments(ArrayList<FlowFragment> flowFragments) {
         this.flowFragments = flowFragments;
+    }
+    
+    
+    /***************************************************
+     * 
+     * The methods bellow are not completely operational
+     * and are currently not used in the project. Might be
+     * useful in future iterations of TSNsched.
+     * 
+     ***************************************************/
+    
+    public IntExpr getCycleOfScheduledTime(Context ctx, FlowFragment f, int index) {
+        IntExpr cycleIndex = null;
+        
+        RealExpr relativeST = (RealExpr) ctx.mkSub(
+                this.scheduledTime(ctx, index, f),
+                this.cycle.getFirstCycleStartZ3()
+        );
+
+        cycleIndex = ctx.mkReal2Int(
+                        (RealExpr) ctx.mkDiv(relativeST, this.cycle.getCycleDurationZ3())
+                     );
+             
+        return cycleIndex;        
+    }
+    
+    
+    public IntExpr getCycleOfTime(Context ctx, RealExpr time) {
+        IntExpr cycleIndex = null;
+        
+        RealExpr relativeST = (RealExpr) ctx.mkSub(
+                time,
+                this.cycle.getFirstCycleStartZ3()
+        );
+
+        cycleIndex = ctx.mkReal2Int(
+                        (RealExpr) ctx.mkDiv(relativeST, this.cycle.getCycleDurationZ3())
+                     );
+             
+        return cycleIndex;        
+    }
+    
+    public RealExpr getScheduledTimeOfPreviousPacket(Context ctx, FlowFragment f, int index) {
+        RealExpr prevPacketST = ctx.mkReal(0);
+        
+        for(FlowFragment auxFrag : this.flowFragments) {
+            
+            for(int i = 0; i < f.getNumOfPacketsSent(); i++) {
+                prevPacketST = (RealExpr)
+                        ctx.mkITE(
+                            ctx.mkAnd(
+                                ctx.mkEq(auxFrag.getFragmentPriorityZ3(), f.getFragmentPriorityZ3()),
+                                ctx.mkLt(
+                                    this.scheduledTime(ctx, i, auxFrag),
+                                    this.scheduledTime(ctx, index, f)
+                                ),
+                                ctx.mkGt(
+                                    this.scheduledTime(ctx, i, auxFrag),
+                                    prevPacketST
+                                )
+                            ),
+                            this.scheduledTime(ctx, i, auxFrag),
+                            prevPacketST
+                            
+                        );
+                
+            }
+           
+        }
+        
+        return (RealExpr)  
+                ctx.mkITE(
+                    ctx.mkEq(prevPacketST, ctx.mkReal(0)),
+                    this.scheduledTime(ctx, index, f),
+                    prevPacketST
+                );
     }
 
 }

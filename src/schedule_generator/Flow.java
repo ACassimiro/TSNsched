@@ -23,7 +23,9 @@ public class Flow implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	static int instanceCounter = 0;
-    protected String name;
+    private int instance = 0;
+
+	protected String name;
     private int type = 0;
     private int totalNumOfPackets = 0;
 
@@ -31,6 +33,7 @@ public class Flow implements Serializable {
 	//Specifying the type of the flow:
     public static int UNICAST = 0;
     public static int PUBLISH_SUBSCRIBE = 1;
+    
     
     
     private ArrayList<Switch> path;
@@ -64,6 +67,7 @@ public class Flow implements Serializable {
      */
     public Flow(int type) {
         instanceCounter++;
+        this.instance = instanceCounter;
         this.name = "flow" + Integer.toString(instanceCounter);
         
         if(type == UNICAST) {
@@ -83,7 +87,10 @@ public class Flow implements Serializable {
         
     }
     
-    /**
+ 
+
+
+	/**
      * [Method]: addToPath
      * [Usage]: Adds a switch to the path of switches of the flow
      * 
@@ -279,9 +286,9 @@ public class Flow implements Serializable {
                 
                 // Setting z3 properties of the flow fragment
                 flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
-                // flowFrag.setFlowPriority(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
+                // flowFrag.setFragmentPriorityZ3(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
                 flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
-                flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
+                flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
                 flowFrag.setStartDevice(this.startDevice);
                 
                 //Adding fragment to the fragment list and to the switch's fragment list
@@ -340,7 +347,7 @@ public class Flow implements Serializable {
         // Setting extra flow properties
         flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority"));
         flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
-        flowFrag.setPacketSize(startDevice.getPacketSizeZ3());
+        flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
         
         /*
          * If index of current switch = last switch in the path, then 
@@ -882,6 +889,15 @@ public class Flow implements Serializable {
         return averageJitter;
     }
     
+    
+    /**
+     * [Method]: getAverageJitterToDevice
+     * [Usage]: From the path tree, retrieve the average jitter of 
+     * the stream aimed at a specific device.
+     * 
+     * @param dev 		Specific end-device of the flow to retrieve the jitter
+     * @return			Float value of the variation of the latency
+     */
     public float getAverageJitterToDevice(Device dev) {
         float averageJitter = 0;
         float averageLatency = this.getAverageLatencyToDevice(dev);   
@@ -1064,6 +1080,17 @@ public class Flow implements Serializable {
         return null;
     }
     
+    
+    /**
+     * [Method]: getAvgLatency
+     * [Usage]: Retrieves the average latency for one of the subscribers
+     * of the flow.
+     * 
+     * @param dev 		Subscriber to which the average latency will be calculated
+     * @param solver	Solver object 
+     * @param ctx		Context object for the solver
+     * @return			z3 variable with the average latency for the device
+     */
     public RealExpr getAvgLatency(Device dev, Solver solver, Context ctx) {
         
         return (RealExpr) ctx.mkDiv(
@@ -1072,8 +1099,6 @@ public class Flow implements Serializable {
         );
         
      }
-    
-    
     
     /**
      * [Method]: getJitterZ3
@@ -1335,4 +1360,19 @@ public class Flow implements Serializable {
 		this.totalNumOfPackets = this.totalNumOfPackets + num;
 	}
 	
+	public int getInstance() {
+		return instance;
+	}
+
+	public void setInstance(int instance) {
+		this.instance = instance;
+	}
+	
+	public float getPacketSize() {
+		return this.startDevice.getPacketSize();
+	}
+
+	public RealExpr getPacketSizeZ3() {
+		return this.startDevice.getPacketSizeZ3();
+	}
 }

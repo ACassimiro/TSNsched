@@ -72,8 +72,8 @@ public class ScenarioGenerator {
 		
 		int firstCycleStart = 0;
 		int softConstraintTime = 0; // Not beign used yet
-		int packetSize = 100; // Not beign used yet
-		int portSpeed = 100; // Not beign used yet
+		int packetSize = 1625; // Bytes
+		int portSpeed = 125; // Bytes per microssecond
 		int maxPacketSize = 100; // Not beign used yet
 
 
@@ -94,8 +94,8 @@ public class ScenarioGenerator {
 
 
 		try {
-			PrintWriter out = new PrintWriter("/home/asus/git/tsn-scheduler/src/schedule_generator/GeneratedCode.java");
-			// PrintWriter out = new PrintWriter("GeneratedCode.java");
+			// PrintWriter out = new PrintWriter("/home/asus/git/tsn-scheduler/src/schedule_generator/GeneratedCode.java");
+			PrintWriter out = new PrintWriter("GeneratedCode.java");
 
 			out.println("package schedule_generator;");
 
@@ -110,7 +110,7 @@ public class ScenarioGenerator {
 			for(int i = 0; i < numOfDevices; i++){
 				// packetPeriodicity = 1000;
 				// packetPeriodicity = rand.nextInt(upperBoundPacketPeriodicity - lowerBoundPacketPeriodicity) + lowerBoundPacketPeriodicity;
-				out.println("\t\tDevice dev" + i + " = new Device(" + packetPeriodicity + ", " + firstT1Time + ", " + hardConstraintTime + ", " + softConstraintTime + ", " + packetSize + ");");					
+				out.println("\t\tDevice dev" + i + " = new Device(" + packetPeriodicity + ", " + firstT1Time + ", " + hardConstraintTime + ", " + packetSize + ");");					
 			}
 
 			
@@ -119,7 +119,7 @@ public class ScenarioGenerator {
 			out.println("\t\t/* \n\t\t* GENERATING SWITCHES\n\t\t*/");
 			// GENERATING SWITCHES
 			for(int i = 0; i < numOfSwitches; i++){
-				out.println("\t\tTSNSwitch switch" + i + " = new TSNSwitch(" + "\"switch" + i + "\"," + maxPacketSize + ", " + timeToTravel + ", " + transmissionTime + ", " + portSpeed + ", " + gbSize + ", " + lowerBoundCycleTime + ", " + upperBoundCycleTime + ");");
+				out.println("\t\tTSNSwitch switch" + i + " = new TSNSwitch(" + "\"switch" + i + "\"," + maxPacketSize + ", " + timeToTravel + ", " + portSpeed + ", " + gbSize + ", " + lowerBoundCycleTime + ", " + upperBoundCycleTime + ");");
 			}
 
 			out.println("");
