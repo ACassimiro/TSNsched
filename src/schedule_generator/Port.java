@@ -1350,10 +1350,10 @@ public class Port implements Serializable {
                 ctx.mkReal(Float.toString(0)), 
                 this.cycle.getCycleDurationZ3()
             ));
-    		solver.add(ctx.mkEq( 
-                ctx.mkReal(Float.toString(0)), 
-                this.cycle.getFirstCycleStartZ3()
-            ));
+    	    //	solver.add(ctx.mkEq( 
+            //    ctx.mkReal(Float.toString(0)), 
+            //    this.cycle.getFirstCycleStartZ3()
+            // ));
     		
     		return;
     	}
