@@ -207,10 +207,6 @@ public class Flow implements Serializable {
             this.startDevice = (Device) this.pathTree.getRoot().getNode();
             this.startDevice.toZ3(ctx);
 
-            if(!this.useCustomValues) {
-                this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
-                this.flowFirstSendingTime = startDevice.getFirstT1Time();
-            }
 
             this.flowPriority = ctx.mkIntConst(this.name + "Priority");
 
@@ -1324,7 +1320,13 @@ public class Flow implements Serializable {
 		
     	
     }
-    
+
+    public void modifyIfUsingCustomVal(){
+        if(!this.useCustomValues) {
+            this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
+            this.flowFirstSendingTime = startDevice.getFirstT1Time();
+        }
+    }
     
     /*
      * GETTERS AND SETTERS:
