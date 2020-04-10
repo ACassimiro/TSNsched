@@ -79,9 +79,6 @@ You can also generate other topologies using our flow generator. [Generating top
 * Eclipse IDE 4.8.0
 
 
-# === TEXT BELOW IS UNIMPROVED ===
-
-
 ## Command Line Usage
 
 The files for the command line usage of this project are all stored in the folder "Script" in this repository. They can be downloaded and used separately.
@@ -138,22 +135,21 @@ With this, components of the network can be created:
 ```
 // Creating a device
 Device dev = new Device(float packetPeriodicity,  //  Periodicity of the packet
-                        float hardConstraint);    //  Maximum latency tolerated by this device (Hard constraint)
-
+                        float firstT1Time,        //  First sending time of the device (Check toZ3 method on the device object to see if it is being used)
+                        float hardConstraint,     //  Maximum latency tolerated by this device (Hard constraint)
+                        float packetSize);        //  Size of packet sent by the device
+                
 // Creating a switch
 TSNSwitch switch = new TSNSwitch(String name,   	 // Identifier of the switch
-				 float maxPacketSize,    // Maximum size of the packet supported by the switch (currently disabled)
+				     float maxPacketSize,    // Maximum size of the packet supported by the switch (currently disabled)
 			         float timeToTravel,     // Time taken to travel on the medium connected to this switch
-			         float transmissionTime, // Time taken to transmit a packet inside this switch
-			         float portSpeed,        // Transmission speed of the port (currently disabled)
+			         float portSpeed,        // Transmission speed of the port
 			         float gbSize,           // Size of the guardband used in the port in time units
 			         float cycleDurationLowerBound, // Minimum duration of the cycle of the ports
 			         float cycleDurationUpperBound) // Maximum duration of the cycle of the ports
 				 
 // Creating a cycle
-Cycle cycle = new Cycle(float upperBoundCycleTime,    // Maximum duration of the cycle
-                        float lowerBoundCycleTime,    // Minimum duration of the cycle
-                        float maximumSlotDuration);   // Maximum duration of a time window of the cycle
+Cycle cycle = new Cycle(float maximumSlotDuration);   // Maximum duration of a time window of the cycle
 
 // With the cycle, create ports. 
 // First parameter is the device that is being connected to the switch, second is the cycle of the port.

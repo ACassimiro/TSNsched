@@ -44,9 +44,17 @@ public class Flow implements Serializable {
 
     protected transient IntExpr flowPriority; // In the future, priority might be fixed
     protected Device startDevice;
-    protected Device endDevice; 
-    
+    protected Device endDevice;
+
+    private float flowFirstSendingTime;
+    private float flowSendingPeriodicity;
+
+    private RealExpr flowFirstSendingTimeZ3;
+    private RealExpr flowSendingPeriodicityZ3;
+
     private int numOfPacketsSentInFragment = 0;
+
+    private boolean useCustomValues = false;
 
 	/**
      * [Method]: Flow
@@ -86,8 +94,39 @@ public class Flow implements Serializable {
         
         
     }
-    
- 
+
+    /**
+     * [Method]: Flow
+     * [Usage]: Overloaded constructor method of a flow.
+     * Specifies the type of the flow.
+     *
+     * @param type      Value specifying the type of the flow (0 - Unicast; 1 - Publish subscribe)
+     */
+    public Flow(int type, float flowFirstSendingTime, float flowSendingPeriodicity) {
+        instanceCounter++;
+        this.instance = instanceCounter;
+        this.name = "flow" + Integer.toString(instanceCounter);
+
+        if(type == UNICAST) {
+            //Its not a unicast flow
+            this.type = 0;
+            path = new ArrayList<Switch>();
+            flowFragments = new ArrayList<FlowFragment>();
+        } else if (type == PUBLISH_SUBSCRIBE) {
+            //Its a publish subscribe flow
+            this.type = 1;
+            pathTree = new PathTree();
+        } else {
+            instanceCounter--;
+            //[TODO]: Throw error
+        }
+
+        this.flowFirstSendingTime = flowFirstSendingTime;
+        this.flowSendingPeriodicity = flowSendingPeriodicity;
+
+        this.useCustomValues = true;
+
+    }
 
 
 	/**
@@ -141,10 +180,7 @@ public class Flow implements Serializable {
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx) {
-        
-        this.flowPriority = ctx.mkIntConst(this.name + "Priority");
-        
-        
+
         if(this.type == UNICAST) { // If flow is unicast
 
             // Convert start device to z3
@@ -167,8 +203,26 @@ public class Flow implements Serializable {
              * doing the same and creating flow fragments for every stream
              * going out of a switch.
              */
+
             this.startDevice = (Device) this.pathTree.getRoot().getNode();
             this.startDevice.toZ3(ctx);
+
+
+            this.flowPriority = ctx.mkIntConst(this.name + "Priority");
+
+            if(this.useCustomValues) {
+                this.flowSendingPeriodicityZ3 = ctx.mkReal(Float.toString(this.flowSendingPeriodicity));
+
+                if(this.flowFirstSendingTime >= 0){
+                    this.flowFirstSendingTimeZ3 = ctx.mkReal(Float.toString(this.flowFirstSendingTime));
+                } else {
+                    this.flowFirstSendingTimeZ3 = ctx.mkRealConst("flow" + this.instance + "FirstSendingTime");
+                }
+            } else {
+                this.flowFirstSendingTimeZ3 = this.startDevice.getFirstT1TimeZ3();
+                this.flowSendingPeriodicityZ3 = this.startDevice.getPacketPeriodicityZ3();
+            }
+
             this.nodeToZ3(ctx, this.pathTree.getRoot());
             
         }
@@ -221,7 +275,8 @@ public class Flow implements Serializable {
                 }
                 
                 if(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).checkIfAutomatedApplicationPeriod()) {
-                	numberOfPackets = (int) (((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize()/this.startDevice.getPacketPeriodicity());
+                	numberOfPackets = (int) (((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize()/this.flowSendingPeriodicity);
+                	// System.out.println(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize());
                 	flowFrag.setNumOfPacketsSent(numberOfPackets);
                 	
                 }                
@@ -240,8 +295,8 @@ public class Flow implements Serializable {
                         /**/
                         flowFrag.addDepartureTimeZ3(
                             (RealExpr) ctx.mkAdd(
-                                this.startDevice.getFirstT1TimeZ3(),
-                                ctx.mkReal(Float.toString(this.startDevice.getPacketPeriodicity() * i))
+                                this.flowFirstSendingTimeZ3,
+                                ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
                             )
                         );
                         /**/
@@ -287,7 +342,7 @@ public class Flow implements Serializable {
                 // Setting z3 properties of the flow fragment
                 flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
                 // flowFrag.setFragmentPriorityZ3(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
-                flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
+                flowFrag.setPacketPeriodicityZ3(this.flowSendingPeriodicityZ3);
                 flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
                 flowFrag.setStartDevice(this.startDevice);
                 
@@ -330,8 +385,8 @@ public class Flow implements Serializable {
             for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
                 flowFrag.addDepartureTimeZ3( // Packet departure constraint
                     (RealExpr) ctx.mkAdd(
-                        this.startDevice.getFirstT1TimeZ3(),
-                        ctx.mkReal(Float.toString(this.startDevice.getPacketPeriodicity() * i))
+                        this.flowFirstSendingTimeZ3,
+                        ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
                     )
                 );
             }
@@ -346,7 +401,7 @@ public class Flow implements Serializable {
         
         // Setting extra flow properties
         flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority"));
-        flowFrag.setPacketPeriodicityZ3(startDevice.getPacketPeriodicityZ3());
+        flowFrag.setPacketPeriodicityZ3(this.flowSendingPeriodicityZ3);
         flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
         
         /*
@@ -523,9 +578,9 @@ public class Flow implements Serializable {
     				return;
     			}
     			
-    			if(!port.getListOfPeriods().contains(this.startDevice.getPacketPeriodicity())) {
-    				port.addToListOfPeriods(this.startDevice.getPacketPeriodicity());
-    			}
+    			if(!port.getListOfPeriods().contains(this.flowSendingPeriodicity)) {
+    				port.addToListOfPeriods(this.flowSendingPeriodicity);
+                }
     		}
     		
     	}
@@ -1265,7 +1320,13 @@ public class Flow implements Serializable {
 		
     	
     }
-    
+
+    public void modifyIfUsingCustomVal(){
+        if(!this.useCustomValues) {
+            this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
+            this.flowFirstSendingTime = startDevice.getFirstT1Time();
+        }
+    }
     
     /*
      * GETTERS AND SETTERS:
@@ -1277,6 +1338,11 @@ public class Flow implements Serializable {
     
     public void setStartDevice(Device startDevice) {
         this.startDevice = startDevice;
+
+        if(!this.useCustomValues) {
+            this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
+            this.flowFirstSendingTime = startDevice.getFirstT1Time();
+        }
     }
 
     public Device getEndDevice() {
@@ -1375,4 +1441,37 @@ public class Flow implements Serializable {
 	public RealExpr getPacketSizeZ3() {
 		return this.startDevice.getPacketSizeZ3();
 	}
+
+    public float getFlowFirstSendingTime() {
+        return flowFirstSendingTime;
+    }
+
+    public void setFlowFirstSendingTime(float flowFirstSendingTime) {
+        this.flowFirstSendingTime = flowFirstSendingTime;
+    }
+
+    public float getFlowSendingPeriodicity() {
+        return flowSendingPeriodicity;
+    }
+
+    public void setFlowSendingPeriodicity(float flowSendingPeriodicity) {
+        this.flowSendingPeriodicity = flowSendingPeriodicity;
+    }
+
+    public RealExpr getFlowFirstSendingTimeZ3() {
+        return flowFirstSendingTimeZ3;
+    }
+
+    public void setFlowFirstSendingTimeZ3(RealExpr flowFirstSendingTimeZ3) {
+        this.flowFirstSendingTimeZ3 = flowFirstSendingTimeZ3;
+    }
+
+    public RealExpr getFlowSendingPeriodicityZ3() {
+        return flowSendingPeriodicityZ3;
+    }
+
+    public void setFlowSendingPeriodicityZ3(RealExpr flowSendingPeriodicityZ3) {
+        this.flowSendingPeriodicityZ3 = flowSendingPeriodicityZ3;
+    }
+
 }

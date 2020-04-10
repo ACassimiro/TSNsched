@@ -282,6 +282,7 @@ public class ScheduleGenerator {
 	   
 	   public void configureNetwork(Network net, Context ctx, Solver solver) {
 		   for(Flow flw : net.getFlows()) {
+		   	   flw.modifyIfUsingCustomVal();
 	    	   flw.convertUnicastFlow();
 	    	   flw.setUpPeriods(flw.getPathTree().getRoot());
 	       }
