@@ -1,0 +1,1 @@
+Default output directory of the XMLExporter class.

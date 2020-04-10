@@ -4,821 +4,333 @@ SCHEDULER LOG:
 SWITCH LIST:
   Switch name: switch0
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch0Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch0Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch1
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch1Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch1Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch2
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch2Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch2Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch3
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch3Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch3Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch4
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch4Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch4Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch5
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch5Port0
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port1
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port2
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port3
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port4
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port5
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port6
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port7
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port8
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port9
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port10
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port11
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port12
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
-
-        Port name (Virtual Index): switch5Port13
-        First cycle start: 3126661695/3081913
-        Cycle duration: 3082283000/3081913
+    Transmission time: 0.0
 
   Switch name: switch6
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch6Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch6Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch7
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch7Port0
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port1
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port2
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port3
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port4
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port5
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port6
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port7
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port8
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port9
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port10
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port11
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port12
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
-
-        Port name (Virtual Index): switch7Port13
-        First cycle start: 3477264038/27737217
-        Cycle duration: 12328022000/27737217
+    Transmission time: 0.0
 
   Switch name: switch8
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch8Port0
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port1
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port2
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port3
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port4
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port5
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port6
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port7
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port8
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port9
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port10
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port11
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port12
-        First cycle start: 0
-        Cycle duration: 400
-
-        Port name (Virtual Index): switch8Port13
-        First cycle start: 0
-        Cycle duration: 400
+    Transmission time: 0.0
 
   Switch name: switch9
     Max packet size: 100.0
-    Port speed: 100.0
+    Port speed: 125.0
     Time to Travel: 1.0
-    Transmission time: 13.0
-    Cycle information -
-        Port name (Virtual Index): switch9Port0
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port1
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port2
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port3
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port4
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port5
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port6
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port7
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port8
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port9
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port10
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port11
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port12
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
-
-        Port name (Virtual Index): switch9Port13
-        First cycle start: 204209345/3081913
-        Cycle duration: 3081543000/3081913
+    Transmission time: 0.0
 
 
 FLOW LIST:
   Flow name: flow1
-    Start dev. first t1: 1000
+    Start dev. first t1: 0
     Start dev. HC: 1000
     Start dev. packet periodicity: 1000
     Flow type: Multicast
-    List of leaves: dev45, dev46, dev25, dev26, 
-    Path to dev45: dev37, switch7(flow1Fragment1), switch9(flow1Fragment3), dev45, 
-    Path to dev46: dev37, switch7(flow1Fragment1), switch9(flow1Fragment4), dev46, 
-    Path to dev25: dev37, switch7(flow1Fragment2), switch5(flow1Fragment5), dev25, 
-    Path to dev26: dev37, switch7(flow1Fragment2), switch5(flow1Fragment6), dev26, 
+    List of leaves: dev15, dev16, dev17, dev18, dev19, 
+    Path to dev15: dev4, switch0(flow1Fragment1), switch4(flow1Fragment2), switch3(flow1Fragment3), dev15, 
+    Path to dev16: dev4, switch0(flow1Fragment1), switch4(flow1Fragment2), switch3(flow1Fragment4), dev16, 
+    Path to dev17: dev4, switch0(flow1Fragment1), switch4(flow1Fragment2), switch3(flow1Fragment5), dev17, 
+    Path to dev18: dev4, switch0(flow1Fragment1), switch4(flow1Fragment2), switch3(flow1Fragment6), dev18, 
+    Path to dev19: dev4, switch0(flow1Fragment1), switch4(flow1Fragment2), switch3(flow1Fragment7), dev19, 
 
     Fragment name: flow1Fragment1
-        Fragment node: switch7
-        Fragment next hop: switch9
-        Fragment priority: 1
-        Fragment slot start: 11959668179/27737217
-        Fragment slot duration: 40804869/3081913
+        Fragment node: switch0
+        Fragment next hop: switch4
+        Fragment priority: 4
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 1000
-          (0) Fragment arrival time: 1001
-          (0) Fragment scheduled time: 1014
-          ----------------------------
-          (1) Fragment departure time: 2000
-          (1) Fragment arrival time: 2001
-          (1) Fragment scheduled time: 21704311346/9245739
-          ----------------------------
-          (2) Fragment departure time: 3000
-          (2) Fragment arrival time: 3001
-          (2) Fragment scheduled time: 89765648038/27737217
-          ----------------------------
-          (3) Fragment departure time: 4000
-          (3) Fragment arrival time: 4001
-          (3) Fragment scheduled time: 114421692038/27737217
-          ----------------------------
-          (4) Fragment departure time: 5000
-          (4) Fragment arrival time: 5001
-          (4) Fragment scheduled time: 15453081782/3081913
-          ----------------------------
-          (5) Fragment departure time: 6000
-          (5) Fragment arrival time: 6001
-          (5) Fragment scheduled time: 58687267346/9245739
+          (0) Fragment departure time: 0.0
+          (0) Fragment arrival time: 1.0
+          (0) Fragment scheduled time: 14.0
           ----------------------------
     Fragment name: flow1Fragment2
-        Fragment node: switch7
-        Fragment next hop: switch5
-        Fragment priority: 1
-        Fragment slot start: 11962998179/27737217
-        Fragment slot duration: 40434869/3081913
+        Fragment node: switch4
+        Fragment next hop: switch3
+        Fragment priority: 3
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 1000
-          (0) Fragment arrival time: 1001
-          (0) Fragment scheduled time: 3125799782/3081913
-          ----------------------------
-          (1) Fragment departure time: 2000
-          (1) Fragment arrival time: 2001
-          (1) Fragment scheduled time: 21705421346/9245739
-          ----------------------------
-          (2) Fragment departure time: 3000
-          (2) Fragment arrival time: 3001
-          (2) Fragment scheduled time: 89772308038/27737217
-          ----------------------------
-          (3) Fragment departure time: 4000
-          (3) Fragment arrival time: 4001
-          (3) Fragment scheduled time: 114425022038/27737217
-          ----------------------------
-          (4) Fragment departure time: 5000
-          (4) Fragment arrival time: 5001
-          (4) Fragment scheduled time: 15453821782/3081913
-          ----------------------------
-          (5) Fragment departure time: 6000
-          (5) Fragment arrival time: 6001
-          (5) Fragment scheduled time: 58689487346/9245739
+          (0) Fragment departure time: 14.0
+          (0) Fragment arrival time: 15.0
+          (0) Fragment scheduled time: 28.0
           ----------------------------
     Fragment name: flow1Fragment3
-        Fragment node: switch9
-        Fragment next hop: dev45
-        Fragment priority: 1
-        Fragment slot start: 2925782350/3081913
-        Fragment slot duration: 50
+        Fragment node: switch3
+        Fragment next hop: dev15
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 1014
-          (0) Fragment arrival time: 1015
-          (0) Fragment scheduled time: 3178042348/3081913
-          ----------------------------
-          (1) Fragment departure time: 2014
-          (1) Fragment arrival time: 2015
-          (1) Fragment scheduled time: 6257490852/3081913
-          ----------------------------
-          (2) Fragment departure time: 3014
-          (2) Fragment arrival time: 3015
-          (2) Fragment scheduled time: 9333947684/3081913
-          ----------------------------
-          (3) Fragment departure time: 4014
-          (3) Fragment arrival time: 4015
-          (3) Fragment scheduled time: 730691817/181289
-          ----------------------------
-          (4) Fragment departure time: 5014
-          (4) Fragment arrival time: 5015
-          (4) Fragment scheduled time: 15505425876/3081913
-          ----------------------------
-          (5) Fragment departure time: 6014
-          (5) Fragment arrival time: 6015
-          (5) Fragment scheduled time: 6028
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
     Fragment name: flow1Fragment4
-        Fragment node: switch9
-        Fragment next hop: dev46
-        Fragment priority: 1
-        Fragment slot start: 2926152350/3081913
-        Fragment slot duration: 41544869/3081913
+        Fragment node: switch3
+        Fragment next hop: dev16
+        Fragment priority: 7
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 1014
-          (0) Fragment arrival time: 1015
-          (0) Fragment scheduled time: 3171906564/3081913
-          ----------------------------
-          (1) Fragment departure time: 2014
-          (1) Fragment arrival time: 2015
-          (1) Fragment scheduled time: 6253449564/3081913
-          ----------------------------
-          (2) Fragment departure time: 3014
-          (2) Fragment arrival time: 3015
-          (2) Fragment scheduled time: 9334992564/3081913
-          ----------------------------
-          (3) Fragment departure time: 4014
-          (3) Fragment arrival time: 4015
-          (3) Fragment scheduled time: 12416535564/3081913
-          ----------------------------
-          (4) Fragment departure time: 5014
-          (4) Fragment arrival time: 5015
-          (4) Fragment scheduled time: 15498078564/3081913
-          ----------------------------
-          (5) Fragment departure time: 6014
-          (5) Fragment arrival time: 6015
-          (5) Fragment scheduled time: 18579621564/3081913
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
     Fragment name: flow1Fragment5
-        Fragment node: switch5
-        Fragment next hop: dev25
-        Fragment priority: 1
-        Fragment slot start: 2590000/3081913
-        Fragment slot duration: 50
+        Fragment node: switch3
+        Fragment next hop: dev17
+        Fragment priority: 2
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 3125799782/3081913
-          (0) Fragment arrival time: 3128881695/3081913
-          (0) Fragment scheduled time: 186766764/181289
-          ----------------------------
-          (1) Fragment departure time: 6207712782/3081913
-          (1) Fragment arrival time: 6210794695/3081913
-          (1) Fragment scheduled time: 6251599564/3081913
-          ----------------------------
-          (2) Fragment departure time: 9289625782/3081913
-          (2) Fragment arrival time: 9292707695/3081913
-          (2) Fragment scheduled time: 9333882564/3081913
-          ----------------------------
-          (3) Fragment departure time: 12371538782/3081913
-          (3) Fragment arrival time: 12374620695/3081913
-          (3) Fragment scheduled time: 12419896866/3081913
-          ----------------------------
-          (4) Fragment departure time: 15453451782/3081913
-          (4) Fragment arrival time: 15456533695/3081913
-          (4) Fragment scheduled time: 15506218564/3081913
-          ----------------------------
-          (5) Fragment departure time: 18535364782/3081913
-          (5) Fragment arrival time: 18538446695/3081913
-          (5) Fragment scheduled time: 18581101564/3081913
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
     Fragment name: flow1Fragment6
-        Fragment node: switch5
-        Fragment next hop: dev26
-        Fragment priority: 1
-        Fragment slot start: 1850000/3081913
-        Fragment slot duration: 50
+        Fragment node: switch3
+        Fragment next hop: dev18
+        Fragment priority: 2
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
         Fragment times-
-          (0) Fragment departure time: 3125799782/3081913
-          (0) Fragment arrival time: 3128881695/3081913
-          (0) Fragment scheduled time: 3168946564/3081913
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
-          (1) Fragment departure time: 6207712782/3081913
-          (1) Fragment arrival time: 6210794695/3081913
-          (1) Fragment scheduled time: 6250859564/3081913
+    Fragment name: flow1Fragment7
+        Fragment node: switch3
+        Fragment next hop: dev19
+        Fragment priority: 7
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
-          (2) Fragment departure time: 9289625782/3081913
-          (2) Fragment arrival time: 9292707695/3081913
-          (2) Fragment scheduled time: 9341507228/3081913
+
+  Flow name: flow2
+    Start dev. first t1: 0
+    Start dev. HC: 1000
+    Start dev. packet periodicity: 1000
+    Flow type: Multicast
+    List of leaves: dev30, dev31, dev32, dev33, dev34, 
+    Path to dev30: dev21, switch4(flow2Fragment1), switch7(flow2Fragment2), switch6(flow2Fragment3), dev30, 
+    Path to dev31: dev21, switch4(flow2Fragment1), switch7(flow2Fragment2), switch6(flow2Fragment4), dev31, 
+    Path to dev32: dev21, switch4(flow2Fragment1), switch7(flow2Fragment2), switch6(flow2Fragment5), dev32, 
+    Path to dev33: dev21, switch4(flow2Fragment1), switch7(flow2Fragment2), switch6(flow2Fragment6), dev33, 
+    Path to dev34: dev21, switch4(flow2Fragment1), switch7(flow2Fragment2), switch6(flow2Fragment7), dev34, 
+
+    Fragment name: flow2Fragment1
+        Fragment node: switch4
+        Fragment next hop: switch7
+        Fragment priority: 1
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 0.0
+          (0) Fragment arrival time: 1.0
+          (0) Fragment scheduled time: 14.0
           ----------------------------
-          (3) Fragment departure time: 12371538782/3081913
-          (3) Fragment arrival time: 12374620695/3081913
-          (3) Fragment scheduled time: 12529456345/3081913
+    Fragment name: flow2Fragment2
+        Fragment node: switch7
+        Fragment next hop: switch6
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 14.0
+          (0) Fragment arrival time: 15.0
+          (0) Fragment scheduled time: 28.0
           ----------------------------
-          (4) Fragment departure time: 15453451782/3081913
-          (4) Fragment arrival time: 15456533695/3081913
-          (4) Fragment scheduled time: 15506218564/3081913
+    Fragment name: flow2Fragment3
+        Fragment node: switch6
+        Fragment next hop: dev30
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
-          (5) Fragment departure time: 18535364782/3081913
-          (5) Fragment arrival time: 18538446695/3081913
-          (5) Fragment scheduled time: 18580361564/3081913
+    Fragment name: flow2Fragment4
+        Fragment node: switch6
+        Fragment next hop: dev31
+        Fragment priority: 3
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow2Fragment5
+        Fragment node: switch6
+        Fragment next hop: dev32
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow2Fragment6
+        Fragment node: switch6
+        Fragment next hop: dev33
+        Fragment priority: 1
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow2Fragment7
+        Fragment node: switch6
+        Fragment next hop: dev34
+        Fragment priority: 3
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+
+  Flow name: flow3
+    Start dev. first t1: 0
+    Start dev. HC: 1000
+    Start dev. packet periodicity: 1000
+    Flow type: Multicast
+    List of leaves: dev10, dev11, dev12, dev13, dev14, 
+    Path to dev10: dev39, switch7(flow3Fragment1), switch1(flow3Fragment2), switch2(flow3Fragment3), dev10, 
+    Path to dev11: dev39, switch7(flow3Fragment1), switch1(flow3Fragment2), switch2(flow3Fragment4), dev11, 
+    Path to dev12: dev39, switch7(flow3Fragment1), switch1(flow3Fragment2), switch2(flow3Fragment5), dev12, 
+    Path to dev13: dev39, switch7(flow3Fragment1), switch1(flow3Fragment2), switch2(flow3Fragment6), dev13, 
+    Path to dev14: dev39, switch7(flow3Fragment1), switch1(flow3Fragment2), switch2(flow3Fragment7), dev14, 
+
+    Fragment name: flow3Fragment1
+        Fragment node: switch7
+        Fragment next hop: switch1
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 0.0
+          (0) Fragment arrival time: 1.0
+          (0) Fragment scheduled time: 14.0
+          ----------------------------
+    Fragment name: flow3Fragment2
+        Fragment node: switch1
+        Fragment next hop: switch2
+        Fragment priority: 7
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 14.0
+          (0) Fragment arrival time: 15.0
+          (0) Fragment scheduled time: 28.0
+          ----------------------------
+    Fragment name: flow3Fragment3
+        Fragment node: switch2
+        Fragment next hop: dev10
+        Fragment priority: 2
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow3Fragment4
+        Fragment node: switch2
+        Fragment next hop: dev11
+        Fragment priority: 0
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow3Fragment5
+        Fragment node: switch2
+        Fragment next hop: dev12
+        Fragment priority: 5
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow3Fragment6
+        Fragment node: switch2
+        Fragment next hop: dev13
+        Fragment priority: 4
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
+          ----------------------------
+    Fragment name: flow3Fragment7
+        Fragment node: switch2
+        Fragment next hop: dev14
+        Fragment priority: 5
+        Fragment slot start 0: 0.0
+        Fragment slot duration 0 : 28.0
+        Fragment times-
+          (0) Fragment departure time: 28.0
+          (0) Fragment arrival time: 29.0
+          (0) Fragment scheduled time: 42.0
           ----------------------------
 
