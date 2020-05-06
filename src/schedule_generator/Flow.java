@@ -29,6 +29,8 @@ public class Flow implements Serializable {
     private int type = 0;
     private int totalNumOfPackets = 0;
 
+    private boolean fixedPriority = false;
+    private int priorityValue = -1;
 
 	//Specifying the type of the flow:
     public static int UNICAST = 0;
@@ -208,7 +210,11 @@ public class Flow implements Serializable {
             this.startDevice.toZ3(ctx);
 
 
-            this.flowPriority = ctx.mkIntConst(this.name + "Priority");
+            if(this.priorityValue < 0 || this.priorityValue > 7) {
+            	this.flowPriority = ctx.mkIntConst(this.name + "Priority");
+            } else {
+            	this.flowPriority = ctx.mkInt(this.priorityValue);
+            }
 
             if(this.useCustomValues) {
                 this.flowSendingPeriodicityZ3 = ctx.mkReal(Float.toString(this.flowSendingPeriodicity));
@@ -339,9 +345,13 @@ public class Flow implements Serializable {
                 } 
                 
                 
+                
                 // Setting z3 properties of the flow fragment
-                flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
-                // flowFrag.setFragmentPriorityZ3(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
+                if(this.fixedPriority) {
+                	flowFrag.setFragmentPriorityZ3(this.flowPriority); // FIXED PRIORITY (Fixed priority per flow constraint)
+                } else {
+                	flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority")); 
+                }
                 flowFrag.setPacketPeriodicityZ3(this.flowSendingPeriodicityZ3);
                 flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
                 flowFrag.setStartDevice(this.startDevice);
@@ -1473,5 +1483,21 @@ public class Flow implements Serializable {
     public void setFlowSendingPeriodicityZ3(RealExpr flowSendingPeriodicityZ3) {
         this.flowSendingPeriodicityZ3 = flowSendingPeriodicityZ3;
     }
+
+	public boolean isFixedPriority() {
+		return fixedPriority;
+	}
+
+	public void setFixedPriority(boolean fixedPriority) {
+		this.fixedPriority = fixedPriority;
+	}
+
+	public int getPriorityValue() {
+		return priorityValue;
+	}
+
+	public void setPriorityValue(int priorityValue) {
+		this.priorityValue = priorityValue;
+	}
 
 }
