@@ -33,8 +33,8 @@ import com.microsoft.z3.Solver;
 public class Port implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Boolean useMicroCycles = true;
-    private Boolean useHyperCycle = false;
+	private Boolean useMicroCycles = false;
+    private Boolean useHyperCycle = true;
     
     private ArrayList<Float> listOfPeriods = new ArrayList<Float>();
     private float definedHyperCycleSize = -1;
@@ -362,7 +362,9 @@ public class Port implements Serializable {
 
         // For the specified range of packets defined by [0, upperBoundRange],
         // apply the scheduling rules.
-        for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
+
+        //System.out.println("Setting up rules for " + flowFrag.getName() + " - Num of packets: " + flowFrag.getParent().getNumOfPacketsSent());
+        for(int i = 0; i < flowFrag.getParent().getNumOfPacketsSent(); i++) {
             // Make t3 > t2 + transmissionTime
             solver.add( // Time to Transmit constraint.
                 ctx.mkGe(
@@ -1113,6 +1115,7 @@ public class Port implements Serializable {
         float hyperCycleSize = findLCM((ArrayList<Float>) listOfPeriods.clone());
         
         this.definedHyperCycleSize = hyperCycleSize;
+        this.cycle.setCycleDuration(hyperCycleSize);
         
         this.cycleUpperBoundRange = 1;
 
@@ -1435,7 +1438,7 @@ public class Port implements Serializable {
      * time when a packet leaves its previous node with this switch as a destination. 
      * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
-     * @param index         Index of the packet of the flow fragment as an integer
+     * @param auxIndex         Index of the packet of the flow fragment as an integer
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the arrival time of the desired packet
      */
@@ -1546,7 +1549,7 @@ public class Port implements Serializable {
      * name of the z3 variable that will be the queried to the solver.
      * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
-     * @param index         Index of the packet of the flow fragment as an integer
+     * @param auxIndex         Index of the packet of the flow fragment as an integer
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the scheduled time of the desired packet
      */

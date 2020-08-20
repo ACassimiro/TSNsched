@@ -200,11 +200,15 @@ public class ScheduleGenerator {
                        ffrag.getParent().addToTotalNumOfPackets(ffrag.getNumOfPacketsSent());
                        
                        for(int i = 0; i < ffrag.getParent().getNumOfPacketsSent(); i++) {
+                       		System.out.println("On " + ffrag.getName() + " - " +
+								((TSNSwitch)child.getNode()).departureTime(ctx, i, ffrag) + " - " +
+						  		((TSNSwitch)child.getNode()).scheduledTime(ctx, i, ffrag)
+							);
                     	   // System.out.println(((TSNSwitch)child.getNode()).departureTime(ctx, i, ffrag));
                     	   // System.out.println(((TSNSwitch)child.getNode()).arrivalTime(ctx, i, ffrag));
                     	   // System.out.println(((TSNSwitch)child.getNode()).scheduledTime(ctx, i, ffrag));
                            
-                    	   if(i < ffrag.getNumOfPacketsSent()) {
+                    	   if(i < ffrag.getParent().getNumOfPacketsSent()) {
 		                	   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
 		                	   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).arrivalTime(ctx, i, ffrag) , false).toString()));
 		                       out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + this.stringToFloat(model.eval(((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) , false).toString()));
@@ -296,7 +300,8 @@ public class ScheduleGenerator {
 	       // On all network flows: Data given by the user will be converted to z3 values 
 	       for(Flow flw : net.getFlows()) {
 	           flw.toZ3(ctx);
-	       }
+			   flw.setNumberOfPacketsSent(flw.getPathTree().getRoot());
+		   }
 	       
 	       // On all network switches: Data given by the user will be converted to z3 values
            for(Switch swt : net.getSwitches()) {

@@ -115,7 +115,9 @@ public class Network implements Serializable {
         
         for(Flow flw : this.getFlows()) {
         	flw.setNumberOfPacketsSent(flw.getPathTree().getRoot());
-        	
+
+            flw.bindAllFragments(solver, ctx);
+
             solver.add( // No negative cycle values constraint
                 ctx.mkGe(
                     flw.getStartDevice().getFirstT1TimeZ3(),
