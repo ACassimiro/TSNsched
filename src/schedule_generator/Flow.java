@@ -257,14 +257,6 @@ public class Flow implements Serializable {
         FlowFragment flowFrag = null;
         int numberOfPackets = Network.PACKETUPPERBOUNDRANGE;
 
-        /*
-        System.out.println("On node " +
-                (node.getNode() instanceof Device ?
-                ((Device) node.getNode()).getName() :
-                ((TSNSwitch) node.getNode()).getName())
-        );
-        */
-
         // If, by chance, the given node has no child, then its a leaf
         if(node.getChildren().size() == 0) {
             //System.out.println("On flow " + this.name + " leaving on node " + ((Device) node.getNode()).getName());
@@ -273,14 +265,6 @@ public class Flow implements Serializable {
 
         // Iterate over node's children
         for(PathNode auxN : node.getChildren()) {
-
-            // If child is a device, then its a leaf. Do nothing
-            /*
-            if(auxN.getNode() instanceof Device) {
-                System.out.println("On flow " + this.name + " leaving on node " + ((Device) auxN.getNode()).getName());
-                continue;
-            }
-            */
 
             // For each grand children of the current child node
             for(PathNode n : auxN.getChildren()) {
@@ -308,21 +292,14 @@ public class Flow implements Serializable {
                     flowFrag.setNodeName(((Switch)auxN.getNode()).getName());
 
                     for (int i = 0; i < numberOfPackets; i++) {
-                        /*
-                        flowFrag.setDepartureTimeZ3(
-                            this.startDevice.getFirstT1TimeZ3(),
-                            i
-                        );
-                        */
-
-                        /**/
+                        
                         flowFrag.addDepartureTimeZ3(
                                 (RealExpr) ctx.mkAdd(
                                         this.flowFirstSendingTimeZ3,
                                         ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
                                 )
                         );
-                        /**/
+                        
                     }
 
 
@@ -386,7 +363,6 @@ public class Flow implements Serializable {
             }
 
             // Recursively repeats process to children
-            // System.out.println("Calling node: " + (auxN.getNode() instanceof Device ? ((Device) auxN.getNode()).getName() : ((TSNSwitch) auxN.getNode()).getName()));
             FlowFragment nextFragment = this.nodeToZ3(ctx, auxN, flowFrag);
 
 
