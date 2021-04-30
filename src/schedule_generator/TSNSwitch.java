@@ -1,3 +1,22 @@
+//TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
+//
+//    Copyright (C) 2021  Aellison Cassimiro
+//    
+//    TSNsched is licensed under the GNU GPL version 3 or later:
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package schedule_generator;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,15 +35,15 @@ import com.microsoft.z3.*;
  */
 public class TSNSwitch extends Switch implements Serializable {
 
-    private Boolean isModifiedOrCreated = true;
-
-    private static final long serialVersionUID = 1L;
-    // private Cycle cycle;
+	private Boolean isModifiedOrCreated = true;
+	
+	private static final long serialVersionUID = 1L;
+	// private Cycle cycle;
     private ArrayList<String> connectsTo;
     private ArrayList<Port> ports;
     private float cycleDurationUpperBound;
     private float cycleDurationLowerBound;
-
+    
     private float gbSize;
     private transient RealExpr gbSizeZ3; // Size of the guardBand
     private transient RealExpr cycleDuration;
@@ -32,19 +51,22 @@ public class TSNSwitch extends Switch implements Serializable {
     private transient RealExpr cycleDurationUpperBoundZ3;
     private transient RealExpr cycleDurationLowerBoundZ3;
     private int portNum = 0;
+    
+    private ScheduleType scheduleType = ScheduleType.DEFAULT;
+   
 
-    private static int indexCounter = 0;
-
-
+	private static int indexCounter = 0; 
+    
+    
     /**
      * [Method]: TSNSwitch
      * [Usage]: Overloaded constructor method of this class.
      * Creates a switch, giving it a name and creating a new
      * list of ports and labels of devices that it can reach.
-     *
-     * Can be adapted in the future to start the switch with
+     * 
+     * Can be adapted in the future to start the switch with 
      * default properties.
-     *
+     * 
      * @param name      Name of the switch
      */
     public TSNSwitch(String name) {
@@ -52,37 +74,38 @@ public class TSNSwitch extends Switch implements Serializable {
         ports = new ArrayList<Port>();
         this.connectsTo = new ArrayList<String>();
     }
-
+    
     /**
      * [Method]: TSNSwitch
      * [Usage]: Overloaded constructor method of this class.
      * Instantiates a new TSNSwitch object setting up its properties
-     * that are given as parameters. Used for simplified configurations.
-     * Other constructors either are deprecated or set parameters
+     * that are given as parameters. Used for simplified configurations. 
+     * Other constructors either are deprecated or set parameters 
      * that will be used in future works.
-     *
-     * @param timeToTravel          Time that a packet takes to leave its port and reach the destination
-     * @param transmissionTime      Time taken to process the packet inside the switch
      */
-    public TSNSwitch(float timeToTravel,
+    public TSNSwitch(String name,
+                     float gbSize,
+					 float portSpeed,
+					 float timeToTravel,
                      float transmissionTime) {
         this.name = "dev" + indexCounter++;
         this.timeToTravel = timeToTravel;
+		this.portSpeed = portSpeed;
         this.transmissionTime = transmissionTime;
         this.ports = new ArrayList<Port>();
         this.connectsTo = new ArrayList<String>();
         this.maxPacketSize = 0;
         this.portSpeed = 0;
-        this.gbSize = 0;
+        this.gbSize = gbSize;
     }
 
-
+    
     /**
      * [Method]: TSNSwitch
      * [Usage]: Overloaded constructor method of this class.
      * Instantiates a new TSNSwitch object setting up its properties
      * that are given as parameters.
-     *
+     * 
      * @param name                  Name of the switch
      * @param maxPacketSize         Maximum packet size supported by the switch
      * @param timeToTravel          Time that a packet takes to leave its port and reach the destination
@@ -115,9 +138,9 @@ public class TSNSwitch extends Switch implements Serializable {
      * [Usage]: Overloaded constructor method of this class.
      * Instantiates a new TSNSwitch object setting up its properties
      * that are given as parameters. There is no transmission time here,
-     * as this method is used when considering that it will be calculated
-     * by the packet size divided by the port speed
-     *
+     * as this method is used when considering that it will be calculated 
+     * by the packet size divided by the port speed 
+     * 
      * @param name                  Name of the switch
      * @param maxPacketSize         Maximum packet size supported by the switch
      * @param timeToTravel          Time that a packet takes to leave its port and reach the destination
@@ -142,58 +165,58 @@ public class TSNSwitch extends Switch implements Serializable {
         this.cycleDurationLowerBound = cycleDurationLowerBound;
         this.cycleDurationUpperBound = cycleDurationUpperBound;
     }
-
-
+    
+    
     /**
      * [Method]: toZ3
      * [Usage]: After setting all the numeric input values of the class,
      * generates the z3 equivalent of these values and creates any extra
      * variable needed.
-     *
+     * 
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx, Solver solver) {
         this.cycleDurationLowerBoundZ3 = ctx.mkReal(Float.toString(cycleDurationLowerBound));
         this.cycleDurationUpperBoundZ3 = ctx.mkReal(Float.toString(cycleDurationUpperBound));
-
+        
         // Creating the cycle duration and start for this switch
         this.cycleDuration = ctx.mkRealConst("cycleOf" + this.name + "Duration");
         this.cycleStart = ctx.mkRealConst("cycleOf" + this.name + "Start");
-
+        
 
         // Creating the cycle setting up the bounds for the duration (Cycle duration constraint)
         solver.add(
-                ctx.mkGe(this.cycleDuration, this.cycleDurationLowerBoundZ3)
+            ctx.mkGe(this.cycleDuration, this.cycleDurationLowerBoundZ3)
         );
         solver.add(
-                ctx.mkLe(this.cycleDuration, this.cycleDurationUpperBoundZ3)
+            ctx.mkLe(this.cycleDuration, this.cycleDurationUpperBoundZ3)
         );
-
+        
         // A cycle must start on a point in time, so it must be greater than 0
         solver.add( // No negative cycle values constraint
-                ctx.mkGe(this.cycleStart, ctx.mkInt(0))
+            ctx.mkGe(this.cycleStart, ctx.mkInt(0))
         );
 
-
+                
         for (Port port : this.ports) {
             port.toZ3(ctx);
-
+            
             for(FlowFragment frag : port.getFlowFragments()) {
                 solver.add( // Maximum cycle start constraint
-                        ctx.mkLe(
-                                port.getCycle().getFirstCycleStartZ3(),
-                                this.arrivalTime(ctx, 0, frag)
-                        )
+                    ctx.mkLe(
+                        port.getCycle().getFirstCycleStartZ3(), 
+                        this.arrivalTime(ctx, 0, frag)
+                    )
                 );
             }
 
             solver.add( // No negative cycle values constraint
-                    ctx.mkGe(port.getCycle().getFirstCycleStartZ3(), ctx.mkInt(0))
-            );
-
+        		ctx.mkGe(port.getCycle().getFirstCycleStartZ3(), ctx.mkInt(0))
+    		);
+        
             /* The cycle of every port must have the same duration
             solver.add(ctx.mkEq( // Equal cycle constraints
-                this.cycleDuration,
+                this.cycleDuration, 
                 port.getCycle().getCycleDurationZ3()
             ));
             /**/
@@ -201,189 +224,177 @@ public class TSNSwitch extends Switch implements Serializable {
             // The cycle of every port must have the same starting point
             /**/
             solver.add(ctx.mkEq( // Equal cycle constraints
-                    this.cycleStart,
-                    port.getCycle().getFirstCycleStartZ3()
+                this.cycleStart, 
+                port.getCycle().getFirstCycleStartZ3()
             ));
             /**/
-
+            
         }
-
+        
         solver.add(ctx.mkEq(
-                this.cycleStart,
-                ctx.mkInt(0)
+            this.cycleStart, 
+            ctx.mkInt(0)
         ));
-
+        
     }
-
+    
     /**
      * [Method]: setupSchedulingRules
      * [Usage]: Iterates over the ports of the switch, calling the
      * method responsible for setting up the rules for each individual port
      * on the switch.
-     *
+     * 
      * @param solver        z3 solver object used to discover the variables' values
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      */
     public void setupSchedulingRules(Solver solver, Context ctx) {
-
+                
         for(Port port : this.ports) {
-                port.setupSchedulingRules(solver, ctx);
+        	if(port.getIsModifiedOrCreated()) {
+        		port.setupSchedulingRules(solver, ctx);        		
+        	}
         }
-
+        
     }
 
     /**
      * [Method]: createPort
      * [Usage]: Adds a port to the switch. A cycle to that port and
-     * the device object that it connects to (since TSN ports connect to
+     * the device object that it connects to (since TSN ports connect to 
      * individual nodes in the approach of this schedule) must be given
      * as parameters.
-     *
+     * 
      * @param destination       Destination of the port as TSNSwitch or Device
      * @param cycle             Cycle used by the port
      */
     public void createPort(Object destination, Cycle cycle) {
-
+        String destinationName = "";
+    	
         if(destination instanceof Device) {
-            this.connectsTo.add(((Device)destination).getName());
-            this.ports.add(
-                    new Port(this.name + "Port" + this.portNum,
-                            this.portNum,
-                            ((Device)destination).getName(),
-                            this.maxPacketSize,
-                            this.timeToTravel,
-                            this.transmissionTime,
-                            this.portSpeed,
-                            this.gbSize,
-                            cycle
-                    )
-            );
+            destinationName = ((Device)destination).getName();
         } else if (destination instanceof Switch) {
-            this.connectsTo.add(((Switch)destination).getName());
-
-            Port newPort = new Port(this.name + "Port" + this.portNum,
-                    this.portNum,
-                    ((Switch)destination).getName(),
-                    this.maxPacketSize,
-                    this.timeToTravel,
-                    this.transmissionTime,
-                    this.portSpeed,
-                    this.gbSize,
-                    cycle
-            );
-
-            newPort.setPortNum(this.portNum);
-
-            this.ports.add(newPort);
+            destinationName = ((Switch)destination).getName();
         }
         else
-            ; // [TODO]: THROW ERROR
-
-
-
-
-
+            return; // [TODO]: THROW ERROR
+  
+        this.createPort(destinationName, cycle);
+        
         this.portNum++;
     }
-
+    
     /**
      * [Method]: createPort
      * [Usage]: Adds a port to the switch. A cycle to that port and
-     * the device name that it connects to (since TSN ports connect to
+     * the device name that it connects to (since TSN ports connect to 
      * individual nodes in the approach of this schedule) must be given
      * as parameters.
-     *
-     * @param destination       Name of the destination of the port
+     * 
+     * @param destination       Name of the destination of the port 
      * @param cycle             Cycle used by the port
      */
     public void createPort(String destination, Cycle cycle) {
         this.connectsTo.add(destination);
-
-        this.ports.add(
-                new Port(this.name + "Port" + this.portNum,
-                        this.portNum,
-                        destination,
-                        this.maxPacketSize,
-                        this.timeToTravel,
-                        this.transmissionTime,
-                        this.portSpeed,
-                        this.gbSize,
-                        cycle
-                )
-        );
-
+        
+        Port newPort = new Port(this.name + "Port" + this.portNum,
+        		this.portNum,
+                destination,
+                this.maxPacketSize,
+                this.timeToTravel,
+                this.transmissionTime,
+                this.portSpeed,
+                this.gbSize,
+                cycle
+            );
+        
+        newPort.setPortNum(this.portNum);
+        
+        switch(this.scheduleType) {
+        	case MICROCYCLES:
+        		newPort.setUseMicroCycles(true);
+        		break;
+        	case HYPERCYCLES:
+        		newPort.setUseHyperCycle(true);
+        		break;
+        	case DEFAULT:
+        		newPort.setUseHyperCycle(true);
+        		break;
+        }
+        
+        this.ports.add(newPort);
+        
         this.portNum++;
     }
-
-
+    
+    
     /**
      * [Method]: addToFragmentList
      * [Usage]: Given a flow fragment, it finds the port that connects to
-     * its destination and adds the it to the fragment list of that specific
+     * its destination and adds the it to the fragment list of that specific 
      * port.
-     *
+     * 
      * @param flowFrag      Fragment of a flow to be added to a port
      */
     public void addToFragmentList(FlowFragment flowFrag) {
         int index = this.connectsTo.indexOf(flowFrag.getNextHop());
-
+        
         /*
         System.out.println("Current node: " + flowFrag.getNodeName());
         System.out.println("Next hop: " + flowFrag.getNextHop());
-        System.out.println("Index of port: " + index);
+        System.out.println("Index of port: " + index);	
         System.out.print("Connects to: ");
         for(String connect : this.connectsTo) {
             System.out.print(connect + ", ");
         }
-
+        
         System.out.println("");
         System.out.println("------------------");
-
+        
         /**/
-
+        
         this.ports.get(index).addToFragmentList(flowFrag);
     }
-
-
+    
+    
     /**
      * [Method]: getPortOf
-     * [Usage]: Given a name of a node, returns the port that
+     * [Usage]: Given a name of a node, returns the port that 
      * can reach this node.
-     *
+     * 
      * @param name      Name of the node that the switch is connects to
      * @return          Port of the switch that connects to a given node
      */
     public Port getPortOf(String name) {
         int index = this.connectsTo.indexOf(name);
-
-        // System.out.println("On switch " + this.getName() + " looking for port to " + name);
-
+        
+        //System.out.println("On switch " + this.getName() + " looking for port to " + name);
+         
         Port port = this.ports.get(index);
-
-        return port;
+        
+        return port;        
     }
-
+    
     /**
      * [Method]: setUpCycleSize
      * [Usage]: Iterate over its ports. The ones using automated application
      * periods will calculate their cycle size.
-     *
+     * 
      * @param solver        z3 solver object used to discover the variables' values
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      */
     public void setUpCycleSize(Solver solver, Context ctx) {
-        for(Port port : this.ports) {
-            port.setUpCycle(solver, ctx);
-        }
+    	for(Port port : this.ports) {
+    		port.setUpCycle(solver, ctx);
+    	}
     }
-
-
+        
+    
     /**
      * [Method]: arrivalTime
      * [Usage]: Retrieves the arrival time of a packet from a flow fragment
-     * specified by the index given as a parameter. The arrival time is the
+     * specified by the index given as a parameter. The arrival time is the 
      * time when a packet reaches this switch's port.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      * @param auxIndex      Index of the packet of the flow fragment as an integer
      * @param flowFrag      Flow fragment that the packets belong to
@@ -394,32 +405,32 @@ public class TSNSwitch extends Switch implements Serializable {
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
 
         return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, auxIndex, flowFrag);
-    }
-
-
+     }
+    
+    
     /**
      * [Method]: arrivalTime
      * [Usage]: Retrieves the arrival time of a packet from a flow fragment
-     * specified by the index given as a parameter. The arrival time is the
+     * specified by the index given as a parameter. The arrival time is the 
      * time when a packet reaches this switch's port.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      * @param auxIndex      Index of the packet of the flow fragment as a z3 variable
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the arrival time of the desired packet
      *
     public RealExpr arrivalTime(Context ctx, IntExpr index, FlowFragment flowFrag){
-    int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
-    return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, index, flowFrag);
+        int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
+        return (RealExpr) this.ports.get(portIndex).arrivalTime(ctx, index, flowFrag);
     }
     /**/
-
+    
     /**
      * [Method]: departureTime
      * [Usage]: Retrieves the departure time of a packet from a flow fragment
-     * specified by the index given as a parameter. The departure time is the
+     * specified by the index given as a parameter. The departure time is the 
      * time when a packet leaves its previous node with this switch as a destination.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      * @param index         Index of the packet of the flow fragment as a z3 variable
      * @param flowFrag      Flow fragment that the packets belong to
@@ -430,13 +441,13 @@ public class TSNSwitch extends Switch implements Serializable {
         return (RealExpr) this.ports.get(portIndex).departureTime(ctx, index, flowFrag);
     }
     /**/
-
+    
     /**
      * [Method]: departureTime
      * [Usage]: Retrieves the departure time of a packet from a flow fragment
-     * specified by the index given as a parameter. The departure time is the
+     * specified by the index given as a parameter. The departure time is the 
      * time when a packet leaves its previous node with this switch as a destination.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      * @param auxIndex         Index of the packet of the flow fragment as an integer
      * @param flowFrag      Flow fragment that the packets belong to
@@ -444,82 +455,95 @@ public class TSNSwitch extends Switch implements Serializable {
      */
     public RealExpr departureTime(Context ctx, int auxIndex, FlowFragment flowFrag){
         IntExpr index = ctx.mkInt(auxIndex);
-
+        
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
         return (RealExpr) this.ports.get(portIndex).departureTime(ctx, index, flowFrag);
-    }
-
+     }
+  
     /**
      * [Method]: scheduledTime
      * [Usage]: Retrieves the scheduled time of a packet from a flow fragment
-     * specified by the index given as a parameter. The scheduled time is the
+     * specified by the index given as a parameter. The scheduled time is the 
      * time when a packet leaves this switch for its next destination.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      * @param index         Index of the packet of the flow fragment as a z3 variable
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the scheduled time of the desired packet
      *
     public RealExpr scheduledTime(Context ctx, IntExpr index, FlowFragment flowFrag){
-    int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
-    return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, index, flowFrag);
+        int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
+        return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, index, flowFrag);
     }
     /**/
-
+    
     /**
      * [Method]: scheduledTime
      * [Usage]: Retrieves the scheduled time of a packet from a flow fragment
-     * specified by the index given as a parameter. The scheduled time is the
+     * specified by the index given as a parameter. The scheduled time is the 
      * time when a packet leaves this switch for its next destination.
-     *
+     * 
      * @param ctx           z3 context which specify the environment of constants, functions and variables
-     * @param auxIndex         Index of the packet of the flow fragment as an integer
+     * @param auxIndex      Index of the packet of the flow fragment as an integer
      * @param flowFrag      Flow fragment that the packets belong to
      * @return              Returns the z3 variable for the scheduled time of the desired packet
      */
     public RealExpr scheduledTime(Context ctx, int auxIndex, FlowFragment flowFrag){
         // IntExpr index = ctx.mkInt(auxIndex);
-
+        
         int portIndex = this.connectsTo.indexOf(flowFrag.getNextHop());
-
+        
         return (RealExpr) this.ports.get(portIndex).scheduledTime(ctx, auxIndex, flowFrag);
     }
-
-
+    
+    
     public void loadZ3(Context ctx, Solver solver) {
     	/*
     	solver.add(
 			ctx.mkEq(
 				this.cycleDurationUpperBoundZ3,
 				ctx.mkReal(Float.toString(this.cycleDurationUpperBound))
-			)
+			)	
 		);
-
+    	
     	solver.add(
 			ctx.mkEq(
 				this.cycleDurationLowerBoundZ3,
 				ctx.mkReal(Float.toString(this.cycleDurationLowerBound))
-			)
+			)	
 		);
     	*/
-
-        if(!ports.isEmpty()) {
-            for(Port port : this.ports) {
-                //System.out.println(port.getIsModifiedOrCreated());
-                port.loadZ3(ctx, solver);
-
-            }
-        }
-
+    	
+    	if(!ports.isEmpty()) {
+    		for(Port port : this.ports) {
+    			//System.out.println(port.getIsModifiedOrCreated());
+    			if(!port.getIsModifiedOrCreated()) {
+    				// System.out.println("Loading port " + port.getName());
+    				port.loadZ3(ctx, solver);    		    			    				
+    			} else {
+    				;
+    				//System.out.println("Not loading port " + port.getName());
+    			}
+    		}
+    	}
+    	
     }
-
-
+    
+    
     /*
      *  GETTERS AND SETTERS
      */
-
+    
+    public ArrayList<Float> getSlotStartList(String nameOfDestination, int prt) {
+        return this.getPortOf(nameOfDestination).getCycle().getSlotStartList(prt);
+    }
+       
+    public ArrayList<Float>  getSlotDurationList(String nameOfDestination, int prt) {
+        return this.getPortOf(nameOfDestination).getCycle().getSlotDurationList(prt);
+    }   
+    
     public Cycle getCycle(int index) {
-
+        
         return this.ports.get(index).getCycle();
     }
 
@@ -555,7 +579,7 @@ public class TSNSwitch extends Switch implements Serializable {
         this.ports.add(port);
         this.connectsTo.add(name);
     }
-
+    
     public RealExpr getCycleDuration() {
         return cycleDuration;
     }
@@ -572,16 +596,24 @@ public class TSNSwitch extends Switch implements Serializable {
         this.cycleStart = cycleStart;
     }
 
-    public Boolean getIsModifiedOrCreated() {
-        return isModifiedOrCreated;
-    }
+	public Boolean getIsModifiedOrCreated() {
+		return isModifiedOrCreated;
+	}
 
-    public void setIsModifiedOrCreated(Boolean isModifiedOrCreated) {
-        this.isModifiedOrCreated = isModifiedOrCreated;
-    }
+	public void setIsModifiedOrCreated(Boolean isModifiedOrCreated) {
+		this.isModifiedOrCreated = isModifiedOrCreated;
+	}
+	
+	public ArrayList<String> getConnectsTo(){
+		return this.connectsTo;
+	}
+		 
+    public ScheduleType getScheduleType() {
+		return scheduleType;
+	}
 
-    public ArrayList<String> getConnectsTo(){
-        return this.connectsTo;
-    }
-
+	public void setScheduleType(ScheduleType scheduleType) {
+		this.scheduleType = scheduleType;
+	}
+    
 }

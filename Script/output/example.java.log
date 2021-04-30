@@ -79,79 +79,79 @@ FLOW LIST:
     Fragment name: flow1Fragment1
         Fragment node: switch0
         Fragment next hop: switch4
-        Fragment priority: 4
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 14.125 ; 113/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 0.0
-          (0) Fragment arrival time: 1.0
-          (0) Fragment scheduled time: 14.0
+          (0) Fragment departure time: 13.0
+          (0) Fragment arrival time: 14.0
+          (0) Fragment scheduled time: 27.125
           ----------------------------
     Fragment name: flow1Fragment2
         Fragment node: switch4
         Fragment next hop: switch3
-        Fragment priority: 3
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 7
+        Fragment slot start 0: 28.25 ; 113/4
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 14.0
-          (0) Fragment arrival time: 15.0
-          (0) Fragment scheduled time: 28.0
+          (0) Fragment departure time: 27.125
+          (0) Fragment arrival time: 28.125
+          (0) Fragment scheduled time: 41.25
           ----------------------------
     Fragment name: flow1Fragment3
         Fragment node: switch3
         Fragment next hop: dev15
         Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment slot start 0: 42.375 ; 339/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.25
+          (0) Fragment arrival time: 42.25
+          (0) Fragment scheduled time: 55.375
           ----------------------------
     Fragment name: flow1Fragment4
         Fragment node: switch3
         Fragment next hop: dev16
-        Fragment priority: 7
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 5
+        Fragment slot start 0: 42.375 ; 339/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.25
+          (0) Fragment arrival time: 42.25
+          (0) Fragment scheduled time: 55.375
           ----------------------------
     Fragment name: flow1Fragment5
         Fragment node: switch3
         Fragment next hop: dev17
-        Fragment priority: 2
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 42.375 ; 339/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.25
+          (0) Fragment arrival time: 42.25
+          (0) Fragment scheduled time: 55.375
           ----------------------------
     Fragment name: flow1Fragment6
         Fragment node: switch3
         Fragment next hop: dev18
-        Fragment priority: 2
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 6
+        Fragment slot start 0: 42.125 ; 337/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.25
+          (0) Fragment arrival time: 42.25
+          (0) Fragment scheduled time: 55.25
           ----------------------------
     Fragment name: flow1Fragment7
         Fragment node: switch3
         Fragment next hop: dev19
-        Fragment priority: 7
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 42.375 ; 339/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.25
+          (0) Fragment arrival time: 42.25
+          (0) Fragment scheduled time: 55.375
           ----------------------------
 
   Flow name: flow2
@@ -169,79 +169,79 @@ FLOW LIST:
     Fragment name: flow2Fragment1
         Fragment node: switch4
         Fragment next hop: switch7
-        Fragment priority: 1
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 13.875 ; 111/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 0.0
-          (0) Fragment arrival time: 1.0
-          (0) Fragment scheduled time: 14.0
+          (0) Fragment departure time: 13.0
+          (0) Fragment arrival time: 14.0
+          (0) Fragment scheduled time: 27.0
           ----------------------------
     Fragment name: flow2Fragment2
         Fragment node: switch7
         Fragment next hop: switch6
-        Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 27.875 ; 223/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 14.0
-          (0) Fragment arrival time: 15.0
-          (0) Fragment scheduled time: 28.0
+          (0) Fragment departure time: 27.0
+          (0) Fragment arrival time: 28.0
+          (0) Fragment scheduled time: 41.0
           ----------------------------
     Fragment name: flow2Fragment3
         Fragment node: switch6
         Fragment next hop: dev30
         Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment slot start 0: 5.0 ; 5
+        Fragment slot duration 0 : 50.0 ; 50
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.0
+          (0) Fragment arrival time: 42.0
+          (0) Fragment scheduled time: 55.0
           ----------------------------
     Fragment name: flow2Fragment4
         Fragment node: switch6
         Fragment next hop: dev31
-        Fragment priority: 3
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 41.875 ; 335/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.0
+          (0) Fragment arrival time: 42.0
+          (0) Fragment scheduled time: 55.0
           ----------------------------
     Fragment name: flow2Fragment5
         Fragment node: switch6
         Fragment next hop: dev32
         Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment slot start 0: 42.125 ; 337/8
+        Fragment slot duration 0 : 50.0 ; 50
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.0
+          (0) Fragment arrival time: 42.0
+          (0) Fragment scheduled time: 55.125
           ----------------------------
     Fragment name: flow2Fragment6
         Fragment node: switch6
         Fragment next hop: dev33
-        Fragment priority: 1
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 41.875 ; 335/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.0
+          (0) Fragment arrival time: 42.0
+          (0) Fragment scheduled time: 55.0
           ----------------------------
     Fragment name: flow2Fragment7
         Fragment node: switch6
         Fragment next hop: dev34
-        Fragment priority: 3
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 5.0 ; 5
+        Fragment slot duration 0 : 50.0 ; 50
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 41.0
+          (0) Fragment arrival time: 42.0
+          (0) Fragment scheduled time: 55.0
           ----------------------------
 
   Flow name: flow3
@@ -259,78 +259,78 @@ FLOW LIST:
     Fragment name: flow3Fragment1
         Fragment node: switch7
         Fragment next hop: switch1
-        Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 958.625 ; 7669/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 0.0
-          (0) Fragment arrival time: 1.0
-          (0) Fragment scheduled time: 14.0
+          (0) Fragment departure time: 957.75
+          (0) Fragment arrival time: 958.75
+          (0) Fragment scheduled time: 971.75
           ----------------------------
     Fragment name: flow3Fragment2
         Fragment node: switch1
         Fragment next hop: switch2
-        Fragment priority: 7
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 2
+        Fragment slot start 0: 935.75 ; 3743/4
+        Fragment slot duration 0 : 50.0 ; 50
         Fragment times-
-          (0) Fragment departure time: 14.0
-          (0) Fragment arrival time: 15.0
-          (0) Fragment scheduled time: 28.0
+          (0) Fragment departure time: 971.75
+          (0) Fragment arrival time: 972.75
+          (0) Fragment scheduled time: 985.75
           ----------------------------
     Fragment name: flow3Fragment3
         Fragment node: switch2
         Fragment next hop: dev10
-        Fragment priority: 2
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 986.875 ; 7895/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 985.75
+          (0) Fragment arrival time: 986.75
+          (0) Fragment scheduled time: 999.875
           ----------------------------
     Fragment name: flow3Fragment4
         Fragment node: switch2
         Fragment next hop: dev11
-        Fragment priority: 0
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 6
+        Fragment slot start 0: 949.75 ; 3799/4
+        Fragment slot duration 0 : 50.0 ; 50
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 985.75
+          (0) Fragment arrival time: 986.75
+          (0) Fragment scheduled time: 999.75
           ----------------------------
     Fragment name: flow3Fragment5
         Fragment node: switch2
         Fragment next hop: dev12
-        Fragment priority: 5
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 986.625 ; 7893/8
+        Fragment slot duration 0 : 13.125 ; 105/8
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 985.75
+          (0) Fragment arrival time: 986.75
+          (0) Fragment scheduled time: 999.75
           ----------------------------
     Fragment name: flow3Fragment6
         Fragment node: switch2
         Fragment next hop: dev13
-        Fragment priority: 4
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 1
+        Fragment slot start 0: 986.875 ; 7895/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 985.75
+          (0) Fragment arrival time: 986.75
+          (0) Fragment scheduled time: 999.875
           ----------------------------
     Fragment name: flow3Fragment7
         Fragment node: switch2
         Fragment next hop: dev14
-        Fragment priority: 5
-        Fragment slot start 0: 0.0
-        Fragment slot duration 0 : 28.0
+        Fragment priority: 0
+        Fragment slot start 0: 986.875 ; 7895/8
+        Fragment slot duration 0 : 13.0 ; 13
         Fragment times-
-          (0) Fragment departure time: 28.0
-          (0) Fragment arrival time: 29.0
-          (0) Fragment scheduled time: 42.0
+          (0) Fragment departure time: 985.75
+          (0) Fragment arrival time: 986.75
+          (0) Fragment scheduled time: 999.875
           ----------------------------
 

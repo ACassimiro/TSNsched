@@ -1,3 +1,22 @@
+//TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
+//
+//    Copyright (C) 2021  Aellison Cassimiro
+//    
+//    TSNsched is licensed under the GNU GPL version 3 or later:
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package schedule_generator;
 
 import java.io.Serializable;
@@ -41,8 +60,15 @@ import com.microsoft.z3.*;
 public class Cycle implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String portName = "";
+	private String name = "";
+
+    private boolean wrapTransmission = false;
+
 	static int instanceCounter = 0;
-    private float upperBoundCycleTime;
+	static int cycleInstanceCounter = 0;
+	private int instance;
+	
+	private float upperBoundCycleTime;
     private float lowerBoundCycleTime;
     private float firstCycleStart;
     private float maximumSlotDuration;
@@ -64,7 +90,9 @@ public class Cycle implements Serializable {
     
     private int numOfSlots = 1;
     
-    
+    SlotArrangementMode slotArrangementMode = SlotArrangementMode.AGRESSIVEDESCENT;
+
+	private ArrayList<Integer> numOfSlotsPerPrt;
 
 	/**
      * [Method]: Cycle
@@ -82,6 +110,11 @@ public class Cycle implements Serializable {
     public Cycle(float upperBoundCycleTime, 
                  float lowerBoundCycleTime, 
                  float maximumSlotDuration) {
+    	
+    	instanceCounter++;        
+        this.instance = instanceCounter;
+        this.name = "cycle" + Integer.toString(instanceCounter);
+        
         this.upperBoundCycleTime = upperBoundCycleTime;
         this.lowerBoundCycleTime = lowerBoundCycleTime;
         this.maximumSlotDuration = maximumSlotDuration;
@@ -90,8 +123,12 @@ public class Cycle implements Serializable {
     
     
     public Cycle(float maximumSlotDuration) {
-       this.maximumSlotDuration = maximumSlotDuration;
-       this.firstCycleStart = 0;
+        instanceCounter++;        
+        this.instance = instanceCounter;
+        this.name = "cycle" + Integer.toString(instanceCounter);
+        
+        this.maximumSlotDuration = maximumSlotDuration;
+        this.firstCycleStart = 0;
     }
     
     
@@ -112,6 +149,11 @@ public class Cycle implements Serializable {
                  float lowerBoundCycleTime, 
                  float firstCycleStart,
                  float maximumSlotDuration) {
+    	
+    	instanceCounter++;        
+        this.instance = instanceCounter;
+        this.name = "cycle" + Integer.toString(instanceCounter);
+    	
         this.upperBoundCycleTime = upperBoundCycleTime;
         this.lowerBoundCycleTime = lowerBoundCycleTime;
         this.firstCycleStart = firstCycleStart;
@@ -136,6 +178,10 @@ public class Cycle implements Serializable {
                  RealExpr lowerBoundCycleTimeZ3, 
                  RealExpr firstCycleStartZ3,
                  RealExpr maximumSlotDurationZ3) {
+    	instanceCounter++;        
+        this.instance = instanceCounter;
+        this.name = "cycle" + Integer.toString(instanceCounter);
+        
         // this.upperBoundCycleTimeZ3 = upperBoundCycleTimeZ3;
         // this.lowerBoundCycleTimeZ3 = lowerBoundCycleTimeZ3;
         this.firstCycleStartZ3 = firstCycleStartZ3;
@@ -152,10 +198,10 @@ public class Cycle implements Serializable {
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx) {
-        instanceCounter++;
+        //instanceCounter++;
         
-        this.cycleDurationZ3 = ctx.mkRealConst("cycle" + Integer.toString(instanceCounter) + "Duration");
-        this.firstCycleStartZ3 = ctx.mkRealConst("cycle" + Integer.toString(instanceCounter) + "Start");
+        this.cycleDurationZ3 = ctx.mkRealConst("cycle" + Integer.toString(instance) + "Duration");
+        this.firstCycleStartZ3 = ctx.mkRealConst("cycle" + Integer.toString(instance) + "Start");
         // this.firstCycleStartZ3 = ctx.mkReal(Float.toString(0));
         // this.firstCycleStartZ3 = ctx.mkReal(Float.toString(firstCycleStart));
         this.maximumSlotDurationZ3 = ctx.mkReal(Float.toString(maximumSlotDuration));
@@ -167,10 +213,12 @@ public class Cycle implements Serializable {
         	this.slotStartZ3.add(new ArrayList<RealExpr>());
         	this.slotDurationZ3.add(new ArrayList<RealExpr>());
         	for(int j = 0; j < this.numOfSlots; j++) {
-        		this.slotStartZ3.get(i).add(ctx.mkRealConst("cycleOfPort" + this.portName + "prt" + (i+1) + "slot" + (j+1)));
+        		this.slotStartZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "start"));
+        	}
+        	for(int j = 0; j < this.numOfSlots; j++) {
+        		this.slotDurationZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "duration"));
         	}
         }
-        
     }
     
     
@@ -201,7 +249,7 @@ public class Cycle implements Serializable {
      * specified by its index. The index is given as integer
      * 
      * @param ctx       Context containing the z3 environment
-     * @param index     Index of the desired cycle
+     * @param auxIndex     Index of the desired cycle
      * @return          Z3 variable containing the cycle start time
      */
     public RealExpr cycleStartZ3(Context ctx, int auxIndex){
@@ -250,7 +298,12 @@ public class Cycle implements Serializable {
      */
     public void loadZ3(Context ctx, Solver solver) {
     	// maximumSlotDurationZ3 already started on toZ3;
-    	
+    	//System.out.println("Loading cycleDuration " + this.cycleDurationZ3 );
+//    	
+//    	if(this.cycleDurationZ3.toString().equals("cycle28Duration")) {
+//    		System.out.println("RESETANDO CICLO 28");
+//    	}
+//    	
     	solver.add(
 			ctx.mkEq(
 				this.cycleDurationZ3,
@@ -324,6 +377,17 @@ public class Cycle implements Serializable {
         return cycleStart;
     }
 
+    public void useTransmissionWrapping(){
+        this.wrapTransmission = true;
+    }
+
+    public boolean getWrapTransmission() {
+        return wrapTransmission;
+    }
+
+    public void setWrapTransmission(boolean wrapTransmission) {
+        this.wrapTransmission = wrapTransmission;
+    }
 
     public void setCycleStart(float cycleStart) {
         this.cycleStart = cycleStart;
@@ -351,24 +415,24 @@ public class Cycle implements Serializable {
 
     
     public RealExpr slotStartZ3(Context ctx, IntExpr prt, IntExpr index) {
-        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Start");
+        return ctx.mkRealConst(this.name + "priority" + prt.toString() + "slot" + index.toString() + "Start");
     }
     
     public RealExpr slotStartZ3(Context ctx, int auxPrt, int auxIndex) {
         IntExpr index = ctx.mkInt(auxIndex);
         IntExpr prt = ctx.mkInt(auxPrt);
-        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Start");
+        return ctx.mkRealConst(this.name + "priority" + prt.toString() + "slot" + index.toString() + "Start");
     }
     
    
     public RealExpr slotDurationZ3(Context ctx, IntExpr prt, IntExpr index) {
-        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Duration");
+        return ctx.mkRealConst(this.name + "priority" + prt.toString() + "slot" + index.toString() + "Duration");
     }
     
     public RealExpr slotDurationZ3(Context ctx, int auxPrt, int auxIndex) {
         IntExpr index = ctx.mkInt(auxIndex);
         IntExpr prt = ctx.mkInt(auxPrt);
-        return ctx.mkRealConst("priority" + prt.toString() + "slot" + index.toString() + "Duration");
+        return ctx.mkRealConst(this.name + "priority" + prt.toString() + "slot" + index.toString() + "Duration");
     }
 
     public RealExpr getCycleDurationZ3() {
@@ -395,12 +459,40 @@ public class Cycle implements Serializable {
         this.numOfPrts = numOfPrts;
     }
 
-    public int getNumOfSlots() {
-		return numOfSlots;
+    public int getNumOfSlots(int prt) {
+    	//System.out.println("          Num of slots for priority " + prt + " is: " + numOfSlotsPerPrt.get(prt));
+		return numOfSlotsPerPrt.get(prt);
 	}
 
 	public void setNumOfSlots(int numOfSlots) {
+		
+		int currentNumOfSlots = numOfSlots;
+		
+		this.numOfSlotsPerPrt = new ArrayList<Integer>();
+				
+		switch (this.slotArrangementMode) {
+			case AGRESSIVEDESCENT:
+				for(int i = 0; i < this.numOfPrts; i++) {
+					numOfSlotsPerPrt.add(currentNumOfSlots);
+					currentNumOfSlots = currentNumOfSlots/2;
+					if(currentNumOfSlots<1) {
+						currentNumOfSlots=1;
+					}
+				}
+				break;
+			case EQUALDISTRIBUTION:
+				for(int i = 0; i < this.numOfPrts; i++) {
+					numOfSlotsPerPrt.add(numOfSlots/this.numOfPrts);
+				}
+				break;
+			case MAXCAPACITY:
+				for(int i = 0; i < this.numOfPrts; i++) {
+					numOfSlotsPerPrt.add(numOfSlots);
+				}
+				break;
+		}
 		this.numOfSlots = numOfSlots;
+
 	}
     
     public RealExpr getMaximumSlotDurationZ3() {
@@ -423,10 +515,18 @@ public class Cycle implements Serializable {
         return this.slotStart.get(this.slotsUsed.indexOf(prt)).get(index);
     }
     
+    public ArrayList<Float> getSlotStartList(int prt) {
+        return this.slotStart.get(this.slotsUsed.indexOf(prt));
+    }
+        
     public float getSlotDuration(int prt, int index) {
         return this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(index);
     }
 	
+    public ArrayList<Float>  getSlotDurationList(int prt) {
+        return this.slotDuration.get(this.slotsUsed.indexOf(prt));
+    }
+    
     public String getPortName() {
 		return portName;
 	}
@@ -440,6 +540,30 @@ public class Cycle implements Serializable {
 		return this.slotStartZ3.get(prt).get(slotNum);
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String cycleName) {
+		this.name = cycleName;
+	}
+	
+	public int getInstance() {
+		return instance;
+	}
+
+	public void setInstance(int instance) {
+		this.instance = instance;
+	}
+
+
+    public SlotArrangementMode getSlotArrangementMode() {
+		return slotArrangementMode;
+	}
+
+	public void setSlotArrangementMode(SlotArrangementMode slotArrangementMode) {
+		this.slotArrangementMode = slotArrangementMode;
+	}
 	/*
 	public RealExpr getSlotDurationZ3(int prt, int slotNum) {
 		return this.slotDurationZ3.get(prt).get(slotNum);

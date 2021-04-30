@@ -1,7 +1,27 @@
+//TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
+//
+//    Copyright (C) 2021  Aellison Cassimiro
+//    
+//    TSNsched is licensed under the GNU GPL version 3 or later:
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package schedule_generator;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import com.microsoft.z3.*;
@@ -15,16 +35,20 @@ import com.microsoft.z3.*;
  *
  */
 public class Network implements Serializable {
-    
+	private Boolean hasBeenModified = false;
+
 	private static final long serialVersionUID = 1L;
 	String db_name;
 	String file_id;
+	
+	private int networkFlowCount = 0;
 	
 	//TODO: Remove debugging variables:
     public transient RealExpr avgOfAllLatency;
     public transient ArrayList<RealExpr> avgLatencyPerDev = new ArrayList<RealExpr>();
     
-    
+
+    private ArrayList<Device> devices;
     private ArrayList<Switch> switches;
     private ArrayList<Flow> flows;
     private float timeToTravel;
@@ -35,7 +59,7 @@ public class Network implements Serializable {
     public static int CYCLEUPPERBOUNDRANGE = 25; // Limits the applications of rules to the cycles
     
     private float jitterUpperBoundRange = -1;
-    transient RealExpr jitterUpperBoundRangeZ3;
+	transient RealExpr jitterUpperBoundRangeZ3;
 
     /**
      * [Method]: Network
@@ -47,7 +71,8 @@ public class Network implements Serializable {
         this.jitterUpperBoundRange = jitterUpperBoundRange;
         this.switches = new ArrayList<Switch>();
         this.flows = new ArrayList<Flow>();
-        this.timeToTravel = 2;
+        this.devices = new ArrayList<Device>();
+        this.timeToTravel = 2;        
     }
     
     
@@ -60,6 +85,7 @@ public class Network implements Serializable {
     public Network () {
         this.switches = new ArrayList<Switch>();
         this.flows = new ArrayList<Flow>();
+        this.devices = new ArrayList<Device>();
         this.timeToTravel = 2;
     }
     
@@ -88,6 +114,7 @@ public class Network implements Serializable {
      * @param ctx       z3 context which specify the environment of constants, functions and variables
      */
     public void secureHC(Solver solver, Context ctx) {
+    	avgLatencyPerDev = new ArrayList<RealExpr>();
         
         if(jitterUpperBoundRange != -1) { // If there is a value on the upperBoundRange, it was set through the network
             this.setJitterUpperBoundRangeZ3(ctx, this.jitterUpperBoundRange);
@@ -177,21 +204,28 @@ public class Network implements Serializable {
                     
                 }
                 
-                // Iterate over the flows of each leaf parent, assert HC
+             // Iterate over the flows of each leaf parent, assert HC
                 for(PathNode parent : parents) {
                     for(FlowFragment ffrag : parent.getFlowFragments()) {
                     	for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
+
                             solver.add( // Maximum Allowed Latency constraint
                                 ctx.mkLe(
-                                    ctx.mkSub(
-                                        ((TSNSwitch) parent.getNode()).scheduledTime(ctx, i, ffrag),
-                                        ((TSNSwitch) root.getChildren().get(0).getNode()).departureTime(ctx, i, 
-                                            root.getChildren().get(0).getFlowFragments().get(0)
-                                        )
-                                    ),
+                                		ctx.mkAdd(
+                                				ctx.mkReal(Float.toString(ffrag.getPacketSize()/
+                                						((TSNSwitch) root.getChildren().get(0).getNode()).getPortSpeed()))                              				
+                                				,ctx.mkSub(
+                                                        ((TSNSwitch) parent.getNode()).scheduledTime(ctx, i, ffrag),
+                                                        ((TSNSwitch) root.getChildren().get(0).getNode()).departureTime(ctx, i, 
+                                                            root.getChildren().get(0).getFlowFragments().get(0)
+                                                        )
+                                                    )
+                                				)
+                                    ,
                                     flw.getStartDevice().getHardConstraintTimeZ3()
                                 )                   
                             );
+
                         }
                     } 
                     
@@ -218,7 +252,6 @@ public class Network implements Serializable {
                 );
                 */
                 
-                // TODO: Remove code for debugging
                 avgOfAllLatency = flw.getAvgLatency(solver, ctx);
                 for(PathNode node : flw.getPathTree().getLeaves()) {
                     Device endDev = (Device) node.getNode();
@@ -229,12 +262,8 @@ public class Network implements Serializable {
                             ctx.mkInt(flw.getNumOfPacketsSent())
                         )
                     );
-                    
-                    
-                    
                 }
                 
-                /**/
             }
         
         }
@@ -252,44 +281,299 @@ public class Network implements Serializable {
      * @param solver	Solver object
      */
     public void loadNetwork(Context ctx, Solver solver) {
-    	
     	// TODO: Don't forget to load the values of this class
+    	boolean hasFlow = false;
     	
     	// On all network flows: Data given by the user will be converted to z3 values 
        for(Flow flw : this.flows) {
            // flw.toZ3(ctx);
+    	   if(flw.getIsModifiedOrCreated())
+    		   continue;
+    	   
     	   flw.flowPriority = ctx.mkIntConst(flw.name + "Priority");
+    	   flw.setFlowFirstSendingTimeZ3(
+			   ctx.mkReal(
+				   Float.toString(flw.getFlowFirstSendingTime())
+			   )
+		   );
+    	   flw.setFlowSendingPeriodicityZ3(
+			   ctx.mkReal(
+				   Float.toString(flw.getFlowSendingPeriodicity())
+			   )
+		   );
     	   ((Device) flw.getPathTree().getRoot().getNode()).toZ3(ctx);
        }
 	       
        // On all network switches: Data given by the user will be converted to z3 values
         for(Switch swt : this.switches) {
         	if(swt instanceof TSNSwitch) {
+        		hasFlow = false;
         		for(Port port : ((TSNSwitch) swt).getPorts()) {
         			for(FlowFragment frag : port.getFlowFragments()) {
+        				
+        				if(frag.getIsModifiedOrCreated() || frag.getParent().getIsModifiedOrCreated()) {
+        					continue;
+        				}
+        				
+        				hasFlow = true;
         				frag.createNewDepartureTimeZ3List();
-        				frag.addDepartureTimeZ3(ctx.mkReal(Float.toString(frag.getDepartureTime(0))));
+        				if(!frag.getDepartureTimeList().isEmpty()) {
+        					frag.addDepartureTimeZ3(ctx.mkReal(Float.toString(frag.getDepartureTime(0))));        					
+        				}
+        				frag.setFlowFirstSendingTimeZ3(ctx.mkReal(
+    						Float.toString(frag.getFlowFirstSendingTime())
+						));
+        				frag.setPacketSizeZ3(ctx.mkReal(
+    						Float.toString(frag.getPacketSize())
+						));
         			}
         		}
-        		((TSNSwitch) swt).toZ3(ctx, solver);
-        		((TSNSwitch) swt).loadZ3(ctx, solver);
+        		
+        		if(hasFlow) {
+        			((TSNSwitch) swt).toZ3(ctx, solver);
+        			((TSNSwitch) swt).loadZ3(ctx, solver);        			
+        		}
         	}
         }
-        
-    	/*
-    	for(Switch swt : this.getSwitches()) {
-    		if(swt instanceof TSNSwitch) {
-    			((TSNSwitch) swt).loadZ3(ctx, solver);    			
-    		}    		
-    	}
-    	*/
     	
     }
     
-    
+
+    public void preventCollisionOnFirstHop(Solver solver, Context context) {
+        List<Flow> listOfFlows = null;
+
+        for(Device dev : this.devices){
+            listOfFlows = new ArrayList<Flow>();
+
+            for(Flow flow : this.flows){
+
+                if(flow.getStartDevice().getName().equals(dev.getName())){
+                    listOfFlows.add(flow);
+                }
+
+            }
+
+            this.assertRulesForCollisionPrevention(listOfFlows, solver, context);
+
+        }
+
+    }
+
+    private void assertRulesForCollisionPrevention(List<Flow> listOfFlows, Solver solver, Context ctx) {
+
+        double currentPortSpeed = -1;
+
+        if(listOfFlows.size() > 1){
+
+            currentPortSpeed =
+                    ((TSNSwitch) listOfFlows // From the list of flows
+                    .get(0)                  // give me the first one
+                    .getPathTree()           // and give me its path tree
+                    .getRoot()               // so I can get the source of the flow
+                    .getChildren()           // and the first hops from the source
+                    .get(0)                  // Since one flow connects to one device, give me the node device it talks to
+                    .getNode())              // and get the object of that node, converting it to a tsnswitch
+                    .getPortOf(listOfFlows.get(0).getStartDevice().getName()) // Now give me the port that the source device talks to
+                    .getPortSpeed();         // and from the port, give me the speed.
+        } else {
+            return;
+        }
+
+        boolean notUsingCustomValues = false;
+        for(Flow flowA : listOfFlows) {
+            notUsingCustomValues = notUsingCustomValues || !flowA.getUseCustomValues();
+        }
+
+        if(notUsingCustomValues){
+            System.out.println("ALERT: Multiple flows with the same source device (" + listOfFlows.get(0).getStartDevice().getName() + "), and one or more of them has no custom values. Their first sending time will be made a variable.");
+
+            for(Flow flowA : listOfFlows) {
+                flowA.setFlowFirstSendingTime(-1);
+            }
+
+        }
+
+        List<FlowFragment> listOfFragments = this.getFragmentsOfFirstHop(listOfFlows);
+
+        for(FlowFragment fragA : listOfFragments) {
+
+            for(int i = 0; i < fragA.getNumOfPacketsSent(); i++) {
+
+                for(FlowFragment fragB : listOfFragments) {
+
+                    for(int j = 0; j < fragB.getNumOfPacketsSent(); j++) {
+
+                        if(fragA.getParent().getName().equals(fragB.getParent().getName())){
+                            continue;
+                        }
+
+                        solver.add(
+                            ctx.mkOr(
+                                ctx.mkGe(
+                                    fragA.getPort().departureTime(ctx, i, fragA),
+                                    ctx.mkAdd(
+                                        fragB.getPort().departureTime(ctx, j, fragB),
+                                        ctx.mkDiv(
+                                            fragA.getPacketSizeZ3(),
+                                            ctx.mkReal(Double.toString(currentPortSpeed))
+                                        )
+                                    )
+                                ),
+                                ctx.mkGe(
+                                    fragB.getPort().departureTime(ctx, i, fragB),
+                                    ctx.mkAdd(
+                                        fragA.getPort().departureTime(ctx, j, fragA),
+                                        ctx.mkDiv(
+                                            fragB.getPacketSizeZ3(),
+                                            ctx.mkReal(Double.toString(currentPortSpeed))
+                                        )
+                                    )
+                                )
+                            )
+                        );
+
+                        /* FOR DEBUGGING PURPOSES
+                        System.out.println(
+                            ctx.mkOr(
+                                    ctx.mkGe(
+                                            fragA.getPort().departureTime(ctx, i, fragA),
+                                            ctx.mkAdd(
+                                                    fragB.getPort().departureTime(ctx, j, fragB),
+                                                    ctx.mkDiv(
+                                                            fragA.getPacketSizeZ3(),
+                                                            ctx.mkReal(Double.toString(currentPortSpeed))
+                                                    )
+                                            )
+                                    ),
+                                    ctx.mkGe(
+                                            fragB.getPort().departureTime(ctx, i, fragB),
+                                            ctx.mkAdd(
+                                                    fragA.getPort().departureTime(ctx, j, fragA),
+                                                    ctx.mkDiv(
+                                                            fragB.getPacketSizeZ3(),
+                                                            ctx.mkReal(Double.toString(currentPortSpeed))
+                                                    )
+                                            )
+                                    )
+                            )
+                        );
+                        /**/
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        /*
+        for(Flow flowA : listOfFlows) {
+
+            for(Flow flowB : listOfFlows) {
+
+                if(flowA.getName().equals(flowB.getName())){
+                    continue;
+                }
+
+                // THE PACKET LEAVES AFTER THE TRANSMISSION OF ANOTHER CONFLICTING PACKET
+                // OR THE PACKET IS TRANSMITTED BEFORE THE TRANSMISSION OF ANOTHER
+                solver.add(
+                    ctx.mkOr(
+                        ctx.mkGe(
+                            flowA.getFlowFirstSendingTimeZ3(),
+                            ctx.mkAdd(
+                                flowB.getFlowFirstSendingTimeZ3(),
+                                ctx.mkDiv(
+                                    flowA.getPacketSizeZ3(),
+                                    ctx.mkReal(String.valueOf(currentPortSpeed))
+                                )
+                            )
+                        ),
+                        ctx.mkGe(
+                            flowB.getFlowFirstSendingTimeZ3(),
+                            ctx.mkAdd(
+                                flowA.getFlowFirstSendingTimeZ3(),
+                                ctx.mkDiv(
+                                    flowB.getPacketSizeZ3(),
+                                    ctx.mkReal(String.valueOf(currentPortSpeed))
+                                )
+                            )
+                        )
+                    )
+                );
+                System.out.println(ctx.mkOr(
+                        ctx.mkGe(
+                                flowA.getFlowFirstSendingTimeZ3(),
+                                ctx.mkAdd(
+                                        flowB.getFlowFirstSendingTimeZ3(),
+                                        ctx.mkDiv(
+                                                flowB.getPacketSizeZ3(),
+                                                ctx.mkReal(String.valueOf(currentPortSpeed))
+                                        )
+                                )
+                        ),
+                        ctx.mkLe(
+                                flowA.getFlowFirstSendingTimeZ3(),
+                                ctx.mkAdd(
+                                        flowB.getFlowFirstSendingTimeZ3(),
+                                        ctx.mkDiv(
+                                                flowB.getPacketSizeZ3(),
+                                                ctx.mkReal(String.valueOf(currentPortSpeed))
+                                        )
+                                )
+                        )
+                ));
+
+            }
+
+        }
+
+         */
+
+
+    }
+
+    private List<FlowFragment> getFragmentsOfFirstHop(List<Flow> flowList) {
+        List<FlowFragment> flowFragList = new ArrayList<FlowFragment>();
+
+        for(Flow flow : flowList){
+
+            for(PathNode node : flow.getPathTree().getRoot().getChildren()){
+                for(FlowFragment frag : node.getFlowFragments()) {
+                    flowFragList.add(frag);
+                }
+            }
+
+        }
+
+        return flowFragList;
+    }
+
+    public void assertFirstSendingTimeOfFlows(Solver solver, Context ctx) {
+
+        for(Flow flow : this.flows) {
+            flow.assertFirstSendingTime(solver, ctx);
+        }
+
+    }
+
     /*
      * GETTERS AND SETTERS
      */
+    
+    public Switch getSwitch(String name) {
+    	Switch swt = null;
+    	
+    	for(Switch auxSwt : this.switches) {
+    		if(auxSwt.getName().equals(name)) {
+    			swt = auxSwt;
+    			break;
+    		}
+    	}
+    	
+    	return swt;
+    }
     
     public RealExpr getJitterUpperBoundRangeZ3() {
         return jitterUpperBoundRangeZ3;
@@ -327,4 +611,38 @@ public class Network implements Serializable {
         this.switches.add(swt);
     }
     
+	public void addDevice(Device dev) {
+		this.devices.add(dev);
+	}
+	
+	public ArrayList<Device> getDevices(){
+		return this.devices;
+	}
+	
+	public Device getDevice(String name) { 
+		for(Device dev : this.devices) {
+			if(dev.getName().equals(name)) {
+				return dev;
+			}
+		}
+		
+		return null;
+	}
+
+	public Boolean getHasBeenModified() {
+		return hasBeenModified;
+	}
+	
+
+    public float getJitterUpperBoundRange() {
+		return jitterUpperBoundRange;
+	}
+
+
+	public void setJitterUpperBoundRange(float jitterUpperBoundRange) {
+		this.jitterUpperBoundRange = jitterUpperBoundRange;
+	}
+
+
+
 }

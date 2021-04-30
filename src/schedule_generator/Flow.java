@@ -1,3 +1,22 @@
+//TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
+//
+//    Copyright (C) 2021  Aellison Cassimiro
+//    
+//    TSNsched is licensed under the GNU GPL version 3 or later:
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package schedule_generator;
 
 import java.io.Serializable;
@@ -10,43 +29,43 @@ import com.microsoft.z3.*;
 
 /**
  * [Class]: Flow
- * [Usage]: This class specifies a flow (or a stream, in other
+ * [Usage]: This class specifies a flow (or a stream, in other 
  * words) of packets from one source to one or multiple destinations.
- * It contains references for all the data related to this flow,
+ * It contains references for all the data related to this flow, 
  * including path, timing, packet properties and so on and so forth.
  * The flows can be unicast type or publish subscribe type flows.
- *
+ * 
  */
 
 public class Flow implements Serializable {
 
-    // TODO: CHECK FUNCTIONS FOR UNICAST FLOWS
+	// TODO: CHECK FUNCTIONS FOR UNICAST FLOWS
 
-    private Boolean isModifiedOrCreated = false;
+	private Boolean isModifiedOrCreated = false;
 
-    private static final long serialVersionUID = 1L;
-    static int instanceCounter = 0;
-    private int instance = 0;
+	private static final long serialVersionUID = 1L;
+	static int instanceCounter = 0;
+	private int instance = 0;
 
-
-
-    protected String name;
+    
+    
+	protected String name;
     private int type = 0;
     private int totalNumOfPackets = 0;
-
+    
     private boolean fixedPriority = false;
     private int priorityValue = -1;
 
-    //Specifying the type of the flow:
+	//Specifying the type of the flow:
     public static int UNICAST = 0;
     public static int PUBLISH_SUBSCRIBE = 1;
-
-
-
+    
+    
+    
     private ArrayList<Switch> path;
     private ArrayList<FlowFragment> flowFragments;
     private PathTree pathTree;
-
+    
     protected int pathTreeCount = 0;
 
     protected transient IntExpr flowPriority; // In the future, priority might be fixed
@@ -63,26 +82,28 @@ public class Flow implements Serializable {
 
     private boolean useCustomValues = false;
 
-    /**
+    private float flowJitter; 
+    
+	/**
      * [Method]: Flow
      * [Usage]: Default constructor method for flow objects.
      * Must be explicit due to call on child class.
      */
     public Flow() {
-
+        
     }
-
-
+    
+    
     /**
      * [Method]: Flow
      * [Usage]: Overloaded constructor method of a flow.
      * Specifies the type of the flow.
-     *
+     * 
      * @param type      Value specifying the type of the flow (0 - Unicast; 1 - Publish subscribe)
      */
     public Flow(int type) {
         instanceCounter++;
-
+        
         this.instance = instanceCounter;
         this.name = "flow" + Integer.toString(instanceCounter);
 
@@ -99,11 +120,31 @@ public class Flow implements Serializable {
             instanceCounter--;
             //[TODO]: Throw error
         }
-
-
-
+   
     }
 
+    public Flow(String name, int type) {
+        instanceCounter++;
+        
+        this.instance = instanceCounter;
+        this.name = name;
+
+        if(type == UNICAST) {
+            //Its not a unicast flow
+            this.type = 0;
+            path = new ArrayList<Switch>();
+            flowFragments = new ArrayList<FlowFragment>();
+        } else if (type == PUBLISH_SUBSCRIBE) {
+            //Its a publish subscribe flow
+            this.type = 1;
+            pathTree = new PathTree();
+        } else {
+            instanceCounter--;
+            //[TODO]: Throw error
+        }
+   
+    }
+    
     /**
      * [Method]: Flow
      * [Usage]: Overloaded constructor method of a flow.
@@ -137,25 +178,71 @@ public class Flow implements Serializable {
 
     }
 
+    public Flow(String name, int type, float flowFirstSendingTime, float flowSendingPeriodicity) {
+        instanceCounter++;
+        this.instance = instanceCounter;
+        this.name = name;
 
-    /**
+        if(type == UNICAST) {
+            //Its not a unicast flow
+            this.type = 0;
+            path = new ArrayList<Switch>();
+            flowFragments = new ArrayList<FlowFragment>();
+        } else if (type == PUBLISH_SUBSCRIBE) {
+            //Its a publish subscribe flow
+            this.type = 1;
+            pathTree = new PathTree();
+        } else {
+            instanceCounter--;
+            //[TODO]: Throw error
+        }
+
+        this.flowFirstSendingTime = flowFirstSendingTime;
+        this.flowSendingPeriodicity = flowSendingPeriodicity;
+
+        this.useCustomValues = true;
+
+    }
+
+	/**
      * [Method]: addToPath
      * [Usage]: Adds a switch to the path of switches of the flow
-     *
+     * 
      * @param swt   Switch to be added to the list
      */
     public void addToPath(TSNSwitch swt) {
         path.add(swt);
     }
-
+    
+    public void addToPath(Object source, Object destination) {
+    	
+    	if(this.pathTree == null) {
+    		this.pathTree = new PathTree();
+    		PathNode pathNode;
+    		pathNode = this.pathTree.addRoot((Device) source);
+    		pathNode = pathNode.addChild((TSNSwitch) destination);
+    	} else {
+    		String nameOfSource = (source instanceof Device? ((Device) source).getName(): ((TSNSwitch) source).getName());
+    		
+    		PathNode pathNode = pathTree.searchNode(nameOfSource, pathTree.getRoot());
+    		
+    		if(pathNode == null) {
+    			System.out.println("[ERROR] SPECIFIED SOURCE NODE " + nameOfSource + " NOT FOUND IN TREE OF FLOW");
+    		} else {
+    			pathNode.addChild(destination);
+    		}	
+    	}
+    	
+    }
+    
     /**
      * [Method]: convertUnicastFlows
      * [Usage]: Most of the unicast functionalities are not supported anymore.
      * At the beginning of the scheduling process, convert the to a multicast
      * structure without a branching path.
-     *
+     * 
      */
-
+    
     public void convertUnicastFlow() {
         // AVOID USING THE ARRAY LIST
         // TODO: REMOVE OPTION TO DISTINGUISH BETWEEN UNICAST AND MULTICAST LATER
@@ -164,7 +251,7 @@ public class Flow implements Serializable {
 
             PathTree pathTree = new PathTree();
             PathNode pathNode;
-            pathNode = pathTree.addRoot(this.startDevice);
+            pathNode = pathTree.addRoot(this.startDevice);            
             pathNode = pathNode.addChild(path.get(0));
             nodeList = new LinkedList<PathNode>();
             nodeList.add(pathNode);
@@ -174,7 +261,7 @@ public class Flow implements Serializable {
             nodeList.getFirst().addChild(this.endDevice);
             nodeList.removeFirst();
             this.setPathTree(pathTree);
-
+            
             this.type = PUBLISH_SUBSCRIBE;
         }
     }
@@ -185,7 +272,7 @@ public class Flow implements Serializable {
      * [Usage]: After setting all the numeric input values of the class,
      * generates the z3 equivalent of these values and creates any extra
      * variable needed.
-     *
+     * 
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx) {
@@ -193,18 +280,18 @@ public class Flow implements Serializable {
         if(this.type == UNICAST) { // If flow is unicast
             // Convert start device to z3
             startDevice.toZ3(ctx);
-
+            
             /*
-             * Iterate over the switches in the path. For each switch,
+             * Iterate over the switches in the path. For each switch, 
              * a flow fragment will be created.
              */
-
+            
             int currentSwitchIndex = 0;
             for (Switch swt : this.path) {
                 this.pathToZ3(ctx, swt, currentSwitchIndex);
                 currentSwitchIndex++;
             }
-
+            
         } else if (this.type == PUBLISH_SUBSCRIBE) { // If flow is publish subscribe
             /*
              * Converts the properties of the root to z3 and traverse the tree
@@ -216,31 +303,35 @@ public class Flow implements Serializable {
             this.startDevice.toZ3(ctx);
 
 
-
+            
             if(this.priorityValue < 0 || this.priorityValue > 7) {
-                this.flowPriority = ctx.mkIntConst(this.name + "Priority");
+            	this.flowPriority = ctx.mkIntConst(this.name + "Priority");
             } else {
-                this.flowPriority = ctx.mkInt(this.priorityValue);
+            	this.flowPriority = ctx.mkInt(this.priorityValue);
             }
 
+            this.flowFirstSendingTimeZ3 = ctx.mkRealConst("flow" + this.instance + "FirstSendingTime");
 
             if(this.useCustomValues) {
                 this.flowSendingPeriodicityZ3 = ctx.mkReal(Float.toString(this.flowSendingPeriodicity));
-
+                /*
                 if(this.flowFirstSendingTime >= 0){
                     this.flowFirstSendingTimeZ3 = ctx.mkReal(Float.toString(this.flowFirstSendingTime));
                 } else {
                     this.flowFirstSendingTimeZ3 = ctx.mkRealConst("flow" + this.instance + "FirstSendingTime");
                 }
+                */
             } else {
-                this.flowFirstSendingTimeZ3 = this.startDevice.getFirstT1TimeZ3();
+                //this.flowFirstSendingTimeZ3 = this.startDevice.getFirstT1TimeZ3();
                 this.flowSendingPeriodicityZ3 = this.startDevice.getPacketPeriodicityZ3();
             }
 
+            //System.out.println("On flow " + this.name + " - " + this.flowSendingPeriodicityZ3 + "; " + this.flowFirstSendingTimeZ3 );
+
             this.nodeToZ3(ctx, this.pathTree.getRoot(), null);
-
+            
         }
-
+       
     }
 
     /**
@@ -257,6 +348,14 @@ public class Flow implements Serializable {
         FlowFragment flowFrag = null;
         int numberOfPackets = Network.PACKETUPPERBOUNDRANGE;
 
+        /*
+        System.out.println("On node " +
+                (node.getNode() instanceof Device ?
+                ((Device) node.getNode()).getName() :
+                ((TSNSwitch) node.getNode()).getName())
+        );
+        */
+
         // If, by chance, the given node has no child, then its a leaf
         if(node.getChildren().size() == 0) {
             //System.out.println("On flow " + this.name + " leaving on node " + ((Device) node.getNode()).getName());
@@ -265,6 +364,14 @@ public class Flow implements Serializable {
 
         // Iterate over node's children
         for(PathNode auxN : node.getChildren()) {
+
+            // If child is a device, then its a leaf. Do nothing
+            /*
+            if(auxN.getNode() instanceof Device) {
+                System.out.println("On flow " + this.name + " leaving on node " + ((Device) auxN.getNode()).getName());
+                continue;
+            }
+            */
 
             // For each grand children of the current child node
             for(PathNode n : auxN.getChildren()) {
@@ -292,14 +399,21 @@ public class Flow implements Serializable {
                     flowFrag.setNodeName(((Switch)auxN.getNode()).getName());
 
                     for (int i = 0; i < numberOfPackets; i++) {
-                        
+                        /*
+                        flowFrag.setDepartureTimeZ3(
+                            this.startDevice.getFirstT1TimeZ3(),
+                            i
+                        );
+                        */
+
+                        /**/
                         flowFrag.addDepartureTimeZ3(
                                 (RealExpr) ctx.mkAdd(
                                         this.flowFirstSendingTimeZ3,
                                         ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
                                 )
                         );
-                        
+                        /**/
                     }
 
 
@@ -338,7 +452,7 @@ public class Flow implements Serializable {
 
                 for (int i = 0; i<flowFrag.getNumOfPacketsSent(); i++){
                     flowFrag.addScheduledTimeZ3(
-                        flowFrag.getPort().scheduledTime(ctx, i, flowFrag)
+                            flowFrag.getPort().scheduledTime(ctx, i, flowFrag)
                     );
                 }
 
@@ -363,6 +477,7 @@ public class Flow implements Serializable {
             }
 
             // Recursively repeats process to children
+            // System.out.println("Calling node: " + (auxN.getNode() instanceof Device ? ((Device) auxN.getNode()).getName() : ((TSNSwitch) auxN.getNode()).getName()));
             FlowFragment nextFragment = this.nodeToZ3(ctx, auxN, flowFrag);
 
 
@@ -375,12 +490,15 @@ public class Flow implements Serializable {
     }
 
 
+
+
+
     /**
      * [Method]: pathToZ3
      * [Usage]: On a unicast flow, the path is a simple ArrayList.
      * Each switch in the path will be given as a parameter for this function
      * so a flow fragment for each hop on the path can be created.
-     *
+     * 
      * @param ctx                   Context variable containing the z3 environment used
      * @param swt                   Switch of the current flow fragment
      * @param currentSwitchIndex    Index of the current switch in the path on the iteration
@@ -388,57 +506,57 @@ public class Flow implements Serializable {
     public void pathToZ3(Context ctx, Switch swt, int currentSwitchIndex) {
         // Flow fragment is created
         FlowFragment flowFrag = new FlowFragment(this);
-
+        
         /*
          * If this flow fragment is the same on the fragment list, then
          * this fragment departure time = source device departure time. Else,
          * this fragment departure time = last fragment scheduled time.
          */
-        if(flowFragments.size() == 0) {
+        if(flowFragments.size() == 0) { 
             // If no flowFragment has been added to the path, flowPriority is null, so initiate it
             //flowFrag.setNodeName(this.startDevice.getName());
             for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
                 flowFrag.addDepartureTimeZ3( // Packet departure constraint
-                        (RealExpr) ctx.mkAdd(
-                                this.flowFirstSendingTimeZ3,
-                                ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
-                        )
+                    (RealExpr) ctx.mkAdd(
+                        this.flowFirstSendingTimeZ3,
+                        ctx.mkReal(Float.toString(this.flowSendingPeriodicity * i))
+                    )
                 );
             }
-        } else {
+        } else { 
             for (int i = 0; i < Network.PACKETUPPERBOUNDRANGE; i++) {
                 flowFrag.addDepartureTimeZ3(
-                        ((TSNSwitch) path.get(currentSwitchIndex - 1)).scheduledTime(ctx, i, flowFragments.get(flowFragments.size() - 1))
+                    ((TSNSwitch) path.get(currentSwitchIndex - 1)).scheduledTime(ctx, i, flowFragments.get(flowFragments.size() - 1))
                 );
             }
-        }
-        flowFrag.setNodeName(((TSNSwitch) path.get(currentSwitchIndex)).getName());
-
+        } 
+        flowFrag.setNodeName(((TSNSwitch) path.get(currentSwitchIndex)).getName());            
+        
         // Setting extra flow properties
         flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority"));
         flowFrag.setPacketPeriodicityZ3(this.flowSendingPeriodicityZ3);
         flowFrag.setPacketSizeZ3(startDevice.getPacketSizeZ3());
 
         /*
-         * If index of current switch = last switch in the path, then
+         * If index of current switch = last switch in the path, then 
          * next hop will be to the end device, else, next hop will be to
          * the next switch in the path.
          */
-
+        
         if((path.size() - 1) == currentSwitchIndex) {
             flowFrag.setNextHop(this.endDevice.getName());
         } else {
             flowFrag.setNextHop(
-                    path.get(currentSwitchIndex + 1).getName()
+                path.get(currentSwitchIndex + 1).getName()
             );
         }
-
+        
         /*
-         * The newly created fragment is added to both the switch
-         * (on the list of fragments that go through it) and to
+         * The newly created fragment is added to both the switch 
+         * (on the list of fragments that go through it) and to 
          * the flow fragment list of this flow.
          */
-
+        
         ((TSNSwitch)swt).addToFragmentList(flowFrag);
         flowFragments.add(flowFrag);
     }
@@ -453,10 +571,10 @@ public class Flow implements Serializable {
 //                    System.out.println("On fragment " + frag.getName() + " making " + frag.getPort().scheduledTime(ctx, i, frag) + " = " + childFrag.getPort().departureTime(ctx, i, childFrag) + " that leads to " + childFrag.getPort().scheduledTime(ctx, i, childFrag)
 //                            + " on cycle of port " + frag.getPort().getCycle().getFirstCycleStartZ3());
                     solver.add(
-                        ctx.mkEq(
-                            frag.getPort().scheduledTime(ctx, i, frag),
-                            childFrag.getPort().departureTime(ctx, i, childFrag)
-                        )
+                            ctx.mkEq(
+                                    frag.getPort().scheduledTime(ctx, i, frag),
+                                    childFrag.getPort().departureTime(ctx, i, childFrag)
+                            )
                     );
                 }
 
@@ -478,12 +596,109 @@ public class Flow implements Serializable {
 
 
 
+    public void assertFirstSendingTime(Solver solver, Context ctx) {
+
+        float firstPortSpeed = ((TSNSwitch) this.pathTree
+                                    .getRoot()
+                                    .getChildren()
+                                    .get(0)
+                                    .getNode())
+                                    .getPortOf(this.getStartDevice().getName())
+                                    .getPortSpeed();
+
+        RealExpr firstPortCycleStart = ((TSNSwitch) this.pathTree
+                .getRoot()
+                .getChildren()
+                .get(0)
+                .getNode())
+                .getPortOf(this.getStartDevice().getName())
+                .getCycle()
+                .getFirstCycleStartZ3();
+
+        float firstPortCycleDuration = getFirstHopCycleDuration();
+
+        if(this.getPacketSize()/firstPortSpeed >= this.flowFirstSendingTime && (this.flowFirstSendingTime>=0)){
+            System.out.println("Alert: First packet of flow " + this.name + " must have enough time to leave source. Making first sending time a variable.");
+            this.flowFirstSendingTime = -1;
+        }
+
+
+        if((this.useCustomValues && this.flowFirstSendingTime > 0) || this.flowFirstSendingTime >= 0){
+            System.out.println("Alert: " + this.name + " Assert first sending time to " + this.flowFirstSendingTime);
+
+            solver.add(
+                ctx.mkEq(
+                    this.flowFirstSendingTimeZ3,
+                    ctx.mkReal(Float.toString(this.flowFirstSendingTime))
+                )
+            );
+
+            return;
+        }
+
+        /**/
+        //System.out.println(
+        solver.add(
+            ctx.mkGe(
+                this.flowFirstSendingTimeZ3,
+                ctx.mkReal(Float.toString(this.getPacketSize()/firstPortSpeed))
+                //ctx.mkReal(Float.toString(0))
+            )
+        );
+        /**/
+
+        /**/
+        //System.out.println(
+        solver.add(
+            ctx.mkLe(
+                this.flowFirstSendingTimeZ3,
+                ctx.mkSub(
+                    ctx.mkAdd(
+                            firstPortCycleStart,
+                            ctx.mkReal(Float.toString(firstPortCycleDuration))
+                    ),
+                    ctx.mkReal(Float.toString(this.getPacketSize()/firstPortSpeed))
+                )
+            )
+        );
+        /**/
+
+
+    }
+
+    public float getFirstHopCycleDuration(){
+        PathNode firstNode = this.pathTree
+                .getRoot()
+                .getChildren()
+                .get(0);
+
+        float cycleDuration = ((TSNSwitch) firstNode
+                .getNode())
+                .getPortOf(this.getStartDevice().getName())
+                .getCycle()
+                .getCycleDuration();
+
+        if(cycleDuration == 0){
+
+            for(FlowFragment frag : firstNode.getFlowFragments()){
+                float currentCycleDuration = frag.getPort().getCycle().getCycleDuration();
+                if(cycleDuration == 0 || cycleDuration > currentCycleDuration){
+                    cycleDuration = currentCycleDuration;
+                }
+            }
+
+        }
+        return cycleDuration;
+
+    }
+
+
     /**
      * [Method]: getFlowFromRootToNode
      * [Usage]: Given an end device of a publish subscriber flow, or in other
      * words, a leaf in the pathTree, returns the flow fragments used to go from
      * the root to the leaf.
-     *
+     * 
      * @param endDevice     End device (leaf) of the desired path
      * @return              ArrayList of flow fragments containing every flow fragment from source to destination
      */
@@ -491,51 +706,51 @@ public class Flow implements Serializable {
         ArrayList<FlowFragment> flowFragments = new ArrayList<FlowFragment>();
         ArrayList<Device> flowEndDevices = new ArrayList<Device>();
         PathNode auxNode = null;
-
-
+        
+        
         // Iterate over leaves, get reference to the leaf of end device
         for(PathNode node : this.pathTree.getLeaves()) {
             flowEndDevices.add((Device) node.getNode());
-
+            
             if((node.getNode() instanceof Device) &&
-                    ((Device) node.getNode()).getName().equals(endDevice.getName())) {
+               ((Device) node.getNode()).getName().equals(endDevice.getName())) {
                 auxNode = node;
             }
-        }
-
+        } 
+        
         // If no leaf contains the desired end device, throw error returns null
         if(!flowEndDevices.contains(endDevice)) {
             // TODO [Priority: Low]: Throw error
             return null;
         }
-
+        
         // Goes from parent to parent adding flowFragments to the list
         while(auxNode.getParent().getParent() != null) {
             flowFragments.add(
-                    auxNode.getParent().getFlowFragments().get(
-                            auxNode.getParent().getChildren().indexOf(auxNode)
-                    )
+                auxNode.getParent().getFlowFragments().get(
+                    auxNode.getParent().getChildren().indexOf(auxNode)
+                )
             );
-
+            
             auxNode = auxNode.getParent();
         }
-
+        
         /*
          * Since the fragments were added from end device to start device,
          * reverse array list.
          */
-
+        
         Collections.reverse(flowFragments);
-
+        
         return flowFragments;
     }
-
+    
     /**
      * [Method]: getNodesFromRootToNode
      * [Usage]: Given an end device of a publish subscriber flow, or in other
      * words, a leaf in the pathTree, returns the nodes of the path used to go from
      * the root to the leaf.
-     *
+     * 
      * @param endDevice     End device (leaf) of the desired path
      * @return              ArrayList of nodes containing every node from source to destination
      */
@@ -543,106 +758,106 @@ public class Flow implements Serializable {
         ArrayList<PathNode> pathNodes = new ArrayList<PathNode>();
         ArrayList<Device> flowEndDevices = new ArrayList<Device>();
         PathNode auxNode = null;
-
+        
         // Iterate over leaves, get reference to the leaf of end device
         for(PathNode node : this.pathTree.getLeaves()) {
             flowEndDevices.add((Device) node.getNode());
             if((node.getNode() instanceof Device) &&
-                    ((Device) node.getNode()).getName().equals(endDevice.getName())) {
+               ((Device) node.getNode()).getName().equals(endDevice.getName())) {
                 auxNode = node;
             }
-        }
-
+        } 
+        
         // If no leaf contains the desired end device, throw error returns null
         if(!flowEndDevices.contains(endDevice)) {
             // TODO [Priority: Low]: Throw error
             return null;
         }
-
+        
         // Goes from parent to parent adding nodes to the list
         while(auxNode != null) {
             pathNodes.add(auxNode);
-
+            
             auxNode = auxNode.getParent();
         }
-
+        
         /*
          * Since the nodes were added from end device to start device,
          * reverse array list.
          */
-
+        
         Collections.reverse(pathNodes);
-
+        
         return pathNodes;
     }
-
-
+    
+    
     /**
      * [Method]: getDepartureTime
      * [Usage]: On a unicast flow, returns the departure time
-     * of a certain packet in a certain hop specified by the
+     * of a certain packet in a certain hop specified by the 
      * parameters.
-     *
+     * 
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
      * @return              Departure time of the specific packet
      */
     public float getDepartureTime(int hop, int packetNum) {
         float time;
-
-
+        
+        
         time = this.getFlowFragments().get(hop).getDepartureTime(packetNum);
-
+        
         return time;
     }
-
-
+    
+    
     /**
      * [Method]: setUpPeriods
-     * [Usage]: Iterate over the switches in the path of the flow.
+     * [Usage]: Iterate over the switches in the path of the flow. 
      * Adds its periodicity to the periodicity list in the switch.
      * This will be used for the automated application cycles.
      */
-
+    
     public void setUpPeriods(PathNode node) {
-        if(node.getChildren().isEmpty()) {
-            return;
-        } else if (node.getNode() instanceof Device) {
-            for(PathNode child : node.getChildren()) {
-                this.setUpPeriods(child);
-            }
-        } else {
-            TSNSwitch swt = (TSNSwitch) node.getNode(); //no good. Need the port
-            Port port = null;
-
-            for(PathNode child : node.getChildren()) {
-                if(child.getNode() instanceof Device) {
-                    port = swt.getPortOf(((Device) child.getNode()).getName());
-                    this.setUpPeriods(child);
-                } else if (child.getNode() instanceof TSNSwitch) {
-                    port = swt.getPortOf(((TSNSwitch) child.getNode()).getName());
-                    this.setUpPeriods(child);
-                } else {
-                    System.out.println("Unrecognized node");
-                    return;
+    	if(node.getChildren().isEmpty()) {
+			return;
+    	} else if (node.getNode() instanceof Device) {
+    		for(PathNode child : node.getChildren()) {
+    			this.setUpPeriods(child);
+    		}
+    	} else {
+    		TSNSwitch swt = (TSNSwitch) node.getNode(); //no good. Need the port
+    		Port port = null;
+    		
+    		for(PathNode child : node.getChildren()) {
+    			if(child.getNode() instanceof Device) {
+        			port = swt.getPortOf(((Device) child.getNode()).getName());    	
+    				this.setUpPeriods(child);			
+    			} else if (child.getNode() instanceof TSNSwitch) {
+        			port = swt.getPortOf(((TSNSwitch) child.getNode()).getName());  
+    				this.setUpPeriods(child);
+    			} else {
+    				System.out.println("Unrecognized node");
+    				return;
+    			}
+    			
+    			if(!port.getListOfPeriods().contains(this.flowSendingPeriodicity)) {
+    				port.addToListOfPeriods(this.flowSendingPeriodicity);
                 }
-
-                if(!port.getListOfPeriods().contains(this.flowSendingPeriodicity)) {
-                    port.addToListOfPeriods(this.flowSendingPeriodicity);
-                }
-            }
-
-        }
+    		}
+    		
+    	}
     }
-
-
+    
+    
     /**
      * [Method]: getDepartureTime
      * [Usage]: On a publish subscribe flow, returns the departure time
      * of a certain packet in a certain hop that reaches a certain device.
-     * The specifications of the packet and destination are given as
+     * The specifications of the packet and destination are given as 
      * parameters.
-     *
+     * 
      * @param deviceName    Name of the desired target device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -652,34 +867,34 @@ public class Flow implements Serializable {
         float time;
         Device targetDevice = null;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         for(Object node : this.pathTree.getLeaves()) {
             if(node instanceof Device) {
                 if(((Device) node).getName().equals(deviceName)) {
                     targetDevice = (Device) node;
                 }
             }
-
+            
         }
-
+        
         if(targetDevice == null) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getDepartureTime(packetNum);
-
+        
         return time;
     }
-
+    
     /**
      * [Method]: getDepartureTime
      * [Usage]: On a publish subscribe flow, returns the departure time
-     * of a certain packet in a certain hop that reaches a certain device.
-     * The specifications of the packet and destination are given as
+     * of a certain packet in a certain hop that reaches a certain device. 
+     * The specifications of the packet and destination are given as 
      * parameters.
-     *
+     * 
      * @param targetDevice  Object containing the desired end device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -688,45 +903,45 @@ public class Flow implements Serializable {
     public float getDepartureTime(Device targetDevice, int hop, int packetNum) {
         float time;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         if(!this.pathTree.getLeaves().contains(targetDevice)) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getDepartureTime(packetNum);
-
+        
         return time;
     }
-
-
+    
+    
     /**
      * [Method]: getArrivalTime
      * [Usage]: On a unicast flow, returns the arrival time
-     * of a certain packet in a certain hop specified by the
+     * of a certain packet in a certain hop specified by the 
      * parameters.
-     *
+     * 
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
      * @return              Arrival time of the specific packet
      */
     public float getArrivalTime(int hop, int packetNum) {
         float time;
-
+        
         time = this.getFlowFragments().get(hop).getArrivalTime(packetNum);
-
+        
         return time;
     }
-
-
+    
+    
     /**
      * [Method]: getArrivalTime
      * [Usage]: On a publish subscribe flow, returns the arrival time
      * of a certain packet in a certain hop that reaches a certain
-     * device. The specifications of the packet and destination are
+     * device. The specifications of the packet and destination are 
      * given as parameters.
-     *
+     * 
      * @param deviceName    Name of the desired target device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -736,35 +951,35 @@ public class Flow implements Serializable {
         float time;
         Device targetDevice = null;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         for(Object node : this.pathTree.getLeaves()) {
             if(node instanceof Device) {
                 if(((Device) node).getName().equals(deviceName)) {
                     targetDevice = (Device) node;
                 }
             }
-
+            
         }
-
+        
         if(targetDevice == null) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getArrivalTime(packetNum);
-
+        
         return time;
     }
-
-
+    
+    
     /**
      * [Method]: getArrivalTime
      * [Usage]: On a publish subscribe flow, returns the arrival time
-     * of a certain packet in a certain hop that reaches a certain device.
-     * The specifications of the packet and destination are given as
+     * of a certain packet in a certain hop that reaches a certain device. 
+     * The specifications of the packet and destination are given as 
      * parameters.
-     *
+     * 
      * @param targetDevice  Object containing the desired end device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -773,44 +988,44 @@ public class Flow implements Serializable {
     public float getArrivalTime(Device targetDevice, int hop, int packetNum) {
         float time;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         if(!this.pathTree.getLeaves().contains(targetDevice)) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getArrivalTime(packetNum);
-
+        
         return time;
     }
-
+    
     /**
      * [Method]: getScheduledTime
      * [Usage]: On a unicast flow, returns the scheduled time
-     * of a certain packet in a certain hop specified by the
+     * of a certain packet in a certain hop specified by the 
      * parameters.
-     *
+     * 
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
      * @return              Scheduled time of the specific packet
      */
     public float getScheduledTime(int hop, int packetNum) {
         float time;
-
+        
         time = this.getFlowFragments().get(hop).getScheduledTime(packetNum);
-
+        
         return time;
     }
-
-
+    
+    
     /**
      * [Method]: getScheduledTime
      * [Usage]: On a publish subscribe flow, returns the scheduled time
      * of a certain packet in a certain hop that reaches a certain
-     * device. The specifications of the packet and destination are
+     * device. The specifications of the packet and destination are 
      * given as parameters.
-     *
+     * 
      * @param deviceName    Name of the desired target device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -820,34 +1035,34 @@ public class Flow implements Serializable {
         float time;
         Device targetDevice = null;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         for(Object node : this.pathTree.getLeaves()) {
             if(node instanceof Device) {
                 if(((Device) node).getName().equals(deviceName)) {
                     targetDevice = (Device) node;
                 }
             }
-
+            
         }
-
+        
         if(targetDevice == null) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getScheduledTime(packetNum);
-
+        
         return time;
     }
-
+    
     /**
      * [Method]: getScheduledTime
      * [Usage]: On a publish subscribe flow, returns the scheduled time
-     * of a certain packet in a certain hop that reaches a certain device.
-     * The specifications of the packet and destination are given as
+     * of a certain packet in a certain hop that reaches a certain device. 
+     * The specifications of the packet and destination are given as 
      * parameters.
-     *
+     * 
      * @param targetDevice  Object containing the desired end device
      * @param hop           Number of the hop of the packet from the flow
      * @param packetNum     Number of the packet sent by the flow
@@ -856,29 +1071,29 @@ public class Flow implements Serializable {
     public float getScheduledTime(Device targetDevice, int hop, int packetNum) {
         float time;
         ArrayList<FlowFragment> auxFlowFragments;
-
+        
         if(!this.pathTree.getLeaves().contains(targetDevice)) {
             //TODO: Throw error
         }
-
+        
         auxFlowFragments = this.getFlowFromRootToNode(targetDevice);
-
+        
         time = auxFlowFragments.get(hop).getScheduledTime(packetNum);
-
+        
         return time;
     }
-
+    
     /**
      * [Method]: getAverageLatency
      * [Usage]: Returns the average latency from this flow.
-     * On a unicast flow, gets the last scheduled time of
+     * On a unicast flow, gets the last scheduled time of 
      * every packet and subtracts by the first departure
      * time of same packet, then divides by the quantity
      * of packets. A similar process is done with the pub-
      * sub flows, the difference is that the flow is broken
      * into multiple unicast flows to repeat the previously
      * mentioned process.
-     *
+     * 
      * @return          Average latency of the flow
      */
     public float getAverageLatency() {
@@ -886,148 +1101,161 @@ public class Flow implements Serializable {
         float auxAverageLatency = 0;
         int timeListSize = 0;
         Device endDevice = null;
-
+        
+        float firstTransmissionDelay = this.getPacketSize()/this.getFirstPortSpeed();
+        
         if (type == UNICAST) {
             timeListSize = this.getTimeListSize();
             for(int i = 0; i < timeListSize; i++) {
-                averageLatency +=
+                averageLatency += 
                         this.getScheduledTime(this.flowFragments.size() - 1, i) -
-                                this.getDepartureTime(0, i);
+                        this.getDepartureTime(0, i) + 
+                        firstTransmissionDelay;
             }
-
+            
             averageLatency = averageLatency / (timeListSize);
-
+            
         } else if(type == PUBLISH_SUBSCRIBE) {
-
+            
             for(PathNode node : this.pathTree.getLeaves()) {
                 timeListSize = this.pathTree.getRoot().getChildren().get(0).getFlowFragments().get(0).getArrivalTimeList().size();;
                 endDevice = (Device) node.getNode();
                 auxAverageLatency = 0;
-
+                
                 for(int i = 0; i < timeListSize; i++) {
-                    auxAverageLatency +=
+                    auxAverageLatency += 
                             this.getScheduledTime(endDevice, this.getFlowFromRootToNode(endDevice).size() - 1, i) -
-                                    this.getDepartureTime(endDevice, 0, i);
+                            this.getDepartureTime(endDevice, 0, i) + 
+                            firstTransmissionDelay;
                 }
-
+                
                 auxAverageLatency = auxAverageLatency/timeListSize;
-
+                
                 averageLatency += auxAverageLatency;
-
+                
             }
-
+            
             averageLatency = averageLatency / this.pathTree.getLeaves().size();
-
+            
         } else {
             // TODO: Throw error
             ;
         }
-
+        
         return averageLatency;
     }
-
+    
     public float getAverageLatencyToDevice(Device dev) {
         float averageLatency = 0;
         float auxAverageLatency = 0;
         Device endDevice = null;
-
+        
+        float firstTransmissionDelay = this.getPacketSize()/this.getFirstPortSpeed();
+        
         ArrayList<FlowFragment> fragments = this.getFlowFromRootToNode(dev);
-
-        for(int i = 0; i < fragments.get(0).getParent().getNumOfPacketsSent(); i++) {
-            averageLatency +=
+        
+        for(int i = 0; i < this.getNumOfPacketsSent(); i++) {
+            averageLatency += 
                     this.getScheduledTime(dev, fragments.size() - 1, i) -
-                            this.getDepartureTime(dev, 0, i);
+                    this.getDepartureTime(dev, 0, i) + 
+                    firstTransmissionDelay;
         }
-
-        averageLatency = averageLatency / (fragments.get(0).getParent().getNumOfPacketsSent());
-
-
+        
+        averageLatency = averageLatency / (this.getNumOfPacketsSent());
+        
+        
         return averageLatency;
     }
-
 
     /**
      * [Method]: getAverageJitter
      * [Usage]: Returns the average jitter of this flow.
      * Each absolute value resulting of the difference between
-     * the last scheduled time, the first departure time and the
+     * the last scheduled time, the first departure time and the 
      * average latency of the flow is added up to a variable.
      * The process is repeated to every packet sent by the starting
-     * device. This sum is then divided by how many packets where
+     * device. This sum is then divided by how many packets where 
      * sent.
-     *
+     * 
      * @return      Average jitter of the flow
      */
     public float getAverageJitter() {
         float averageJitter = 0;
         float auxAverageJitter = 0;
-        float averageLatency = this.getAverageLatency();
+        float averageLatency = this.getAverageLatency();   
         int timeListSize = 0;
-
+        
+        float firstTransmissionDelay = this.getPacketSize()/this.getFirstPortSpeed();
+        
         if (type == UNICAST) {
             timeListSize = this.getTimeListSize();
             for(int i = 0; i < timeListSize; i++) {
-                averageJitter +=
-                        Math.abs(
-                                this.getScheduledTime(this.flowFragments.size() - 1, i) -
-                                        this.getDepartureTime(0, i) -
-                                        averageLatency
-                        );
+                averageJitter += 
+                    Math.abs(
+                        this.getScheduledTime(this.flowFragments.size() - 1, i) -
+                        this.getDepartureTime(0, i) +
+                        firstTransmissionDelay -
+                        averageLatency
+                    );
             }
-
+            
             averageJitter = averageJitter / (timeListSize);
         } else if(type == PUBLISH_SUBSCRIBE) {
 
             for(PathNode node : this.pathTree.getLeaves()) {
-
+                
                 auxAverageJitter = this.getAverageJitterToDevice(((Device) node.getNode()));
                 averageJitter += auxAverageJitter;
-
+                
             }
-
+            
             averageJitter = averageJitter / this.pathTree.getLeaves().size();
         } else {
             // TODO: Throw error
             ;
         }
-
+        
         return averageJitter;
     }
-
-
+    
+    
     /**
      * [Method]: getAverageJitterToDevice
-     * [Usage]: From the path tree, retrieve the average jitter of
+     * [Usage]: From the path tree, retrieve the average jitter of 
      * the stream aimed at a specific device.
-     *
+     * 
      * @param dev 		Specific end-device of the flow to retrieve the jitter
      * @return			Float value of the variation of the latency
      */
     public float getAverageJitterToDevice(Device dev) {
         float averageJitter = 0;
-        float averageLatency = this.getAverageLatencyToDevice(dev);
+        float averageLatency = this.getAverageLatencyToDevice(dev);   
 
         ArrayList<FlowFragment> fragments = this.getFlowFromRootToNode(dev);
+        
+        float firstTransmissionDelay = this.getPacketSize()/this.getFirstPortSpeed();
 
-        for(int i = 0; i < fragments.get(0).getNumOfPacketsSent(); i++) {
-            averageJitter +=
+        //System.out.println( this.name + " average latency for " + dev.getName() + " of " + this.getAverageLatency());
+        
+        for(int i = 0; i < this.getNumOfPacketsSent(); i++) {
+            averageJitter += 
                     Math.abs(
-                            this.getScheduledTime(dev, this.getFlowFromRootToNode(dev).size() - 1, i) -
-                                    this.getDepartureTime(dev, 0, i) -
-                                    averageLatency
-                    );
+                        this.getScheduledTime(dev, this.getFlowFromRootToNode(dev).size() - 1, i) -
+                        this.getDepartureTime(dev, 0, i) + 
+                        firstTransmissionDelay - 
+                        averageLatency
+                    ); 
         }
-
-        averageJitter = averageJitter/fragments.get(0).getNumOfPacketsSent();
-
+        averageJitter = averageJitter/this.getNumOfPacketsSent();
+        
         return averageJitter;
     }
-
+    
     /**
      * [Method]: getLatency
-     * [Usage]: Gets the Z3 variable containing the latency
+     * [Usage]: Gets the Z3 variable containing the latency 
      * of the flow for a certain packet specified by the index.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
      * @param ctx       Z3 variable and function environment
      * @param index     Index of the desired packet
@@ -1036,35 +1264,38 @@ public class Flow implements Serializable {
     public RealExpr getLatencyZ3(Solver solver, Context ctx, int index) {
         //index += 1;
         RealExpr latency = ctx.mkRealConst(this.name + "latencyOfPacket" + index);
-
+        
         TSNSwitch lastSwitchInPath = ((TSNSwitch) this.path.get(path.size() - 1));
         FlowFragment lastFragmentInList = this.flowFragments.get(flowFragments.size() - 1);
-
+        
         TSNSwitch firstSwitchInPath = ((TSNSwitch) this.path.get(0));
         FlowFragment firstFragmentInList = this.flowFragments.get(0);
-
+        
+        RealExpr firstTransmissionDelay = ctx.mkRealConst(Float.toString(this.getPacketSize()/this.getFirstPortSpeed()));
+        
         solver.add(
-                ctx.mkEq(latency,
-                        ctx.mkSub(
-                                lastSwitchInPath
-                                        .getPortOf(lastFragmentInList.getNextHop())
-                                        .scheduledTime(ctx, index, lastFragmentInList),
-                                firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
-                                        .departureTime(ctx, index, firstFragmentInList)
-                        )
+            ctx.mkEq(latency, 
+                ctx.mkAdd( firstTransmissionDelay ,
+                		ctx.mkSub( lastSwitchInPath
+                			.getPortOf(lastFragmentInList.getNextHop())
+                        	.scheduledTime(ctx, index, lastFragmentInList),
+                        	firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
+                        	.departureTime(ctx, index, firstFragmentInList)
+                    )
                 )
+            )
         );
-
-
+        
+        
         return latency;
     }
-
+    
     /**
      * [Method]: getLatencyZ3
-     * [Usage]: Gets the Z3 variable containing the latency
+     * [Usage]: Gets the Z3 variable containing the latency 
      * of the flow for a certain packet specified by the index
      * for a certain device.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
      * @param dev       End device of the packet
      * @param ctx       Z3 variable and function environment
@@ -1074,54 +1305,59 @@ public class Flow implements Serializable {
     public RealExpr getLatencyZ3(Solver solver, Device dev, Context ctx, int index) {
         //index += 1;
         RealExpr latency = ctx.mkRealConst(this.name + "latencyOfPacket" + index + "For" + dev.getName());
-
+        
         ArrayList<PathNode> nodes = this.getNodesFromRootToNode(dev);
         ArrayList<FlowFragment> flowFrags = this.getFlowFromRootToNode(dev);
-
+        
         TSNSwitch lastSwitchInPath = ((TSNSwitch) nodes.get(nodes.size() - 2).getNode()); // - 1 for indexing, - 1 for last node being the end device
         FlowFragment lastFragmentInList = flowFrags.get(flowFrags.size() - 1);
-
+        
         TSNSwitch firstSwitchInPath = ((TSNSwitch) nodes.get(1).getNode()); // 1 since the first node is the publisher
         FlowFragment firstFragmentInList = flowFrags.get(0);
 
-        solver.add(ctx.mkEq(latency,
-                ctx.mkSub(
-                        lastSwitchInPath
-                                .getPortOf(lastFragmentInList.getNextHop())
-                                .scheduledTime(ctx, index, lastFragmentInList),
-                        firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
-                                .departureTime(ctx, index, firstFragmentInList)
+        RealExpr firstTransmissionDelay = ctx.mkRealConst(Float.toString(this.getPacketSize()/this.getFirstPortSpeed()));
+        
+        solver.add(
+            ctx.mkEq(latency, 
+                ctx.mkAdd( firstTransmissionDelay ,
+                		ctx.mkSub( lastSwitchInPath
+                			.getPortOf(lastFragmentInList.getNextHop())
+                        	.scheduledTime(ctx, index, lastFragmentInList),
+                        	firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
+                        	.departureTime(ctx, index, firstFragmentInList)
+                    )
                 )
-        ));
-
+            )
+        );
+        
         return latency;
     }
-
+    
     /**
      * [Method]: getSumOfLatencyZ3
      * [Usage]: Recursively creates values to sum the z3 latencies
      * of the flow from 0 up to a certain packet.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
      * @param ctx       Z3 variable and function environment
      * @param index     Index of the current packet in the sum
      * @return          Z3 variable containing sum of latency up to index packet
      */
     public RealExpr getSumOfLatencyZ3(Solver solver, Context ctx, int index) {
-
+        
         if(index == 0) {
             return getLatencyZ3(solver, ctx, 0);
         }
-
+        
         return (RealExpr) ctx.mkAdd(getLatencyZ3(solver, ctx, index), getSumOfLatencyZ3(solver, ctx, index - 1));
 
     }
-
+    
     /**
      * [Method]: getSumOfLatencyZ3
      * [Usage]: Recursively creates values to sum the z3 latencies
      * of the flow from 0 up to a certain packet for a certain device.
-     *
+     * 
      * @param dev       Destination of the packet
      * @param solver    Solver in which the rules of the problem will be added
      * @param ctx       Z3 variable and function environment
@@ -1132,161 +1368,161 @@ public class Flow implements Serializable {
         if(index == 0) {
             return getLatencyZ3(solver, dev, ctx, 0);
         }
-
+        
         return (RealExpr) ctx.mkAdd(getLatencyZ3(solver, dev, ctx, index), getSumOfLatencyZ3(dev, solver, ctx, index - 1));
     }
-
+    
     /**
      * [Method]: getSumOfAllDevLatencyZ3
      * [Usage]: Returns the sum of all latency for all destinations
      * of the flow for the [index] number of packets sent.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable containing the sum of all latencies of the flow
      */
     public RealExpr getSumOfAllDevLatencyZ3(Solver solver, Context ctx, int index) {
         RealExpr sumValue = ctx.mkReal(0);
         Device currentDev = null;
-
+        
         for(PathNode node : this.pathTree.getLeaves()) {
             currentDev = (Device) node.getNode();
-            sumValue = (RealExpr) ctx.mkAdd(this.getSumOfLatencyZ3(currentDev, solver, ctx, index), sumValue);
+            sumValue = (RealExpr) ctx.mkAdd(this.getSumOfLatencyZ3(currentDev, solver, ctx, index), sumValue);   
         }
-
+        
         return sumValue;
     }
-
+    
     /**
      * [Method]: getSumOfAllDevLatencyZ3
      * [Usage]: Returns the sum of all latency for all destinations
      * of the flow for the [index] number of packets sent.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @return          Z3 variable containing the average latency of the flow
      */
     public RealExpr getAvgLatency(Solver solver, Context ctx) {
         if(this.type == UNICAST) {
             return (RealExpr) ctx.mkDiv(
-                    getSumOfLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1),
-                    ctx.mkReal(this.numOfPacketsSentInFragment)
+                getSumOfLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1), 
+                ctx.mkReal(this.numOfPacketsSentInFragment)
             );
         } else if (this.type == PUBLISH_SUBSCRIBE) {
-            return (RealExpr) ctx.mkDiv(
-                    getSumOfAllDevLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1),
+                return (RealExpr) ctx.mkDiv(
+                    getSumOfAllDevLatencyZ3(solver, ctx, this.numOfPacketsSentInFragment - 1), 
                     ctx.mkReal((this.numOfPacketsSentInFragment) * this.pathTree.getLeaves().size())
-            );
+                );
         } else {
             // TODO: THROW ERROR
         }
-
+        
         return null;
     }
-
-
+    
+    
     /**
      * [Method]: getAvgLatency
      * [Usage]: Retrieves the average latency for one of the subscribers
      * of the flow.
-     *
+     * 
      * @param dev 		Subscriber to which the average latency will be calculated
-     * @param solver	Solver object
+     * @param solver	Solver object 
      * @param ctx		Context object for the solver
      * @return			z3 variable with the average latency for the device
      */
     public RealExpr getAvgLatency(Device dev, Solver solver, Context ctx) {
-
+        
         return (RealExpr) ctx.mkDiv(
-                this.getSumOfLatencyZ3(dev, solver, ctx, this.numOfPacketsSentInFragment - 1),
-                ctx.mkReal(this.numOfPacketsSentInFragment)
+            this.getSumOfLatencyZ3(dev, solver, ctx, this.numOfPacketsSentInFragment - 1), 
+            ctx.mkReal(this.numOfPacketsSentInFragment)
         );
-
-    }
-
+        
+     }
+    
     /**
      * [Method]: getJitterZ3
      * [Usage]: Returns the z3 variable containing the jitter of that
      * packet.
-     *
-     *
+     * 
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable for the jitter of packet [index]
      */
     public RealExpr getJitterZ3(Solver solver, Context ctx, int index) {
         RealExpr avgLatency = this.getAvgLatency(solver, ctx);
         RealExpr latency = this.getLatencyZ3(solver, ctx, index);
-
+        
         return (RealExpr) ctx.mkITE(
                 ctx.mkGe(
-                        latency,
-                        avgLatency
-                ),
+                    latency, 
+                    avgLatency
+                ), 
                 ctx.mkSub(latency , avgLatency),
                 ctx.mkMul(
-                        ctx.mkSub(latency , avgLatency),
-                        ctx.mkReal(-1)
+                    ctx.mkSub(latency , avgLatency), 
+                    ctx.mkReal(-1)
                 )
-        );
-
+            );
+        
     }
-
+    
     /**
      * [Method]: getJitterZ3
      * [Usage]: Returns the z3 variable containing the jitter of that
      * packet.
-     *
-     *
+     * 
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable for the jitter of packet [index]
      */
     public RealExpr getJitterZ3(Device dev, Solver solver, Context ctx, int index) {
         //index += 1;
         RealExpr jitter = ctx.mkRealConst(this.name + "JitterOfPacket" + index + "For" + dev.getName());
-
+        
         ArrayList<PathNode> nodes = this.getNodesFromRootToNode(dev);
-
+        
         TSNSwitch lastSwitchInPath = ((TSNSwitch) nodes.get(nodes.size() - 2).getNode()); // - 1 for indexing, - 1 for last node being the end device
         FlowFragment lastFragmentInList = nodes.get(nodes.size() - 2).getFlowFragments()
-                .get(nodes.get(nodes.size() - 2).getChildren().indexOf(nodes.get(nodes.size() - 1)));
-
+                        .get(nodes.get(nodes.size() - 2).getChildren().indexOf(nodes.get(nodes.size() - 1)));
+        
         TSNSwitch firstSwitchInPath = ((TSNSwitch) nodes.get(1).getNode()); // 1 since the first node is the publisher
-        FlowFragment firstFragmentInList = nodes.get(1).getFlowFragments().get(0);
-
+        FlowFragment firstFragmentInList = nodes.get(1).getFlowFragments().get(0); 
+        
         // RealExpr avgLatency = (RealExpr) ctx.mkDiv(getSumOfLatencyZ3(solver, dev, ctx, index), ctx.mkInt(Network.PACKETUPPERBOUNDRANGE - 1));
         RealExpr avgLatency = this.getAvgLatency(dev, solver, ctx);
         RealExpr latency = (RealExpr) ctx.mkSub(
-                lastSwitchInPath
-                        .getPortOf(lastFragmentInList.getNextHop())
-                        .scheduledTime(ctx, index, lastFragmentInList),
-                firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
-                        .departureTime(ctx, index, firstFragmentInList)
-        );
-
-        solver.add(ctx.mkEq(jitter,
+                                            lastSwitchInPath
+                                            .getPortOf(lastFragmentInList.getNextHop())
+                                            .scheduledTime(ctx, index, lastFragmentInList),
+                                            firstSwitchInPath.getPortOf(firstFragmentInList.getNextHop())
+                                            .departureTime(ctx, index, firstFragmentInList)
+                                      );
+        
+        solver.add(ctx.mkEq(jitter, 
                 ctx.mkITE(
-                        ctx.mkGe(latency, avgLatency),
-                        ctx.mkSub(latency, avgLatency),
-                        ctx.mkSub(avgLatency, latency)
+                    ctx.mkGe(latency, avgLatency),
+                    ctx.mkSub(latency, avgLatency),
+                    ctx.mkSub(avgLatency, latency)
                 )
-
+            
         ));
-
+        
         return jitter;
     }
-
+    
     /**
      * [Method]: getSumOfJitterZ3
      * [Usage]: Returns the sum of all jitter from packet 0
      * to packet of the given index as a Z3 variable.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable containing the sum of all jitter
      */
@@ -1294,19 +1530,19 @@ public class Flow implements Serializable {
         if(index == 0) {
             return getJitterZ3(solver, ctx, 0);
         }
-
+        
         return (RealExpr) ctx.mkAdd(getJitterZ3(solver, ctx, index), getSumOfJitterZ3(solver, ctx, index - 1));
     }
-
+    
     /**
      * [Method]: getSumOfJitterZ3
      * [Usage]: Returns the sum of all jitter from packet 0
-     * to packet of the given index to a specific destination
+     * to packet of the given index to a specific destination 
      * on a pub sub flow as a Z3 variable.
-     *
+     * 
      * @param dev       Destination of the packet
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable containing the sum of all jitter
      */
@@ -1314,68 +1550,68 @@ public class Flow implements Serializable {
         if(index == 0) {
             return (RealExpr) getJitterZ3(dev, solver, ctx, 0);
         }
-
+        
         return (RealExpr) ctx.mkAdd(getJitterZ3(dev, solver, ctx, index), getSumOfJitterZ3(dev, solver, ctx, index - 1));
     }
-
+    
     /**
      * [Method]: getSumOfAllDevJitterZ3
      * [Usage]: Returns the sum of all jitter for all destinations
      * of the flow from 0 to the [index] packet.
-     *
+     * 
      * @param solver    Solver in which the rules of the problem will be added
-     * @param ctx       Z3 variable and function environment
+     * @param ctx       Z3 variable and function environment       
      * @param index     Number of packet sent (as index)
      * @return          Z3 variable containing the sum of all jitter of the flow
      */
     public RealExpr getSumOfAllDevJitterZ3(Solver solver, Context ctx, int index) {
         RealExpr sumValue = ctx.mkReal(0);
         Device currentDev = null;
-
+        
         for(PathNode node : this.pathTree.getLeaves()) {
             currentDev = (Device) node.getNode();
-            sumValue = (RealExpr) ctx.mkAdd(this.getSumOfJitterZ3(currentDev, solver, ctx, index), sumValue);
+            sumValue = (RealExpr) ctx.mkAdd(this.getSumOfJitterZ3(currentDev, solver, ctx, index), sumValue);   
         }
-
+        
         return sumValue;
     }
-
-
+    
+    
     /**
      * [Method]: setNumberOfPacketsSent
      * [Usage]: Search through the flow fragments in order to find the highest
      * number of packets scheduled in a fragment. This is useful to set the hard
      * constraint for all packets scheduled within the flow.
      */
-
+    
     public void setNumberOfPacketsSent(PathNode node) {
-
-        if(node.getNode() instanceof Device && (node.getChildren().size() == 0)) {
-            return;
-        } else if (node.getNode() instanceof Device) {
-            for(PathNode child : node.getChildren()) {
-                this.setNumberOfPacketsSent(child);
-            }
-        } else {
-            int index = 0;
-            for(FlowFragment frag : node.getFlowFragments()) {
-                if(this.numOfPacketsSentInFragment < frag.getNumOfPacketsSent()) {
-                    this.numOfPacketsSentInFragment = frag.getNumOfPacketsSent();
+    	
+    	if(node.getNode() instanceof Device && (node.getChildren().size() == 0)) {
+			return;
+		} else if (node.getNode() instanceof Device) {
+			for(PathNode child : node.getChildren()) {
+				this.setNumberOfPacketsSent(child);
+			}
+		} else {
+			int index = 0;
+			for(FlowFragment frag : node.getFlowFragments()) {
+				if(this.numOfPacketsSentInFragment < frag.getNumOfPacketsSent()) {
+					this.numOfPacketsSentInFragment = frag.getNumOfPacketsSent();
                 }
-
-                // System.out.println("On node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");
-                // System.out.println("Node has: " + node.getFlowFragments().size() + " frags");
-                // System.out.println("Node has: " + node.getChildren().size() + " children");
-                // for(PathNode n : node.getChildren()) {
-                // 		System.out.println("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
-                // }
-
-                this.setNumberOfPacketsSent(node.getChildren().get(index));
-                index = index + 1;
-            }
-        }
-
-
+				
+				// System.out.println("On node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");			
+				// System.out.println("Node has: " + node.getFlowFragments().size() + " frags");
+				// System.out.println("Node has: " + node.getChildren().size() + " children");
+				// for(PathNode n : node.getChildren()) {
+				// 		System.out.println("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
+				// }
+				
+				this.setNumberOfPacketsSent(node.getChildren().get(index));
+				index = index + 1;
+			}
+		}
+		
+    	
     }
 
     public void modifyIfUsingCustomVal(){
@@ -1388,11 +1624,33 @@ public class Flow implements Serializable {
     /*
      * GETTERS AND SETTERS:
      */
-
+    
+    public int getHopPriority(String nameOfDestination) {
+    	
+    	PathNode pathNode = pathTree.searchNode(nameOfDestination, pathTree.getRoot());
+		
+		if(this.priorityValue!=-1) {
+			return this.priorityValue;
+		} else if(pathNode.getParent() == null) {
+			return 1;
+		} else {
+			
+			for(FlowFragment frag : pathNode.getParent().getFlowFragments()) {
+				if(frag.getName().equals(nameOfDestination)) {
+					return frag.getFragmentPriority();
+				}
+			}
+			
+		}
+		
+		return this.priorityValue;
+    	
+    }
+    
     public Device getStartDevice() {
         return startDevice;
     }
-
+    
     public void setStartDevice(Device startDevice) {
         this.startDevice = startDevice;
 
@@ -1400,6 +1658,7 @@ public class Flow implements Serializable {
             this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
             this.flowFirstSendingTime = startDevice.getFirstT1Time();
         }
+
     }
 
     public Device getEndDevice() {
@@ -1417,15 +1676,15 @@ public class Flow implements Serializable {
     public void setPath(ArrayList<Switch> path) {
         this.path = path;
     }
-
+    
     public IntExpr getFragmentPriorityZ3() {
         return flowPriority;
     }
-
+    
     public void getFlowPriority(IntExpr priority) {
         this.flowPriority = priority;
     }
-
+        
     public String getName() {
         return name;
     }
@@ -1441,7 +1700,7 @@ public class Flow implements Serializable {
     public void setFlowFragments(ArrayList<FlowFragment> flowFragments) {
         this.flowFragments = flowFragments;
     }
-
+    
     public int getTimeListSize() {
         return this.getFlowFragments().get(0).getArrivalTimeList().size();
     }
@@ -1451,10 +1710,10 @@ public class Flow implements Serializable {
     }
 
     public void setPathTree(PathTree pathTree) {
-        this.startDevice = (Device) pathTree.getRoot().getNode();
+    	this.startDevice = (Device) pathTree.getRoot().getNode();
         this.pathTree = pathTree;
     }
-
+    
     public int getType() {
         return type;
     }
@@ -1462,42 +1721,42 @@ public class Flow implements Serializable {
     public void setType(int type) {
         this.type = type;
     }
-
+	
     public int getNumOfPacketsSent() {
-        return numOfPacketsSentInFragment;
-    }
+		return numOfPacketsSentInFragment;
+	}
 
-    public void setNumOfPacketsSent(int numOfPacketsSent) {
-        this.numOfPacketsSentInFragment = numOfPacketsSent;
-    }
+	public void setNumOfPacketsSent(int numOfPacketsSent) {
+		this.numOfPacketsSentInFragment = numOfPacketsSent;
+	}
 
     public int getTotalNumOfPackets() {
-        return totalNumOfPackets;
-    }
+		return totalNumOfPackets;
+	}
 
-    public void setTotalNumOfPackets(int totalNumOfPackets) {
-        this.totalNumOfPackets = totalNumOfPackets;
-    }
+	public void setTotalNumOfPackets(int totalNumOfPackets) {
+		this.totalNumOfPackets = totalNumOfPackets;
+	}
+	
+	public void addToTotalNumOfPackets(int num) {
+		this.totalNumOfPackets = this.totalNumOfPackets + num;
+	}
+	
+	public int getInstance() {
+		return instance;
+	}
 
-    public void addToTotalNumOfPackets(int num) {
-        this.totalNumOfPackets = this.totalNumOfPackets + num;
-    }
+	public void setInstance(int instance) {
+		this.instance = instance;
+	}
+	
+	public float getPacketSize() {
+		return this.startDevice.getPacketSize();
+	}
 
-    public int getInstance() {
-        return instance;
-    }
-
-    public void setInstance(int instance) {
-        this.instance = instance;
-    }
-
-    public float getPacketSize() {
-        return this.startDevice.getPacketSize();
-    }
-
-    public RealExpr getPacketSizeZ3() {
-        return this.startDevice.getPacketSizeZ3();
-    }
+	public RealExpr getPacketSizeZ3() {
+		return this.startDevice.getPacketSizeZ3();
+	}
 
     public float getFlowFirstSendingTime() {
         return flowFirstSendingTime;
@@ -1532,36 +1791,65 @@ public class Flow implements Serializable {
     }
 
 
-    public boolean isFixedPriority() {
-        return fixedPriority;
-    }
+	public boolean isFixedPriority() {
+		return fixedPriority;
+	}
 
-    public void setFixedPriority(boolean fixedPriority) {
-        this.fixedPriority = fixedPriority;
-    }
+	public void setFixedPriority(boolean fixedPriority) {
+		this.fixedPriority = fixedPriority;
+	}
 
-    public int getPriorityValue() {
-        return priorityValue;
-    }
+	public int getPriorityValue() {
+		return priorityValue;
+	}
 
-    public void setPriorityValue(int priorityValue) {
-        this.priorityValue = priorityValue;
-    }
-
+	public void setPriorityValue(int priorityValue) {
+		this.priorityValue = priorityValue;
+	}
+	
     public static int getInstanceCounter() {
-        return instanceCounter;
+		return instanceCounter;
+	}
+
+	public static void setInstanceCounter(int instanceCounter) {
+		Flow.instanceCounter = instanceCounter;
+	}
+
+	public Boolean getIsModifiedOrCreated() {
+		return isModifiedOrCreated;
+	}
+
+	public void setIsModifiedOrCreated(Boolean isModifiedOrCreated) {
+		this.isModifiedOrCreated = isModifiedOrCreated;
+	}
+
+
+    public boolean getUseCustomValues() {
+        return useCustomValues;
     }
 
-    public static void setInstanceCounter(int instanceCounter) {
-        Flow.instanceCounter = instanceCounter;
+    public void setUseCustomValues(boolean useCustomValues) {
+        this.useCustomValues = useCustomValues;
     }
 
-    public Boolean getIsModifiedOrCreated() {
-        return isModifiedOrCreated;
+    public float getFirstPortSpeed() {
+    	return ((TSNSwitch) this.pathTree
+                .getRoot()
+                .getChildren()
+                .get(0)
+                .getNode())
+                .getPortOf(this.getStartDevice().getName())
+                .getPortSpeed();
     }
 
-    public void setIsModifiedOrCreated(Boolean isModifiedOrCreated) {
-        this.isModifiedOrCreated = isModifiedOrCreated;
-    }
+
+	public float getFlowJitter() {
+		return flowJitter;
+	}
+
+
+	public void setFlowJitter(float flowJitter) {
+		this.flowJitter = flowJitter;
+	}
 
 }

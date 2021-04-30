@@ -1,1175 +1,246 @@
 findSchedulerModel
 
 Z3 Major Version: 4
-Z3 Full Version: 4.8.7.0
-Z3 Full Version String: Z3 4.8.7.0
+Z3 Full Version: 4.8.10.0
+Z3 Full Version String: Z3 4.8.10.0
 
-1000.0
-0.0
-1000.0
-0.0
-1000.0
-0.0
-Rules set. Checking solver.
-Current time of the day: 10:41:08.843059
-(define-fun cycle97Start () Real
-  14.0)
-(define-fun cycle54Start () Real
-  14.0)
-(define-fun priorityflow3Fragment5Priorityslot0Duration () Real
-  28.0)
-(define-fun flow2Fragment5Priority () Int
-  0)
-(define-fun dev39FirstT1Time () Real
-  0.0)
-(define-fun priorityflow1Fragment2Priorityslot0Duration () Real
-  28.0)
-(define-fun flow1Fragment4Priority () Int
-  7)
-(define-fun flow3Fragment2Priority () Int
-  7)
-(define-fun flow1Fragment3ScheduledTime0 () Real
-  42.0)
-(define-fun cycle105Start () Real
-  0.0)
-(define-fun priority4slot0Duration () Real
-  28.0)
-(define-fun flow1Fragment2ScheduledTime0 () Real
-  28.0)
-(define-fun cycle100Start () Real
-  0.0)
-(define-fun priority7slot0Duration () Real
-  28.0)
-(define-fun priorityflow3Fragment1Priorityslot0Start () Real
-  0.0)
-(define-fun flow2Fragment1ScheduledTime0 () Real
-  14.0)
-(define-fun flow1Fragment3Priority () Int
-  0)
-(define-fun cycleOfswitch5Duration () Real
-  400.0)
-(define-fun flow2Fragment2ScheduledTime0 () Real
-  28.0)
-(define-fun priorityflow3Fragment6Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow3Fragment3Priorityslot0Duration () Real
-  28.0)
-(define-fun flow2Fragment3Priority () Int
-  0)
-(define-fun priorityflow3Fragment7Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow2Fragment4Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow1Fragment5Priorityslot0Start () Real
-  0.0)
-(define-fun cycle40Start () Real
-  14.0)
-(define-fun cycle56Start () Real
-  14.0)
-(define-fun priority0slot0Start () Real
-  0.0)
-(define-fun flow1Fragment5Priority () Int
-  2)
-(define-fun cycle63Start () Real
-  0.0)
-(define-fun priority6slot0Start () Real
-  0.0)
-(define-fun cycle16Start () Real
-  14.0)
-(define-fun flow3Fragment4ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow1Fragment3Priorityslot0Start () Real
-  0.0)
-(define-fun cycle60Start () Real
-  0.0)
-(define-fun cycle38Start () Real
-  14.0)
-(define-fun cycle4Start () Real
-  0.0)
-(define-fun priority6slot0Duration () Real
-  28.0)
-(define-fun priorityflow3Fragment2Priorityslot0Duration () Real
-  28.0)
-(define-fun priority5slot0Start () Real
-  0.0)
-(define-fun flow2Fragment6Priority () Int
-  1)
-(define-fun flow2Fragment4Priority () Int
-  3)
-(define-fun priorityflow3Fragment1Priorityslot0Duration () Real
-  28.0)
-(define-fun cycle39Start () Real
-  14.0)
-(define-fun priorityflow3Fragment7Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow2Fragment2Priorityslot0Start () Real
-  0.0)
-(define-fun priority1slot0Duration () Real
-  28.0)
-(define-fun priorityflow2Fragment2Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow2Fragment4Priorityslot0Start () Real
-  0.0)
-(define-fun flow3Fragment5ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow3Fragment3Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow2Fragment7Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow3Fragment2Priorityslot0Start () Real
-  0.0)
-(define-fun cycle94Start () Real
-  14.0)
-(define-fun flow3Fragment7ScheduledTime0 () Real
-  42.0)
-(define-fun cycleOfswitch0Duration () Real
-  400.0)
-(define-fun cycle53Start () Real
-  14.0)
-(define-fun cycle55Start () Real
-  14.0)
-(define-fun flow1Fragment1Priority () Int
-  4)
-(define-fun cycle52Start () Real
-  14.0)
-(define-fun flow2Fragment1Priority () Int
-  1)
-(define-fun priorityflow2Fragment5Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow1Fragment6Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow1Fragment7Priorityslot0Start () Real
-  0.0)
-(define-fun flow1Fragment5ScheduledTime0 () Real
-  42.0)
-(define-fun priority3slot0Duration () Real
-  28.0)
-(define-fun dev4FirstT1Time () Real
-  0.0)
-(define-fun priority7slot0Start () Real
-  0.0)
-(define-fun flow3Fragment6ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow2Fragment3Priorityslot0Duration () Real
-  28.0)
-(define-fun priority0slot0Duration () Real
-  28.0)
-(define-fun flow3Fragment3Priority () Int
-  2)
-(define-fun cycle95Start () Real
-  14.0)
-(define-fun flow3Fragment3ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow3Fragment4Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow2Fragment7Priorityslot0Duration () Real
-  28.0)
-(define-fun cycleOfswitch2Duration () Real
-  400.0)
-(define-fun flow2Fragment3ScheduledTime0 () Real
-  42.0)
-(define-fun priority2slot0Start () Real
-  0.0)
-(define-fun flow3Fragment7Priority () Int
-  5)
-(define-fun priorityflow1Fragment7Priorityslot0Duration () Real
-  28.0)
-(define-fun cycle42Start () Real
-  14.0)
-(define-fun priorityflow2Fragment1Priorityslot0Start () Real
-  0.0)
-(define-fun cycle98Start () Real
-  14.0)
-(define-fun cycleOfswitch8Duration () Real
-  400.0)
-(define-fun flow2Fragment2Priority () Int
-  0)
-(define-fun priorityflow2Fragment1Priorityslot0Duration () Real
-  28.0)
-(define-fun flow3Fragment4Priority () Int
-  0)
-(define-fun priorityflow3Fragment5Priorityslot0Start () Real
-  0.0)
-(define-fun flow1Fragment6ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow2Fragment6Priorityslot0Start () Real
-  0.0)
-(define-fun priority1slot0Start () Real
-  0.0)
-(define-fun flow2Fragment7ScheduledTime0 () Real
-  42.0)
-(define-fun flow3Fragment5Priority () Int
-  5)
-(define-fun flow1Fragment6Priority () Int
-  2)
-(define-fun cycleOfswitch9Duration () Real
-  400.0)
-(define-fun priorityflow1Fragment6Priorityslot0Duration () Real
-  28.0)
-(define-fun flow2Fragment7Priority () Int
-  3)
-(define-fun flow3Fragment6Priority () Int
-  4)
-(define-fun priorityflow1Fragment5Priorityslot0Duration () Real
-  28.0)
-(define-fun cycleOfswitch1Duration () Real
-  400.0)
-(define-fun flow1Fragment1ScheduledTime0 () Real
-  14.0)
-(define-fun cycle41Start () Real
-  14.0)
-(define-fun priorityflow2Fragment5Priorityslot0Start () Real
-  0.0)
-(define-fun flow1Fragment4ScheduledTime0 () Real
-  42.0)
-(define-fun flow3Fragment1ScheduledTime0 () Real
-  14.0)
-(define-fun cycleOfswitch6Duration () Real
-  400.0)
-(define-fun priorityflow2Fragment3Priorityslot0Start () Real
-  0.0)
-(define-fun priority2slot0Duration () Real
-  28.0)
-(define-fun cycle96Start () Real
-  14.0)
-(define-fun flow2Fragment6ScheduledTime0 () Real
-  42.0)
-(define-fun flow3Fragment2ScheduledTime0 () Real
-  28.0)
-(define-fun priorityflow1Fragment4Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow3Fragment4Priorityslot0Duration () Real
-  28.0)
-(define-fun priorityflow3Fragment6Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow2Fragment6Priorityslot0Duration () Real
-  28.0)
-(define-fun cycleOfswitch3Duration () Real
-  400.0)
-(define-fun dev21FirstT1Time () Real
-  0.0)
-(define-fun flow2Fragment5ScheduledTime0 () Real
-  42.0)
-(define-fun priorityflow1Fragment1Priorityslot0Start () Real
-  0.0)
-(define-fun priorityflow1Fragment3Priorityslot0Duration () Real
-  28.0)
-(define-fun cycleOfswitch4Duration () Real
-  400.0)
-(define-fun priorityflow1Fragment1Priorityslot0Duration () Real
-  28.0)
-(define-fun priority5slot0Duration () Real
-  28.0)
-(define-fun priority4slot0Start () Real
-  0.0)
-(define-fun priorityflow1Fragment4Priorityslot0Start () Real
-  0.0)
-(define-fun cycleOfswitch7Duration () Real
-  400.0)
-(define-fun priority3slot0Start () Real
-  0.0)
-(define-fun flow1Fragment7ScheduledTime0 () Real
-  42.0)
-(define-fun flow1Fragment2Priority () Int
-  3)
-(define-fun priorityflow1Fragment2Priorityslot0Start () Real
-  0.0)
-(define-fun flow2Fragment4ScheduledTime0 () Real
-  42.0)
-(define-fun flow3Fragment1Priority () Int
-  0)
-(define-fun flow1Fragment7Priority () Int
-  7)
-(define-fun priorityflow2Fragment2Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment1Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment7Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment6Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment5Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment4Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment3Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow2Fragment1Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment2Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment7Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment6Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment5Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment4Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment3Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment7Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment6Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment5Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment4Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment3Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow3Fragment2Priorityslot1Start () Real
-  28.0)
-(define-fun priorityflow1Fragment1Priorityslot1Start () Real
-  28.0)
-(define-fun cycle140Start () Real
-  0.0)
-(define-fun cycle139Start () Real
-  0.0)
-(define-fun cycle138Start () Real
-  0.0)
-(define-fun cycle137Start () Real
-  0.0)
-(define-fun cycle136Start () Real
-  0.0)
-(define-fun cycle135Start () Real
-  0.0)
-(define-fun cycle134Start () Real
-  0.0)
-(define-fun cycle133Start () Real
-  0.0)
-(define-fun cycle132Start () Real
-  0.0)
-(define-fun cycle131Start () Real
-  0.0)
-(define-fun cycle130Start () Real
-  0.0)
-(define-fun cycle129Start () Real
-  0.0)
-(define-fun cycle128Start () Real
-  0.0)
-(define-fun cycle127Start () Real
-  0.0)
-(define-fun cycle126Start () Real
-  0.0)
-(define-fun cycle125Start () Real
-  0.0)
-(define-fun cycle124Start () Real
-  0.0)
-(define-fun cycle123Start () Real
-  0.0)
-(define-fun cycle122Start () Real
-  0.0)
-(define-fun cycle121Start () Real
-  0.0)
-(define-fun cycle120Start () Real
-  0.0)
-(define-fun cycle119Start () Real
-  0.0)
-(define-fun cycle118Start () Real
-  0.0)
-(define-fun cycle117Start () Real
-  0.0)
-(define-fun cycle116Start () Real
-  0.0)
-(define-fun cycle115Start () Real
-  0.0)
-(define-fun cycle114Start () Real
-  0.0)
-(define-fun cycle113Start () Real
-  0.0)
-(define-fun cycle112Start () Real
-  0.0)
-(define-fun cycle111Start () Real
-  0.0)
-(define-fun cycle110Start () Real
-  0.0)
-(define-fun cycle109Start () Real
-  0.0)
-(define-fun cycle108Start () Real
-  0.0)
-(define-fun cycle107Start () Real
-  0.0)
-(define-fun cycle106Start () Real
-  0.0)
-(define-fun cycle104Start () Real
-  0.0)
-(define-fun cycle103Start () Real
-  0.0)
-(define-fun cycle102Start () Real
-  0.0)
-(define-fun cycle101Start () Real
-  0.0)
-(define-fun cycle99Start () Real
-  0.0)
-(define-fun cycle93Start () Real
-  0.0)
-(define-fun cycle92Start () Real
-  0.0)
-(define-fun cycle91Start () Real
-  0.0)
-(define-fun cycle90Start () Real
-  0.0)
-(define-fun cycle89Start () Real
-  0.0)
-(define-fun cycle88Start () Real
-  0.0)
-(define-fun cycle87Start () Real
-  0.0)
-(define-fun cycle86Start () Real
-  0.0)
-(define-fun cycle85Start () Real
-  0.0)
-(define-fun cycle84Start () Real
-  0.0)
-(define-fun cycle83Start () Real
-  0.0)
-(define-fun cycle82Start () Real
-  0.0)
-(define-fun cycle81Start () Real
-  0.0)
-(define-fun cycle80Start () Real
-  0.0)
-(define-fun cycle79Start () Real
-  0.0)
-(define-fun cycle78Start () Real
-  0.0)
-(define-fun cycle77Start () Real
-  0.0)
-(define-fun cycle76Start () Real
-  0.0)
-(define-fun cycle75Start () Real
-  0.0)
-(define-fun cycle74Start () Real
-  0.0)
-(define-fun cycle73Start () Real
-  0.0)
-(define-fun cycle72Start () Real
-  0.0)
-(define-fun cycle71Start () Real
-  0.0)
-(define-fun cycle70Start () Real
-  0.0)
-(define-fun cycle69Start () Real
-  0.0)
-(define-fun cycle68Start () Real
-  0.0)
-(define-fun cycle67Start () Real
-  0.0)
-(define-fun cycle66Start () Real
-  0.0)
-(define-fun cycle65Start () Real
-  0.0)
-(define-fun cycle64Start () Real
-  0.0)
-(define-fun cycle62Start () Real
-  0.0)
-(define-fun cycle61Start () Real
-  0.0)
-(define-fun cycle59Start () Real
-  0.0)
-(define-fun cycle58Start () Real
-  0.0)
-(define-fun cycle57Start () Real
-  0.0)
-(define-fun cycle51Start () Real
-  0.0)
-(define-fun cycle50Start () Real
-  0.0)
-(define-fun cycle49Start () Real
-  0.0)
-(define-fun cycle48Start () Real
-  0.0)
-(define-fun cycle47Start () Real
-  0.0)
-(define-fun cycle46Start () Real
-  0.0)
-(define-fun cycle45Start () Real
-  0.0)
-(define-fun cycle44Start () Real
-  0.0)
-(define-fun cycle43Start () Real
-  0.0)
-(define-fun cycle37Start () Real
-  0.0)
-(define-fun cycle36Start () Real
-  0.0)
-(define-fun cycle35Start () Real
-  0.0)
-(define-fun cycle34Start () Real
-  0.0)
-(define-fun cycle33Start () Real
-  0.0)
-(define-fun cycle32Start () Real
-  0.0)
-(define-fun cycle31Start () Real
-  0.0)
-(define-fun cycle30Start () Real
-  0.0)
-(define-fun cycle29Start () Real
-  0.0)
-(define-fun cycle28Start () Real
-  0.0)
-(define-fun cycle27Start () Real
-  0.0)
-(define-fun cycle26Start () Real
-  0.0)
-(define-fun cycle25Start () Real
-  0.0)
-(define-fun cycle24Start () Real
-  0.0)
-(define-fun cycle23Start () Real
-  0.0)
-(define-fun cycle22Start () Real
-  0.0)
-(define-fun cycle21Start () Real
-  0.0)
-(define-fun cycle20Start () Real
-  0.0)
-(define-fun cycle19Start () Real
-  0.0)
-(define-fun cycle18Start () Real
-  0.0)
-(define-fun cycle17Start () Real
-  0.0)
-(define-fun cycle15Start () Real
-  0.0)
-(define-fun cycle14Start () Real
-  0.0)
-(define-fun cycle13Start () Real
-  0.0)
-(define-fun cycle12Start () Real
-  0.0)
-(define-fun cycle11Start () Real
-  0.0)
-(define-fun cycle10Start () Real
-  0.0)
-(define-fun cycle9Start () Real
-  0.0)
-(define-fun cycle8Start () Real
-  0.0)
-(define-fun cycle7Start () Real
-  0.0)
-(define-fun cycle6Start () Real
-  0.0)
-(define-fun cycle5Start () Real
-  0.0)
-(define-fun cycle3Start () Real
-  0.0)
-(define-fun cycle2Start () Real
-  0.0)
-(define-fun cycle1Start () Real
-  0.0)
-(define-fun flow3JitterOfPacket0Fordev14 () Real
-  0.0)
-(define-fun flow3latencyOfPacket0Fordev14 () Real
-  42.0)
-(define-fun flow3JitterOfPacket0Fordev13 () Real
-  0.0)
-(define-fun flow3latencyOfPacket0Fordev13 () Real
-  42.0)
-(define-fun flow3JitterOfPacket0Fordev12 () Real
-  0.0)
-(define-fun flow3latencyOfPacket0Fordev12 () Real
-  42.0)
-(define-fun flow3JitterOfPacket0Fordev11 () Real
-  0.0)
-(define-fun flow3latencyOfPacket0Fordev11 () Real
-  42.0)
-(define-fun flow3JitterOfPacket0Fordev10 () Real
-  0.0)
-(define-fun flow3latencyOfPacket0Fordev10 () Real
-  42.0)
-(define-fun flow2JitterOfPacket0Fordev34 () Real
-  0.0)
-(define-fun flow2latencyOfPacket0Fordev34 () Real
-  42.0)
-(define-fun flow2JitterOfPacket0Fordev33 () Real
-  0.0)
-(define-fun flow2latencyOfPacket0Fordev33 () Real
-  42.0)
-(define-fun flow2JitterOfPacket0Fordev32 () Real
-  0.0)
-(define-fun flow2latencyOfPacket0Fordev32 () Real
-  42.0)
-(define-fun flow2JitterOfPacket0Fordev31 () Real
-  0.0)
-(define-fun flow2latencyOfPacket0Fordev31 () Real
-  42.0)
-(define-fun flow2JitterOfPacket0Fordev30 () Real
-  0.0)
-(define-fun flow2latencyOfPacket0Fordev30 () Real
-  42.0)
-(define-fun flow1JitterOfPacket0Fordev19 () Real
-  0.0)
-(define-fun flow1latencyOfPacket0Fordev19 () Real
-  42.0)
-(define-fun flow1JitterOfPacket0Fordev18 () Real
-  0.0)
-(define-fun flow1latencyOfPacket0Fordev18 () Real
-  42.0)
-(define-fun flow1JitterOfPacket0Fordev17 () Real
-  0.0)
-(define-fun flow1latencyOfPacket0Fordev17 () Real
-  42.0)
-(define-fun flow1JitterOfPacket0Fordev16 () Real
-  0.0)
-(define-fun flow1latencyOfPacket0Fordev16 () Real
-  42.0)
-(define-fun flow1JitterOfPacket0Fordev15 () Real
-  0.0)
-(define-fun flow1latencyOfPacket0Fordev15 () Real
-  42.0)
-(define-fun cycle140Duration () Real
-  0.0)
-(define-fun cycle139Duration () Real
-  0.0)
-(define-fun cycle138Duration () Real
-  0.0)
-(define-fun cycle137Duration () Real
-  0.0)
-(define-fun cycle136Duration () Real
-  0.0)
-(define-fun cycle135Duration () Real
-  0.0)
-(define-fun cycle134Duration () Real
-  0.0)
-(define-fun cycle133Duration () Real
-  0.0)
-(define-fun cycle132Duration () Real
-  0.0)
-(define-fun cycle131Duration () Real
-  0.0)
-(define-fun cycle130Duration () Real
-  0.0)
-(define-fun cycle129Duration () Real
-  0.0)
-(define-fun cycle128Duration () Real
-  0.0)
-(define-fun cycle127Duration () Real
-  0.0)
-(define-fun cycle126Duration () Real
-  0.0)
-(define-fun cycle125Duration () Real
-  0.0)
-(define-fun cycle124Duration () Real
-  0.0)
-(define-fun cycle123Duration () Real
-  0.0)
-(define-fun cycle122Duration () Real
-  0.0)
-(define-fun cycle121Duration () Real
-  0.0)
-(define-fun cycle120Duration () Real
-  0.0)
-(define-fun cycle119Duration () Real
-  0.0)
-(define-fun cycle118Duration () Real
-  0.0)
-(define-fun cycle117Duration () Real
-  0.0)
-(define-fun cycle116Duration () Real
-  0.0)
-(define-fun cycle115Duration () Real
-  0.0)
-(define-fun cycle114Duration () Real
-  0.0)
-(define-fun cycle113Duration () Real
-  0.0)
-(define-fun cycle112Duration () Real
-  0.0)
-(define-fun cycle111Duration () Real
-  0.0)
-(define-fun cycle110Duration () Real
-  0.0)
-(define-fun cycle109Duration () Real
-  0.0)
-(define-fun cycle108Duration () Real
-  0.0)
-(define-fun cycle107Duration () Real
-  0.0)
-(define-fun cycle106Duration () Real
-  0.0)
-(define-fun cycle104Duration () Real
-  0.0)
-(define-fun cycle103Duration () Real
-  0.0)
-(define-fun cycle102Duration () Real
-  0.0)
-(define-fun cycle101Duration () Real
-  0.0)
-(define-fun cycle99Duration () Real
-  0.0)
-(define-fun cycle93Duration () Real
-  0.0)
-(define-fun cycle92Duration () Real
-  0.0)
-(define-fun cycle91Duration () Real
-  0.0)
-(define-fun cycle90Duration () Real
-  0.0)
-(define-fun cycle89Duration () Real
-  0.0)
-(define-fun cycle88Duration () Real
-  0.0)
-(define-fun cycle87Duration () Real
-  0.0)
-(define-fun cycle86Duration () Real
-  0.0)
-(define-fun cycle85Duration () Real
-  0.0)
-(define-fun cycle84Duration () Real
-  0.0)
-(define-fun cycle83Duration () Real
-  0.0)
-(define-fun cycle82Duration () Real
-  0.0)
-(define-fun cycle81Duration () Real
-  0.0)
-(define-fun cycle80Duration () Real
-  0.0)
-(define-fun cycle79Duration () Real
-  0.0)
-(define-fun cycle78Duration () Real
-  0.0)
-(define-fun cycle77Duration () Real
-  0.0)
-(define-fun cycle76Duration () Real
-  0.0)
-(define-fun cycle75Duration () Real
-  0.0)
-(define-fun cycle74Duration () Real
-  0.0)
-(define-fun cycle73Duration () Real
-  0.0)
-(define-fun cycle72Duration () Real
-  0.0)
-(define-fun cycle71Duration () Real
-  0.0)
-(define-fun cycle70Duration () Real
-  0.0)
-(define-fun cycle69Duration () Real
-  0.0)
-(define-fun cycle68Duration () Real
-  0.0)
-(define-fun cycle67Duration () Real
-  0.0)
-(define-fun cycle66Duration () Real
-  0.0)
-(define-fun cycle65Duration () Real
-  0.0)
-(define-fun cycle64Duration () Real
-  0.0)
-(define-fun cycle62Duration () Real
-  0.0)
-(define-fun cycle61Duration () Real
-  0.0)
-(define-fun cycle59Duration () Real
-  0.0)
-(define-fun cycle58Duration () Real
-  0.0)
-(define-fun cycle57Duration () Real
-  0.0)
-(define-fun cycle51Duration () Real
-  0.0)
-(define-fun cycle50Duration () Real
-  0.0)
-(define-fun cycle49Duration () Real
-  0.0)
-(define-fun cycle48Duration () Real
-  0.0)
-(define-fun cycle47Duration () Real
-  0.0)
-(define-fun cycle46Duration () Real
-  0.0)
-(define-fun cycle45Duration () Real
-  0.0)
-(define-fun cycle44Duration () Real
-  0.0)
-(define-fun cycle43Duration () Real
-  0.0)
-(define-fun cycle37Duration () Real
-  0.0)
-(define-fun cycle36Duration () Real
-  0.0)
-(define-fun cycle35Duration () Real
-  0.0)
-(define-fun cycle34Duration () Real
-  0.0)
-(define-fun cycle33Duration () Real
-  0.0)
-(define-fun cycle32Duration () Real
-  0.0)
-(define-fun cycle31Duration () Real
-  0.0)
-(define-fun cycle30Duration () Real
-  0.0)
-(define-fun cycle29Duration () Real
-  0.0)
-(define-fun cycle28Duration () Real
-  0.0)
-(define-fun cycle27Duration () Real
-  0.0)
-(define-fun cycle26Duration () Real
-  0.0)
-(define-fun cycle25Duration () Real
-  0.0)
-(define-fun cycle24Duration () Real
-  0.0)
-(define-fun cycle23Duration () Real
-  0.0)
-(define-fun cycle22Duration () Real
-  0.0)
-(define-fun cycle21Duration () Real
-  0.0)
-(define-fun cycle20Duration () Real
-  0.0)
-(define-fun cycle19Duration () Real
-  0.0)
-(define-fun cycle18Duration () Real
-  0.0)
-(define-fun cycle17Duration () Real
-  0.0)
-(define-fun cycle15Duration () Real
-  0.0)
-(define-fun cycle14Duration () Real
-  0.0)
-(define-fun cycle13Duration () Real
-  0.0)
-(define-fun cycle12Duration () Real
-  0.0)
-(define-fun cycle11Duration () Real
-  0.0)
-(define-fun cycle10Duration () Real
-  0.0)
-(define-fun cycle9Duration () Real
-  0.0)
-(define-fun cycle8Duration () Real
-  0.0)
-(define-fun cycle7Duration () Real
-  0.0)
-(define-fun cycle6Duration () Real
-  0.0)
-(define-fun cycle5Duration () Real
-  0.0)
-(define-fun cycle3Duration () Real
-  0.0)
-(define-fun cycle2Duration () Real
-  0.0)
-(define-fun cycle1Duration () Real
-  0.0)
-(define-fun cycleOfswitch9Start () Real
-  0.0)
-(define-fun cycleOfswitch8Start () Real
-  0.0)
-(define-fun cycleOfswitch7Start () Real
-  0.0)
-(define-fun cycleOfswitch6Start () Real
-  0.0)
-(define-fun cycleOfswitch5Start () Real
-  0.0)
-(define-fun cycleOfswitch4Start () Real
-  0.0)
-(define-fun cycleOfswitch3Start () Real
-  0.0)
-(define-fun cycleOfswitch2Start () Real
-  0.0)
-(define-fun cycleOfswitch1Start () Real
-  0.0)
-(define-fun cycleOfswitch0Start () Real
-  0.0)
-(define-fun cycle105Duration () Real
-  1000.0)
-(define-fun cycle100Duration () Real
-  1000.0)
-(define-fun cycle98Duration () Real
-  1000.0)
-(define-fun cycle97Duration () Real
-  1000.0)
-(define-fun cycle96Duration () Real
-  1000.0)
-(define-fun cycle95Duration () Real
-  1000.0)
-(define-fun cycle94Duration () Real
-  1000.0)
-(define-fun cycle63Duration () Real
-  1000.0)
-(define-fun cycle60Duration () Real
-  1000.0)
-(define-fun cycle56Duration () Real
-  1000.0)
-(define-fun cycle55Duration () Real
-  1000.0)
-(define-fun cycle54Duration () Real
-  1000.0)
-(define-fun cycle53Duration () Real
-  1000.0)
-(define-fun cycle52Duration () Real
-  1000.0)
-(define-fun cycle42Duration () Real
-  1000.0)
-(define-fun cycle41Duration () Real
-  1000.0)
-(define-fun cycle40Duration () Real
-  1000.0)
-(define-fun cycle39Duration () Real
-  1000.0)
-(define-fun cycle38Duration () Real
-  1000.0)
-(define-fun cycle16Duration () Real
-  1000.0)
-(define-fun cycle4Duration () Real
-  1000.0)
-Model generated.
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch0.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch1.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch2.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch3.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch4.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch5.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch6.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch7.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch8.xml
-BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-41-09-007-switch9.xml
+
+==================================================
+[CREATING FRAGMENTS AND SETTING RULES]
+- Creating network
+Alert: First packet of flow flow1 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow2 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow3 must have enough time to leave source. Making first sending time a variable.
+Time taken to set the rules: 0.14220862 seconds
+ 
+
+==================================================
+[RULES SET. CHECKING SOLVER]
+Current time of the day: 12:31:44.635
+Time taken on solving: 0.19061032 seconds 
+Number of assertions: 3985
+
+==================================================
+[DATA LOGGING]
+- Model generated successfully.
 
 
 
 
 >>>> INFORMATION OF SWITCH: switch0 <<<<
     Port list - 
-        => Port name:       switch0Port3
+        => Port name:       switch0Port6
         Connects to:     switch4
         Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment1, 
-        Slots per prt:   1
-        Priority number: 4
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      14.125
+          Index 0 Slot duration:   13.0
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch1 <<<<
     Port list - 
-        => Port name:       switch1Port1
+        => Port name:       switch1Port2
         Connects to:     switch2
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment2, 
-        Slots per prt:   1
-        Priority number: 7
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 2
+          Index 0 Slot start:      935.75
+          Index 0 Slot duration:   50.0
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch2 <<<<
     Port list - 
-        => Port name:       switch2Port9
+        => Port name:       switch2Port18
         Connects to:     dev10
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment3, 
-        Slots per prt:   1
-        Priority number: 2
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      986.875
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch2Port10
+        => Port name:       switch2Port20
         Connects to:     dev11
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment4, 
-        Slots per prt:   1
-        Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 6
+          Index 0 Slot start:      949.75
+          Index 0 Slot duration:   50.0
         ------------------------
-        => Port name:       switch2Port11
+        => Port name:       switch2Port22
         Connects to:     dev12
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment5, 
-        Slots per prt:   1
-        Priority number: 5
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      986.625
+          Index 0 Slot duration:   13.125
         ------------------------
-        => Port name:       switch2Port12
+        => Port name:       switch2Port24
         Connects to:     dev13
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment6, 
-        Slots per prt:   1
-        Priority number: 4
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      986.875
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch2Port13
+        => Port name:       switch2Port26
         Connects to:     dev14
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment7, 
-        Slots per prt:   1
-        Priority number: 5
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      986.875
+          Index 0 Slot duration:   13.0
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch3 <<<<
     Port list - 
-        => Port name:       switch3Port9
+        => Port name:       switch3Port18
         Connects to:     dev15
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment3, 
-        Slots per prt:   1
         Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch3Port10
+        => Port name:       switch3Port20
         Connects to:     dev16
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment4, 
-        Slots per prt:   1
-        Priority number: 7
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 5
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch3Port11
+        => Port name:       switch3Port22
         Connects to:     dev17
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment5, 
-        Slots per prt:   1
-        Priority number: 2
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch3Port12
+        => Port name:       switch3Port24
         Connects to:     dev18
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment6, 
-        Slots per prt:   1
-        Priority number: 2
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 6
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.125
         ------------------------
-        => Port name:       switch3Port13
+        => Port name:       switch3Port26
         Connects to:     dev19
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment7, 
-        Slots per prt:   1
-        Priority number: 7
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch4 <<<<
     Port list - 
-        => Port name:       switch4Port3
+        => Port name:       switch4Port6
         Connects to:     switch3
         Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow1Fragment2, 
-        Slots per prt:   1
-        Priority number: 3
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 7
+          Index 0 Slot start:      28.25
+          Index 0 Slot duration:   13.0
         ------------------------
-        => Port name:       switch4Port6
+        => Port name:       switch4Port12
         Connects to:     switch7
         Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment1, 
-        Slots per prt:   1
-        Priority number: 1
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      13.875
+          Index 0 Slot duration:   13.125
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch6 <<<<
     Port list - 
-        => Port name:       switch6Port9
+        => Port name:       switch6Port18
         Connects to:     dev30
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment3, 
-        Slots per prt:   1
         Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+          Index 0 Slot start:      5.0
+          Index 0 Slot duration:   50.0
         ------------------------
-        => Port name:       switch6Port10
+        => Port name:       switch6Port20
         Connects to:     dev31
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment4, 
-        Slots per prt:   1
-        Priority number: 3
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      41.875
+          Index 0 Slot duration:   13.125
         ------------------------
-        => Port name:       switch6Port11
+        => Port name:       switch6Port22
         Connects to:     dev32
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment5, 
-        Slots per prt:   1
         Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   50.0
         ------------------------
-        => Port name:       switch6Port12
+        => Port name:       switch6Port24
         Connects to:     dev33
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment6, 
-        Slots per prt:   1
-        Priority number: 1
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 0
+          Index 0 Slot start:      41.875
+          Index 0 Slot duration:   13.125
         ------------------------
-        => Port name:       switch6Port13
+        => Port name:       switch6Port26
         Connects to:     dev34
-        Cycle start:    14.0
+        Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment7, 
-        Slots per prt:   1
-        Priority number: 3
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      5.0
+          Index 0 Slot duration:   50.0
         ------------------------
 
 
 >>>> INFORMATION OF SWITCH: switch7 <<<<
     Port list - 
-        => Port name:       switch7Port1
+        => Port name:       switch7Port2
         Connects to:     switch1
         Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow3Fragment1, 
-        Slots per prt:   1
-        Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      958.625
+          Index 0 Slot duration:   13.125
         ------------------------
-        => Port name:       switch7Port6
+        => Port name:       switch7Port12
         Connects to:     switch6
         Cycle start:    0.0
         Cycle duration: 1000.0
         Fragments:       flow2Fragment2, 
-        Slots per prt:   1
-        Priority number: 0
-          Index 0 Slot start:      0.0
-          Index 0 Slot duration:   28.0
+        Priority number: 1
+          Index 0 Slot start:      27.875
+          Index 0 Slot duration:   13.125
         ------------------------
 
 
@@ -1186,41 +257,41 @@ BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-
 
 
     Packets heading to dev15:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
        Method average Jitter: 0.0
 
     Packets heading to dev16:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
        Method average Jitter: 0.0
 
     Packets heading to dev17:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
        Method average Jitter: 0.0
 
     Packets heading to dev18:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
        Method average Jitter: 0.0
 
     Packets heading to dev19:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
        Method average Jitter: 0.0
 
-    Calculated average latency of all devices: 42.0
+    Calculated average latency of all devices: 42.35
 
 
 >>>> INFORMATION OF FLOW1 <<<<
@@ -1235,41 +306,41 @@ BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-
 
 
     Packets heading to dev30:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.0
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
     Packets heading to dev31:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.0
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
     Packets heading to dev32:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
        Method average Jitter: 0.0
 
     Packets heading to dev33:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.0
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
     Packets heading to dev34:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.0
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
-    Calculated average latency of all devices: 42.0
+    Calculated average latency of all devices: 42.025
 
 
 >>>> INFORMATION OF FLOW2 <<<<
@@ -1284,53 +355,54 @@ BAGUI: /home/acassimiro/git/tsn-scheduler/Script/XMLExporterFiles/2020-04-10_10-
 
 
     Packets heading to dev10:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 957.75
+       Flow lastScheduledTime of packet 0:  999.875
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
        Method average Jitter: 0.0
 
     Packets heading to dev11:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 957.75
+       Flow lastScheduledTime of packet 0:  999.75
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
     Packets heading to dev12:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
+       Flow firstDepartureTime of packet 0: 957.75
+       Flow lastScheduledTime of packet 0:  999.75
        Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Method average Latency: 55.0
        Method average Jitter: 0.0
 
     Packets heading to dev13:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 957.75
+       Flow lastScheduledTime of packet 0:  999.875
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
        Method average Jitter: 0.0
 
     Packets heading to dev14:
-       Flow firstDepartureTime of packet 0: 0.0
-       Flow lastScheduledTime of packet 0:  42.0
-       Calculated average Latency: 42.0
-       Method average Latency: 42.0
+       Flow firstDepartureTime of packet 0: 957.75
+       Flow lastScheduledTime of packet 0:  999.875
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
        Method average Jitter: 0.0
 
-    Calculated average latency of all devices: 42.0
-Execution time: 0.4496543 seconds
- 
-Flow 0 average latency: 42.0
-Flow 0 average jitter: 0.0
-Flow 1 average latency: 42.0
-Flow 1 average jitter: 0.0
-Flow 2 average latency: 42.0
-Flow 2 average jitter: 0.0
-
-Number of nodes in the network: 3 
-Number of flows in the network: 3 
-Number of subscribers in the network: 15 
+    Calculated average latency of all devices: 42.075
+flow1 average latency: 55.35
+flow1 average jitter: 0.0
+flow2 average latency: 55.025
+flow2 average jitter: 0.0
+flow3 average latency: 55.075
+flow3 average jitter: 0.0
 Total number of scheduled packets: 21
-Overall average latency: 42.0
+Overall average latency: 55.149998
 Overall average jitter: 0.0
+- Serializing network
+Serialized data is saved in network.ser
+Time taken on logging: 0.041748144 seconds
+
+==================================================
+Execution time: 0.45643172 seconds
+ 

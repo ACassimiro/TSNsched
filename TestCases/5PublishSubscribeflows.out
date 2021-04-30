@@ -1,0 +1,987 @@
+findSchedulerModel
+
+Z3 Major Version: 4
+Z3 Full Version: 4.8.10.0
+Z3 Full Version String: Z3 4.8.10.0
+
+
+==================================================
+[CREATING FRAGMENTS AND SETTING RULES]
+- Creating network
+Alert: First packet of flow flow1 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow2 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow3 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow4 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow5 must have enough time to leave source. Making first sending time a variable.
+Time taken to set the rules: 0.52876073 seconds
+ 
+
+==================================================
+[RULES SET. CHECKING SOLVER]
+Current time of the day: 11:54:03.277858
+Time taken on solving: 2.9690535 seconds 
+Number of assertions: 9875
+
+==================================================
+[DATA LOGGING]
+- Model generated successfully.
+
+
+
+
+>>>> INFORMATION OF SWITCH: switch0 <<<<
+    Port list - 
+        => Port name:       switch0Port2
+        Connects to:     switch2
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment2, 
+        Priority number: 5
+          Index 0 Slot start:      972.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch0Port6
+        Connects to:     switch4
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment1, 
+        Priority number: 5
+          Index 0 Slot start:      972.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch0Port8
+        Connects to:     switch5
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow5Fragment2, 
+        Priority number: 5
+          Index 0 Slot start:      55.5
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch0Port18
+        Connects to:     dev0
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment5, flow4Fragment10, 
+        Priority number: 2
+          Index 0 Slot start:      42.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 1
+          Index 0 Slot start:      974.0
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch0Port20
+        Connects to:     dev1
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment6, flow4Fragment11, 
+        Priority number: 0
+          Index 0 Slot start:      960.75
+          Index 0 Slot duration:   26.125
+        ------------------------
+        => Port name:       switch0Port22
+        Connects to:     dev2
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment7, flow4Fragment12, 
+        Priority number: 6
+          Index 0 Slot start:      987.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 5
+          Index 0 Slot start:      973.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch0Port24
+        Connects to:     dev3
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment13, 
+        Priority number: 0
+          Index 0 Slot start:      973.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch0Port26
+        Connects to:     dev4
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment14, 
+        Priority number: 1
+          Index 0 Slot start:      974.0
+          Index 0 Slot duration:   13.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch1 <<<<
+    Port list - 
+        => Port name:       switch1Port10
+        Connects to:     switch6
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment9, 
+        Priority number: 4
+          Index 0 Slot start:      28.25
+          Index 0 Slot duration:   13.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch2 <<<<
+    Port list - 
+        => Port name:       switch2Port4
+        Connects to:     switch3
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment3, 
+        Priority number: 1
+          Index 0 Slot start:      27.875
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch2Port18
+        Connects to:     dev10
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment11, flow5Fragment5, 
+        Priority number: 5
+          Index 0 Slot start:      985.875
+          Index 0 Slot duration:   13.25
+        ------------------------
+        Priority number: 6
+          Index 0 Slot start:      999.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch2Port20
+        Connects to:     dev11
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment12, flow5Fragment6, 
+        Priority number: 7
+          Index 0 Slot start:      1945.0
+          Index 0 Slot duration:   50.0
+        ------------------------
+        Priority number: 0
+          Index 0 Slot start:      999.375
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch2Port22
+        Connects to:     dev12
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment13, flow5Fragment7, 
+        Priority number: 0
+          Index 0 Slot start:      986.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 5
+          Index 0 Slot start:      999.375
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch2Port24
+        Connects to:     dev13
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow5Fragment8, 
+        Priority number: 0
+          Index 0 Slot start:      999.375
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch2Port26
+        Connects to:     dev14
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow5Fragment9, 
+        Priority number: 0
+          Index 0 Slot start:      999.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch3 <<<<
+    Port list - 
+        => Port name:       switch3Port6
+        Connects to:     switch4
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment3, 
+        Priority number: 0
+          Index 0 Slot start:      14.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port12
+        Connects to:     switch7
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment2, 
+        Priority number: 0
+          Index 0 Slot start:      14.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port16
+        Connects to:     switch9
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment1, 
+        Priority number: 0
+          Index 0 Slot start:      14.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port18
+        Connects to:     dev15
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment4, 
+        Priority number: 0
+          Index 0 Slot start:      41.875
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch3Port20
+        Connects to:     dev16
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment5, 
+        Priority number: 0
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port22
+        Connects to:     dev17
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment6, 
+        Priority number: 7
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port24
+        Connects to:     dev18
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment7, 
+        Priority number: 6
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch3Port26
+        Connects to:     dev19
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment8, 
+        Priority number: 0
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch4 <<<<
+    Port list - 
+        => Port name:       switch4Port8
+        Connects to:     switch5
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment3, 
+        Priority number: 1
+          Index 0 Slot start:      986.25
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch4Port12
+        Connects to:     switch7
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment4, flow4Fragment1, 
+        Priority number: 4
+          Index 0 Slot start:      986.25
+          Index 0 Slot duration:   13.0
+        ------------------------
+        Priority number: 0
+          Index 0 Slot start:      945.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch4Port18
+        Connects to:     dev20
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment11, 
+        Priority number: 4
+          Index 0 Slot start:      28.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch4Port20
+        Connects to:     dev21
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment12, 
+        Priority number: 4
+          Index 0 Slot start:      987.0
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch4Port22
+        Connects to:     dev22
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment13, 
+        Priority number: 3
+          Index 0 Slot start:      28.25
+          Index 0 Slot duration:   13.0
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch5 <<<<
+    Port list - 
+        => Port name:       switch5Port12
+        Connects to:     switch7
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow5Fragment3, 
+        Priority number: 1
+          Index 0 Slot start:      32.5
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch5Port18
+        Connects to:     dev25
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment5, 
+        Priority number: 0
+          Index 0 Slot start:      963.25
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch5Port20
+        Connects to:     dev26
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment6, 
+        Priority number: 0
+          Index 0 Slot start:      1000.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch5Port22
+        Connects to:     dev27
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow2Fragment7, 
+        Priority number: 0
+          Index 0 Slot start:      1000.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch6 <<<<
+    Port list - 
+        => Port name:       switch6Port18
+        Connects to:     dev30
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment10, 
+        Priority number: 1
+          Index 0 Slot start:      5.25
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch6Port20
+        Connects to:     dev31
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment11, 
+        Priority number: 0
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch6Port22
+        Connects to:     dev32
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment12, 
+        Priority number: 0
+          Index 0 Slot start:      42.375
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch6Port24
+        Connects to:     dev33
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment13, 
+        Priority number: 0
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch6Port26
+        Connects to:     dev34
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment14, 
+        Priority number: 0
+          Index 0 Slot start:      42.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch7 <<<<
+    Port list - 
+        => Port name:       switch7Port0
+        Connects to:     switch0
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment3, 
+        Priority number: 2
+          Index 0 Slot start:      959.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch7Port4
+        Connects to:     switch2
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow5Fragment4, 
+        Priority number: 0
+          Index 0 Slot start:      985.25
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch7Port14
+        Connects to:     switch8
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment2, 
+        Priority number: 2
+          Index 0 Slot start:      959.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch7Port18
+        Connects to:     dev35
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment8, flow2Fragment8, 
+        Priority number: 6
+          Index 0 Slot start:      28.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 5
+          Index 0 Slot start:      1000.0
+          Index 0 Slot duration:   13.25
+        ------------------------
+        => Port name:       switch7Port20
+        Connects to:     dev36
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment9, flow2Fragment9, 
+        Priority number: 6
+          Index 0 Slot start:      27.875
+          Index 0 Slot duration:   13.25
+        ------------------------
+        Priority number: 0
+          Index 0 Slot start:      1000.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch7Port22
+        Connects to:     dev37
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment10, flow2Fragment10, 
+        Priority number: 0
+          Index 0 Slot start:      987.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 1
+          Index 0 Slot start:      1000.125
+          Index 0 Slot duration:   13.125
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch8 <<<<
+    Port list - 
+        => Port name:       switch8Port2
+        Connects to:     switch1
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment2, 
+        Priority number: 7
+          Index 0 Slot start:      14.125
+          Index 0 Slot duration:   13.0
+        ------------------------
+        => Port name:       switch8Port4
+        Connects to:     switch2
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow3Fragment1, 
+        Priority number: 3
+          Index 0 Slot start:      13.875
+          Index 0 Slot duration:   13.125
+        ------------------------
+        => Port name:       switch8Port16
+        Connects to:     switch9
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment4, 
+        Priority number: 1
+          Index 0 Slot start:      973.75
+          Index 0 Slot duration:   13.125
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch9 <<<<
+    Port list - 
+        => Port name:       switch9Port0
+        Connects to:     switch0
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment4, flow5Fragment1, 
+        Priority number: 4
+          Index 0 Slot start:      28.0
+          Index 0 Slot duration:   13.125
+        ------------------------
+        Priority number: 7
+          Index 0 Slot start:      41.125
+          Index 0 Slot duration:   13.25
+        ------------------------
+        => Port name:       switch9Port18
+        Connects to:     dev45
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment5, 
+        Priority number: 1
+          Index 0 Slot start:      987.75
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch9Port20
+        Connects to:     dev46
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment6, 
+        Priority number: 3
+          Index 0 Slot start:      987.75
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch9Port22
+        Connects to:     dev47
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment7, 
+        Priority number: 1
+          Index 0 Slot start:      987.75
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch9Port24
+        Connects to:     dev48
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment8, 
+        Priority number: 1
+          Index 0 Slot start:      987.75
+          Index 0 Slot duration:   50.0
+        ------------------------
+        => Port name:       switch9Port26
+        Connects to:     dev49
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow4Fragment9, 
+        Priority number: 1
+          Index 0 Slot start:      988.0
+          Index 0 Slot duration:   13.0
+        ------------------------
+
+
+
+>>>> INFORMATION OF FLOW0 <<<<
+
+    Total number of packets scheduled: 13
+    Path tree of the flow:
+        Path to dev0: dev16, switch3(flow1Fragment1), switch9(flow1Fragment4), switch0(flow1Fragment5), dev0, 
+        Path to dev1: dev16, switch3(flow1Fragment1), switch9(flow1Fragment4), switch0(flow1Fragment6), dev1, 
+        Path to dev2: dev16, switch3(flow1Fragment1), switch9(flow1Fragment4), switch0(flow1Fragment7), dev2, 
+        Path to dev35: dev16, switch3(flow1Fragment2), switch7(flow1Fragment8), dev35, 
+        Path to dev36: dev16, switch3(flow1Fragment2), switch7(flow1Fragment9), dev36, 
+        Path to dev37: dev16, switch3(flow1Fragment2), switch7(flow1Fragment10), dev37, 
+        Path to dev20: dev16, switch3(flow1Fragment3), switch4(flow1Fragment11), dev20, 
+        Path to dev21: dev16, switch3(flow1Fragment3), switch4(flow1Fragment12), dev21, 
+        Path to dev22: dev16, switch3(flow1Fragment3), switch4(flow1Fragment13), dev22, 
+
+
+    Packets heading to dev0:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev1:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  973.75
+       Calculated average Latency: 960.75
+       Method average Latency: 973.75
+       Method average Jitter: 0.0
+
+    Packets heading to dev2:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  1000.0
+       Calculated average Latency: 987.0
+       Method average Latency: 1000.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev35:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  41.125
+       Calculated average Latency: 28.125
+       Method average Latency: 41.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev36:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  41.125
+       Calculated average Latency: 28.125
+       Method average Latency: 41.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev37:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  1000.0
+       Calculated average Latency: 987.0
+       Method average Latency: 1000.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev20:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  41.125
+       Calculated average Latency: 28.125
+       Method average Latency: 41.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev21:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  1000.0
+       Calculated average Latency: 987.0
+       Method average Latency: 1000.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev22:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  41.25
+       Calculated average Latency: 28.25
+       Method average Latency: 41.25
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 452.94446
+
+
+>>>> INFORMATION OF FLOW1 <<<<
+
+    Total number of packets scheduled: 13
+    Path tree of the flow:
+        Path to dev25: dev3, switch0(flow2Fragment1), switch4(flow2Fragment3), switch5(flow2Fragment5), dev25, 
+        Path to dev26: dev3, switch0(flow2Fragment1), switch4(flow2Fragment3), switch5(flow2Fragment6), dev26, 
+        Path to dev27: dev3, switch0(flow2Fragment1), switch4(flow2Fragment3), switch5(flow2Fragment7), dev27, 
+        Path to dev35: dev3, switch0(flow2Fragment1), switch4(flow2Fragment4), switch7(flow2Fragment8), dev35, 
+        Path to dev36: dev3, switch0(flow2Fragment1), switch4(flow2Fragment4), switch7(flow2Fragment9), dev36, 
+        Path to dev37: dev3, switch0(flow2Fragment1), switch4(flow2Fragment4), switch7(flow2Fragment10), dev37, 
+        Path to dev10: dev3, switch0(flow2Fragment2), switch2(flow2Fragment11), dev10, 
+        Path to dev11: dev3, switch0(flow2Fragment2), switch2(flow2Fragment12), dev11, 
+        Path to dev12: dev3, switch0(flow2Fragment2), switch2(flow2Fragment13), dev12, 
+
+
+    Packets heading to dev25:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev26:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev27:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev35:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev36:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev37:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1013.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev10:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  999.125
+       Calculated average Latency: 28.125
+       Method average Latency: 41.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev11:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  1958.0
+       Calculated average Latency: 987.0
+       Method average Latency: 1000.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev12:
+       Flow firstDepartureTime of packet 0: 971.0
+       Flow lastScheduledTime of packet 0:  999.125
+       Calculated average Latency: 28.125
+       Method average Latency: 41.125
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 144.08333
+
+
+>>>> INFORMATION OF FLOW2 <<<<
+
+    Total number of packets scheduled: 14
+    Path tree of the flow:
+        Path to dev15: dev42, switch8(flow3Fragment1), switch2(flow3Fragment3), switch3(flow3Fragment4), dev15, 
+        Path to dev16: dev42, switch8(flow3Fragment1), switch2(flow3Fragment3), switch3(flow3Fragment5), dev16, 
+        Path to dev17: dev42, switch8(flow3Fragment1), switch2(flow3Fragment3), switch3(flow3Fragment6), dev17, 
+        Path to dev18: dev42, switch8(flow3Fragment1), switch2(flow3Fragment3), switch3(flow3Fragment7), dev18, 
+        Path to dev19: dev42, switch8(flow3Fragment1), switch2(flow3Fragment3), switch3(flow3Fragment8), dev19, 
+        Path to dev30: dev42, switch8(flow3Fragment2), switch1(flow3Fragment9), switch6(flow3Fragment10), dev30, 
+        Path to dev31: dev42, switch8(flow3Fragment2), switch1(flow3Fragment9), switch6(flow3Fragment11), dev31, 
+        Path to dev32: dev42, switch8(flow3Fragment2), switch1(flow3Fragment9), switch6(flow3Fragment12), dev32, 
+        Path to dev33: dev42, switch8(flow3Fragment2), switch1(flow3Fragment9), switch6(flow3Fragment13), dev33, 
+        Path to dev34: dev42, switch8(flow3Fragment2), switch1(flow3Fragment9), switch6(flow3Fragment14), dev34, 
+
+
+    Packets heading to dev15:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.0
+       Calculated average Latency: 42.0
+       Method average Latency: 55.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev16:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev17:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev18:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev19:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.125
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev30:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev31:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
+       Method average Jitter: 0.0
+
+    Packets heading to dev32:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.375
+       Calculated average Latency: 42.375
+       Method average Latency: 55.375
+       Method average Jitter: 0.0
+
+    Packets heading to dev33:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Packets heading to dev34:
+       Flow firstDepartureTime of packet 0: 13.0
+       Flow lastScheduledTime of packet 0:  55.25
+       Calculated average Latency: 42.25
+       Method average Latency: 55.25
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 42.2
+
+
+>>>> INFORMATION OF FLOW3 <<<<
+
+    Total number of packets scheduled: 14
+    Path tree of the flow:
+        Path to dev45: dev22, switch4(flow4Fragment1), switch7(flow4Fragment2), switch8(flow4Fragment4), switch9(flow4Fragment5), dev45, 
+        Path to dev46: dev22, switch4(flow4Fragment1), switch7(flow4Fragment2), switch8(flow4Fragment4), switch9(flow4Fragment6), dev46, 
+        Path to dev47: dev22, switch4(flow4Fragment1), switch7(flow4Fragment2), switch8(flow4Fragment4), switch9(flow4Fragment7), dev47, 
+        Path to dev48: dev22, switch4(flow4Fragment1), switch7(flow4Fragment2), switch8(flow4Fragment4), switch9(flow4Fragment8), dev48, 
+        Path to dev49: dev22, switch4(flow4Fragment1), switch7(flow4Fragment2), switch8(flow4Fragment4), switch9(flow4Fragment9), dev49, 
+        Path to dev0: dev22, switch4(flow4Fragment1), switch7(flow4Fragment3), switch0(flow4Fragment10), dev0, 
+        Path to dev1: dev22, switch4(flow4Fragment1), switch7(flow4Fragment3), switch0(flow4Fragment11), dev1, 
+        Path to dev2: dev22, switch4(flow4Fragment1), switch7(flow4Fragment3), switch0(flow4Fragment12), dev2, 
+        Path to dev3: dev22, switch4(flow4Fragment1), switch7(flow4Fragment3), switch0(flow4Fragment13), dev3, 
+        Path to dev4: dev22, switch4(flow4Fragment1), switch7(flow4Fragment3), switch0(flow4Fragment14), dev4, 
+
+
+    Packets heading to dev45:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  1000.875
+       Calculated average Latency: 56.0
+       Method average Latency: 69.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev46:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  1000.875
+       Calculated average Latency: 56.0
+       Method average Latency: 69.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev47:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  1000.875
+       Calculated average Latency: 56.0
+       Method average Latency: 69.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev48:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  1000.875
+       Calculated average Latency: 56.0
+       Method average Latency: 69.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev49:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  1001.0
+       Calculated average Latency: 56.125
+       Method average Latency: 69.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev0:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  987.0
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Packets heading to dev1:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  986.875
+       Calculated average Latency: 42.0
+       Method average Latency: 55.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev2:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  986.875
+       Calculated average Latency: 42.0
+       Method average Latency: 55.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev3:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  986.875
+       Calculated average Latency: 42.0
+       Method average Latency: 55.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev4:
+       Flow firstDepartureTime of packet 0: 944.875
+       Flow lastScheduledTime of packet 0:  987.0
+       Calculated average Latency: 42.125
+       Method average Latency: 55.125
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 49.0375
+
+
+>>>> INFORMATION OF FLOW4 <<<<
+
+    Total number of packets scheduled: 9
+    Path tree of the flow:
+        Path to dev10: dev47, switch9(flow5Fragment1), switch0(flow5Fragment2), switch5(flow5Fragment3), switch7(flow5Fragment4), switch2(flow5Fragment5), dev10, 
+        Path to dev11: dev47, switch9(flow5Fragment1), switch0(flow5Fragment2), switch5(flow5Fragment3), switch7(flow5Fragment4), switch2(flow5Fragment6), dev11, 
+        Path to dev12: dev47, switch9(flow5Fragment1), switch0(flow5Fragment2), switch5(flow5Fragment3), switch7(flow5Fragment4), switch2(flow5Fragment7), dev12, 
+        Path to dev13: dev47, switch9(flow5Fragment1), switch0(flow5Fragment2), switch5(flow5Fragment3), switch7(flow5Fragment4), switch2(flow5Fragment8), dev13, 
+        Path to dev14: dev47, switch9(flow5Fragment1), switch0(flow5Fragment2), switch5(flow5Fragment3), switch7(flow5Fragment4), switch2(flow5Fragment9), dev14, 
+
+
+    Packets heading to dev10:
+       Flow firstDepartureTime of packet 0: 40.375
+       Flow lastScheduledTime of packet 0:  1012.25
+       Calculated average Latency: 971.875
+       Method average Latency: 984.875
+       Method average Jitter: 0.0
+
+    Packets heading to dev11:
+       Flow firstDepartureTime of packet 0: 40.375
+       Flow lastScheduledTime of packet 0:  1012.375
+       Calculated average Latency: 972.0
+       Method average Latency: 985.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev12:
+       Flow firstDepartureTime of packet 0: 40.375
+       Flow lastScheduledTime of packet 0:  1012.375
+       Calculated average Latency: 972.0
+       Method average Latency: 985.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev13:
+       Flow firstDepartureTime of packet 0: 40.375
+       Flow lastScheduledTime of packet 0:  1012.375
+       Calculated average Latency: 972.0
+       Method average Latency: 985.0
+       Method average Jitter: 0.0
+
+    Packets heading to dev14:
+       Flow firstDepartureTime of packet 0: 40.375
+       Flow lastScheduledTime of packet 0:  1012.25
+       Calculated average Latency: 971.875
+       Method average Latency: 984.875
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 971.95
+flow1 average latency: 465.94446
+flow1 average jitter: 0.0
+flow2 average latency: 157.08333
+flow2 average jitter: 0.0
+flow3 average latency: 55.2
+flow3 average jitter: 0.0
+flow4 average latency: 62.0375
+flow4 average jitter: 0.0
+flow5 average latency: 984.95
+flow5 average jitter: 0.0
+Total number of scheduled packets: 63
+Overall average latency: 345.04306
+Overall average jitter: 0.0
+- Serializing network
+Serialized data is saved in network.ser
+Time taken on logging: 1.1671321 seconds
+
+==================================================
+Execution time: 4.7845683 seconds
+ 

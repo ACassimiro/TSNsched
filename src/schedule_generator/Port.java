@@ -1,3 +1,22 @@
+//TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
+//
+//    Copyright (C) 2021  Aellison Cassimiro
+//    
+//    TSNsched is licensed under the GNU GPL version 3 or later:
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//    
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package schedule_generator;
 
 import java.io.Serializable;
@@ -31,10 +50,12 @@ import com.microsoft.z3.Solver;
  * anything else does not matter at this point.
  */
 public class Port implements Serializable {
-
+	
+	private Boolean isModifiedOrCreated = true;
+	
 	private static final long serialVersionUID = 1L;
 	private Boolean useMicroCycles = false;
-    private Boolean useHyperCycle = true;
+    private Boolean useHyperCycle = false;
     
     private ArrayList<Float> listOfPeriods = new ArrayList<Float>();
     private float definedHyperCycleSize = -1;
@@ -52,12 +73,13 @@ public class Port implements Serializable {
     private int cycleUpperBoundRange = Network.CYCLEUPPERBOUNDRANGE; // Limits the applications of rules to the cycles
 
 	private float gbSize;
-    
-    protected float maxPacketSize;
+	
+	protected float maxPacketSize;
     protected float timeToTravel;
     protected float transmissionTime;
     protected float portSpeed;
-    protected int portNum;
+   
+	protected int portNum;
 
 	private transient RealExpr gbSizeZ3; // Size of the guardBand
     protected transient RealExpr maxPacketSizeZ3;
@@ -67,7 +89,7 @@ public class Port implements Serializable {
     
     
     /**
-     * [Method]: Port
+     * [Method]: Port   
      * [Usage]: Overloaded constructor of this class. Will start 
      * the port with setting properties given as parameters.
      * 
@@ -134,10 +156,11 @@ public class Port implements Serializable {
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      */
     private void setUpCycleRules(Solver solver, Context ctx) {
+    	
 
-        for(FlowFragment frag : this.flowFragments) {
-        	for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
-                IntExpr flowPriority = frag.getFragmentPriorityZ3();
+        for(int numericFlowPriority = 0; numericFlowPriority < this.cycle.getNumOfPrts(); numericFlowPriority++) {
+        	for(int index = 0; index < this.cycle.getNumOfSlots(numericFlowPriority); index++) {
+                IntExpr flowPriority = ctx.mkInt(numericFlowPriority);
                 IntExpr indexZ3 = ctx.mkInt(index);
                 
                 // A slot will be somewhere between 0 and the end of the cycle minus its duration (Slot in cycle constraint)
@@ -170,7 +193,6 @@ public class Port implements Serializable {
                  * If the priority of the fragments are the same, then the start and duration
                  * of a slot is also the same (needs to be specified due to z3 variable naming
                  * properties) (Same priority, same slot constraint)
-                 */
                 
                 for (FlowFragment auxFrag : this.flowFragments) {
                     solver.add(
@@ -186,19 +208,20 @@ public class Port implements Serializable {
                                          cycle.slotDurationZ3(ctx, frag.getFragmentPriorityZ3(), indexZ3),
                                          cycle.slotDurationZ3(ctx, auxFrag.getFragmentPriorityZ3(), indexZ3)
                                  )
-                                 
+
                             )    
                         )
                     );
                 }
+                 */
             
                 // No two slots can overlap (No overlapping slots constraint)
-                for (FlowFragment auxFrag : this.flowFragments) {
-                    if(auxFrag.equals(frag)) {
+                for(int auxNumericFlowPriority = 0; auxNumericFlowPriority < this.cycle.getNumOfPrts(); auxNumericFlowPriority++) {
+                    if(auxNumericFlowPriority == numericFlowPriority) {
                         continue;
                     }
                     
-                    IntExpr auxFlowPriority = auxFrag.getFragmentPriorityZ3();
+                    IntExpr auxFlowPriority = ctx.mkInt(auxNumericFlowPriority);
                     
                     solver.add(
                         ctx.mkImplies(
@@ -229,7 +252,7 @@ public class Port implements Serializable {
                 }
                 
                 
-                if(index < this.cycle.getNumOfSlots() - 1) {
+                if(index < this.cycle.getNumOfSlots(numericFlowPriority) - 1) {
                 	solver.add(
             			ctx.mkLt(
         					cycle.slotStartZ3(ctx, flowPriority, indexZ3),    
@@ -253,7 +276,7 @@ public class Port implements Serializable {
                     		continue;
                     	}
                     	
-                    	IntExpr auxFlowPriority = auxFrag.getFlowPriority();
+                    	IntExpr auxFlowPriority = auxFrag.getFragmentPriorityZ3();
                     	
                     	solver.add(
                 			ctx.mkImplies(
@@ -311,38 +334,50 @@ public class Port implements Serializable {
     	IntExpr indexZ3;
     	
     	// If there is a flow assigned to the slot, slotDuration must be greater than transmission time
-    	for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
-    		solver.add(
-    			ctx.mkGe(
-					cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index+1)), 
-					ctx.mkAdd(
-							cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index)),
-							cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index))
+    	for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+    		for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
+        		solver.add(
+    				ctx.mkImplies(
+    					ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
+						ctx.mkGe(
+	    					cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index+1)), 
+	    					ctx.mkAdd(
+    							cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index)),
+    							cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index))
+	    					)
+	    				)
 					)
-				)
-			);
+    			);
+        	}
     	}
     	
-    	for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
-    		indexZ3 = ctx.mkInt(index);
-    		
-	        // solver.add(ctx.mkGe(cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3), this.transmissionTimeZ3));
-	        
-	        // Every flow must have a priority (Priority assignment constraint)
-	        solver.add(ctx.mkGe(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(0))); 
-	        solver.add(ctx.mkLt(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(this.cycle.getNumOfPrts())));
-	        
-	        // Slot start must be <= cycle time - slot duration 
-	        solver.add(
-	            ctx.mkLe(
-	                ctx.mkAdd(
-	                    cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-	                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3)
-	                ), 
-	                cycle.getCycleDurationZ3()
-	            )
-	        );
-	    	
+
+    	for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+	    	for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
+	    		indexZ3 = ctx.mkInt(index);
+	    		
+		        // solver.add(ctx.mkGe(cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3), this.transmissionTimeZ3));
+		        
+		        // Every flow must have a priority (Priority assignment constraint)
+		        solver.add(ctx.mkGe(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(0))); 
+		        solver.add(ctx.mkLt(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(this.cycle.getNumOfPrts())));
+		        
+		        // Slot start must be <= cycle time - slot duration 
+		        solver.add(
+	        		ctx.mkImplies(
+        				ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
+			            ctx.mkLe(
+			                ctx.mkAdd(
+			                    cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+			                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3)
+			                ), 
+			                cycle.getCycleDurationZ3()
+			            )
+		            )
+	        		
+		        );
+		    	
+	    	}
     	}
     }
     
@@ -362,10 +397,20 @@ public class Port implements Serializable {
 
         // For the specified range of packets defined by [0, upperBoundRange],
         // apply the scheduling rules.
-
-        //System.out.println("Setting up rules for " + flowFrag.getName() + " - Num of packets: " + flowFrag.getParent().getNumOfPacketsSent());
-        for(int i = 0; i < flowFrag.getParent().getNumOfPacketsSent(); i++) {
+        for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
             // Make t3 > t2 + transmissionTime
+        	
+        	/*
+        	System.out.println("Attempting to set rules on " + flowFrag.getName());
+        	System.out.println("Making " + this.scheduledTime(ctx, i, flowFrag) 
+        						+ " greater or equals to " + this.arrivalTime(ctx, i, flowFrag)
+        						+ " plus " + ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3));
+        	System.out.println(flowFrag.getPacketPeriodicityZ3());
+        	System.out.println(this.arrivalTime(ctx, i, flowFrag));
+        	System.out.println(this.portSpeedZ3);
+        	System.out.println(flowFrag.getPacketSizeZ3());
+        	/**/
+
             solver.add( // Time to Transmit constraint.
                 ctx.mkGe(
                     this.scheduledTime(ctx, i, flowFrag),
@@ -379,364 +424,375 @@ public class Port implements Serializable {
         Expr auxExp = null;
         Expr auxExp2 = ctx.mkTrue();
         Expr exp = null;
-        
-        for(FlowFragment auxFragment : this.flowFragments) {
-        	
-        	/*
-        	System.out.println("Num de pacotes escalonados:" + auxFragment.getNumOfPacketsSent());
-        	
-        	for(int i = 0; i < auxFragment.getNumOfPacketsSent(); i++) {
-            	solver.add(
-        			ctx.mkEq(
-        				this.arrivalTime(ctx, i, auxFragment), 
-						ctx.mkAdd(
-								this.departureTime(ctx, i, auxFragment),
-								this.timeToTravelZ3								
-						)
-					)
-    			);
-            	
-            	solver.add(
-        			ctx.mkGe(
-        				this.scheduledTime(ctx, i, auxFragment), 
-						ctx.mkAdd(
-								this.arrivalTime(ctx, i, auxFragment),
-								this.transmissionTimeZ3								
-						)
-					)
-    			);
-        	}
-        	/**/
-        	
-        	
-            for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
-                for(int j = 0; j < auxFragment.getNumOfPacketsSent(); j++) {
-                	if (auxExp == null) {
-                        auxExp = ctx.mkFalse();
-                    }
-                	
-                	if(auxFragment == flowFrag && i == j) {
-                        continue;
-                    }
-                    
-                    
-                    /*****************************************************
-                     * 
-                     * Packet A must be transfered after packet B or 
-                     * fit one of the three base cases. 
-                     * 
-                     *****************************************************/
-                    auxExp = ctx.mkOr((BoolExpr) auxExp,
-                            ctx.mkAnd(
-                                ctx.mkAnd(
-                                    ctx.mkEq(auxFragment.getFragmentPriorityZ3(), flowFrag.getFragmentPriorityZ3()),
-                                    ctx.mkLe(this.arrivalTime(ctx, i, flowFrag), this.arrivalTime(ctx, j, auxFragment))
-                                ),
-                                ctx.mkEq(
-                                    this.scheduledTime(ctx, j, auxFragment),
-                                    ctx.mkAdd(
-                                        this.scheduledTime(ctx, i, flowFrag),
-                                        ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                    )
-                                )
-                            )
-                    );
-                    
-                    
-                    
-                }
-                
-                
-                for(int j = 0; j < this.cycleUpperBoundRange; j++) {
-                    
-                    /*
-                    T2 IS INSIDE SLOT, HAS ENOUGH TIME TO TRANSMIT
-                    ; **************************************
-                    ; |------------------------------------|
-                    ; CS       S    t2-------t3    E       CE
-                    ;               transmission
-                    ; **************************************
-                    */
-                	
-                	for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
-                		indexZ3 = ctx.mkInt(index);
 
-                		/**/
-                		auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived during a time slot predicate
-                                ctx.mkImplies( 
-                                    ctx.mkAnd(
-                                        ctx.mkLe(
-                                            this.arrivalTime(ctx, i, flowFrag), 
-                                            ctx.mkSub(
-                                                ctx.mkAdd( 
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                    cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                    cycle.cycleStartZ3(ctx, ctx.mkInt(j))
-                                                ), 
-                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                            )
-                                        ),
-                                        ctx.mkGe(
-                                            this.arrivalTime(ctx, i, flowFrag), 
-                                            ctx.mkAdd( 
-                                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                cycle.cycleStartZ3(ctx, j)
-                                            )
-                                        )
-                                    ),    
-                                    ctx.mkEq(
-                                        this.scheduledTime(ctx, i, flowFrag),
-                                        ctx.mkAdd(
-                                            this.arrivalTime(ctx, i, flowFrag),
-                                            ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                        )
-                                    )
-                                )
-                        );
-                        /**/
-                        
-                        
-                        /*
-                        ; T2 IS BEFORE THE SLOT
-                        ; **************************************
-                        ; |------------------------------------|
-                        ; CS     t2      S-------t3    E       CE
-                        ;               transmission
-                        ; **************************************
-                        */
-                		
-                		if(index == 0) {
-                            auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived before slot start constraint
-                                    ctx.mkImplies( 
-                                        ctx.mkAnd(
-                                            ctx.mkLt(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                ctx.mkAdd(
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3), 
-                                                    cycle.cycleStartZ3(ctx, j)
-                                                )
-                                            ),
-                                            ctx.mkGe(
-                                                this.arrivalTime(ctx, i, flowFrag),
-                                                cycle.cycleStartZ3(ctx, j)
-                                            )
-                                        ),
-                                        ctx.mkEq( 
-                                            this.scheduledTime(ctx, i, flowFrag),
-                                            ctx.mkAdd( 
-                                                ctx.mkAdd(
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                    cycle.cycleStartZ3(ctx, j)
-                                                ),
-                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                            )
-                                            
-                                        )
-                                    )
-                                ); 
-                		} else if (index < this.cycle.getNumOfSlots()) {
-                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2,
-                                    ctx.mkImplies( 
-                                        ctx.mkAnd(
-                                            ctx.mkLt(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                ctx.mkAdd(
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3), 
-                                                    cycle.cycleStartZ3(ctx, j)
-                                                )
-                                            ),
-                                            ctx.mkGt(
-                                                this.arrivalTime(ctx, i, flowFrag),
-                                                ctx.mkSub(
-                                            		ctx.mkAdd(
-                                                		cycle.cycleStartZ3(ctx, j),
-                                                		cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1)),
-                                                		cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1))                                                    
-                                            		),
-                                            		ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                        		)                                                
-                                            )
-                                        ),
-                                        ctx.mkEq( 
-                                            this.scheduledTime(ctx, i, flowFrag),
-                                            ctx.mkAdd( 
-                                                ctx.mkAdd(
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                    cycle.cycleStartZ3(ctx, j)
-                                                ),
-                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-                                            )
-                                            
-                                        )
-                                    )
-                                ); 
-                		}
-                        /**/
-                        
-                		
-                        
-                        /*
-                        ; T2 IS AFTER THE SLOT OR INSIDE WITHOUT ENOUGH TIME. The packet won't be trans-
-                        ; mitted. This happens due to the usage of hyper and micro-cycles.
-                        ; ****************************************************************************
-                        ; |------------------------------------|------------------------------------|
-                        ; CS        S        t2     E        CE/CS       S----------t3   E         CE
-                        ;                                                transmission
-                        ; ****************************************************************************
-                        */
-                		                		
-                		if(index == this.cycle.getNumOfSlots() - 1) {
-                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived after slot end constraint
-                					ctx.mkImplies( 
-                                        ctx.mkAnd(
-                                            ctx.mkGe(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                cycle.cycleStartZ3(ctx, j)
-                                            ),
-                                            ctx.mkLe(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                ctx.mkAdd(
-                                            		cycle.getCycleDurationZ3(),
-                                                    cycle.cycleStartZ3(ctx, j)		
-                                        		)
-                                            )
-                                        ),
-                                        ctx.mkLe( 
-                                            this.scheduledTime(ctx, i, flowFrag),
-                                            ctx.mkAdd(
-                                      		    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-                                                cycle.cycleStartZ3(ctx, j)
-                                            )
-                                        )  
-                                    )         
-                            ); 
-                		}
-                		
-                		/**
-                		* THE CODE BELLOW HAS ISSUES REGARDING NOT COVERING ALL CASES (ALLOWS DELAY).
-                		* REVIEW LATER.
-                		
-                		if(j < this.cycleUpperBoundRange - 1 && index == this.cycle.getNumOfSlots() - 1) {
-                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived after slot end constraint
-                                    ctx.mkImplies( 
-                                        ctx.mkAnd(
-                                            ctx.mkGt(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                ctx.mkSub(
-                                                    ctx.mkAdd(
-                                                        cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
-                                                        cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
-                                                        cycle.cycleStartZ3(ctx, j)
-                                                    ),
-                                                    this.transmissionTimeZ3
-                                                )
-                                            ),
-                                            ctx.mkLe(
-                                                this.arrivalTime(ctx, i, flowFrag),
-                                                ctx.mkAdd(  
-                                                    cycle.cycleStartZ3(ctx, j),
-                                                    cycle.getCycleDurationZ3()
-                                                )
-                                            )
-                                        ),
-                                    
-                                        ctx.mkEq( 
-                                            this.scheduledTime(ctx, i, flowFrag),
-                                            ctx.mkAdd( 
-                                                ctx.mkAdd(
-                                                    cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), ctx.mkInt(0)),
-                                                    cycle.cycleStartZ3(ctx, j + 1)
-                                                ),
-                                                this.transmissionTimeZ3
-                                            )
-                                        )
-                                    )               
-                            ); 
-                		} else if (j == this.cycleUpperBoundRange - 1 && index == this.cycle.getNumOfSlots() - 1) {
-                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2,
-                                    ctx.mkImplies( 
-                                        ctx.mkAnd(
-                                            ctx.mkGt(
-                                                this.arrivalTime(ctx, i, flowFrag), 
-                                                ctx.mkSub(
-                                                    ctx.mkAdd(
-                                                        cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
-                                                        cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
-                                                        cycle.cycleStartZ3(ctx, j)
-                                                    ),
-                                                    this.transmissionTimeZ3
-                                                )
-                                            ),
-                                            ctx.mkLe(
-                                                this.arrivalTime(ctx, i, flowFrag),
-                                                ctx.mkAdd(  
-                                                    cycle.cycleStartZ3(ctx, j),
-                                                    cycle.getCycleDurationZ3()
-                                                )
-                                            )
-                                        ),
-                                    
-                                        ctx.mkEq( 
-                                            this.scheduledTime(ctx, i, flowFrag),
-                                            this.arrivalTime(ctx, i, flowFrag)
-                                        )
-                                    
-                                    )               
-                            ); 
-                		}     
-                		/**/           		
-                	}
-                }
-
-                //auxExp = ctx.mkOr((BoolExpr)ctx.mkFalse(), (BoolExpr)auxExp2);
-                auxExp = ctx.mkOr((BoolExpr)auxExp, (BoolExpr)auxExp2);
-                
-                
-                if(exp == null) {
-                    exp = auxExp;
-                } else {
-                    exp = ctx.mkAnd((BoolExpr) exp, (BoolExpr) auxExp);
-                }
-                auxExp = ctx.mkFalse();
-                auxExp2 = ctx.mkTrue();
-            }
+        for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+	        for(FlowFragment auxFragment : this.flowFragments) {
+	        	
+	        	/*
+	        	System.out.println("Num de pacotes escalonados:" + auxFragment.getNumOfPacketsSent());
+	        	
+	        	for(int i = 0; i < auxFragment.getNumOfPacketsSent(); i++) {
+	            	solver.add(
+	        			ctx.mkEq(
+	        				this.arrivalTime(ctx, i, auxFragment), 
+							ctx.mkAdd(
+									this.departureTime(ctx, i, auxFragment),
+									this.timeToTravelZ3								
+							)
+						)
+	    			);
+	            	
+	            	solver.add(
+	        			ctx.mkGe(
+	        				this.scheduledTime(ctx, i, auxFragment), 
+							ctx.mkAdd(
+									this.arrivalTime(ctx, i, auxFragment),
+									this.transmissionTimeZ3								
+							)
+						)
+	    			);
+	        	}
+	        	/**/
+	        	
+	            for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
+	                for(int j = 0; j < auxFragment.getNumOfPacketsSent(); j++) {
+	                	if (auxExp == null) {
+	                        auxExp = ctx.mkFalse();
+	                    }
+	                	
+	                	if(auxFragment == flowFrag && i == j) {
+	                        continue;
+	                    }
+	                    
+	                    
+	                    /*****************************************************
+	                     * 
+	                     * Packet A must be transfered after packet B or 
+	                     * fit one of the three base cases. 
+	                     * 
+	                     *****************************************************/
+	                    auxExp = ctx.mkOr((BoolExpr) auxExp,
+	                            ctx.mkAnd(
+	                                ctx.mkAnd(
+	                                    ctx.mkEq(auxFragment.getFragmentPriorityZ3(), flowFrag.getFragmentPriorityZ3()),
+	                                    ctx.mkLe(this.arrivalTime(ctx, i, flowFrag), this.arrivalTime(ctx, j, auxFragment))
+	                                ),
+	                                ctx.mkEq(
+	                                    this.scheduledTime(ctx, j, auxFragment),
+	                                    ctx.mkAdd(
+	                                        this.scheduledTime(ctx, i, flowFrag),
+	                                        ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                    )
+	                                )
+	                            )
+	                    );
+	
+	                }
+	
+	                for(int j = 0; j < this.cycleUpperBoundRange; j++) {
+	                    
+	                    /*
+	                    T2 IS INSIDE SLOT, HAS ENOUGH TIME TO TRANSMIT
+	                    ; **************************************
+	                    ; |------------------------------------|
+	                    ; CS       S    t2-------t3    E       CE
+	                    ;               transmission
+	                    ; **************************************
+	                    */
+	                	
+	                	for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
+	                		indexZ3 = ctx.mkInt(index);
+	
+	                		/**/
+	                		auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived during a time slot predicate
+	                                ctx.mkImplies( 
+	                                    ctx.mkAnd(
+	                                        ctx.mkLe(
+	                                            this.arrivalTime(ctx, i, flowFrag), 
+	                                            ctx.mkSub(
+	                                                ctx.mkAdd( 
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                    cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                    cycle.cycleStartZ3(ctx, ctx.mkInt(j))
+	                                                ), 
+	                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                            )
+	                                        ),
+	                                        ctx.mkGe(
+	                                            this.arrivalTime(ctx, i, flowFrag), 
+	                                            ctx.mkAdd( 
+	                                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                cycle.cycleStartZ3(ctx, j)
+	                                            )
+	                                        )
+	                                    ),    
+	                                    ctx.mkEq(
+	                                        this.scheduledTime(ctx, i, flowFrag),
+	                                        ctx.mkAdd(
+	                                            this.arrivalTime(ctx, i, flowFrag),
+	                                            ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                        )
+	                                    )
+	                                )
+	                        );
+	                        /**/
+	                        
+	                        
+	                        /*
+	                        ; T2 IS BEFORE THE SLOT
+	                        ; **************************************
+	                        ; |------------------------------------|
+	                        ; CS     t2      S-------t3    E       CE
+	                        ;               transmission
+	                        ; **************************************
+	                        */
+	                		
+	                		if(index == 0) {
+	                            auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived before slot start constraint
+	                                    ctx.mkImplies( 
+	                                        ctx.mkAnd(
+	                                            ctx.mkLt(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                ctx.mkAdd(
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3), 
+	                                                    cycle.cycleStartZ3(ctx, j)
+	                                                )
+	                                            ),
+	                                            ctx.mkGe(
+	                                                this.arrivalTime(ctx, i, flowFrag),
+	                                                cycle.cycleStartZ3(ctx, j)
+	                                            )
+	                                        ),
+	                                        ctx.mkEq( 
+	                                            this.scheduledTime(ctx, i, flowFrag),
+	                                            ctx.mkAdd( 
+	                                                ctx.mkAdd(
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                    cycle.cycleStartZ3(ctx, j)
+	                                                ),
+	                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                            )
+	                                            
+	                                        )
+	                                    )
+	                                ); 
+	                		} else if (index < this.cycle.getNumOfSlots(prt)) {
+	                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2,
+	                                    ctx.mkImplies( 
+	                                        ctx.mkAnd(
+	                                            ctx.mkLt(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                ctx.mkAdd(
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3), 
+	                                                    cycle.cycleStartZ3(ctx, j)
+	                                                )
+	                                            ),
+	                                            ctx.mkGt(
+	                                                this.arrivalTime(ctx, i, flowFrag),
+	                                                ctx.mkSub(
+	                                            		ctx.mkAdd(
+	                                                		cycle.cycleStartZ3(ctx, j),
+	                                                		cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1)),
+	                                                		cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), ctx.mkInt(index - 1))                                                    
+	                                            		),
+	                                            		ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                        		)                                                
+	                                            )
+	                                        ),
+	                                        ctx.mkEq( 
+	                                            this.scheduledTime(ctx, i, flowFrag),
+	                                            ctx.mkAdd( 
+	                                                ctx.mkAdd(
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                    cycle.cycleStartZ3(ctx, j)
+	                                                ),
+	                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+	                                            )
+	                                            
+	                                        )
+	                                    )
+	                                ); 
+	                		}
+	                        /**/
+	                        
+	                		
+	                        
+	                        /*
+	                        ; T2 IS AFTER THE SLOT OR INSIDE WITHOUT ENOUGH TIME. The packet won't be trans-
+	                        ; mitted. This happens due to the usage of hyper and micro-cycles.
+	                        ; ****************************************************************************
+	                        ; |------------------------------------|------------------------------------|
+	                        ; CS        S        t2     E        CE/CS       S----------t3   E         CE
+	                        ;                                                transmission
+	                        ; ****************************************************************************
+	                        */
+	                		                		
+	                		if(index == this.cycle.getNumOfSlots(prt) - 1) {
+	                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived after slot end constraint
+	                					ctx.mkImplies( 
+	                                        ctx.mkAnd(
+	                                            ctx.mkGe(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                cycle.cycleStartZ3(ctx, j)
+	                                            ),
+	                                            ctx.mkLe(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                ctx.mkAdd(
+	                                            		cycle.getCycleDurationZ3(),
+	                                                    cycle.cycleStartZ3(ctx, j)		
+	                                        		)
+	                                            )
+	                                        ),
+	                                        ctx.mkLe( 
+	                                            this.scheduledTime(ctx, i, flowFrag),
+	                                            ctx.mkAdd(
+	                                      		    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                                cycle.cycleStartZ3(ctx, j)
+	                                            )
+	                                        )  
+	                                    )         
+	                            ); 
+	                		}
+	                		
+	                		/**
+	                		* THE CODE BELLOW HAS ISSUES REGARDING NOT COVERING ALL CASES (ALLOWS DELAY).
+	                		* REVIEW LATER.
+	                		
+	                		if(j < this.cycleUpperBoundRange - 1 && index == this.cycle.getNumOfSlots() - 1) {
+	                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2, // Arrived after slot end constraint
+	                                    ctx.mkImplies( 
+	                                        ctx.mkAnd(
+	                                            ctx.mkGt(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                ctx.mkSub(
+	                                                    ctx.mkAdd(
+	                                                        cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
+	                                                        cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
+	                                                        cycle.cycleStartZ3(ctx, j)
+	                                                    ),
+	                                                    this.transmissionTimeZ3
+	                                                )
+	                                            ),
+	                                            ctx.mkLe(
+	                                                this.arrivalTime(ctx, i, flowFrag),
+	                                                ctx.mkAdd(  
+	                                                    cycle.cycleStartZ3(ctx, j),
+	                                                    cycle.getCycleDurationZ3()
+	                                                )
+	                                            )
+	                                        ),
+	                                    
+	                                        ctx.mkEq( 
+	                                            this.scheduledTime(ctx, i, flowFrag),
+	                                            ctx.mkAdd( 
+	                                                ctx.mkAdd(
+	                                                    cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), ctx.mkInt(0)),
+	                                                    cycle.cycleStartZ3(ctx, j + 1)
+	                                                ),
+	                                                this.transmissionTimeZ3
+	                                            )
+	                                        )
+	                                    )               
+	                            ); 
+	                		} else if (j == this.cycleUpperBoundRange - 1 && index == this.cycle.getNumOfSlots() - 1) {
+	                			auxExp2 = ctx.mkAnd((BoolExpr) auxExp2,
+	                                    ctx.mkImplies( 
+	                                        ctx.mkAnd(
+	                                            ctx.mkGt(
+	                                                this.arrivalTime(ctx, i, flowFrag), 
+	                                                ctx.mkSub(
+	                                                    ctx.mkAdd(
+	                                                        cycle.slotStartZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
+	                                                        cycle.slotDurationZ3(ctx, flowFrag.getFlowPriority(), indexZ3),
+	                                                        cycle.cycleStartZ3(ctx, j)
+	                                                    ),
+	                                                    this.transmissionTimeZ3
+	                                                )
+	                                            ),
+	                                            ctx.mkLe(
+	                                                this.arrivalTime(ctx, i, flowFrag),
+	                                                ctx.mkAdd(  
+	                                                    cycle.cycleStartZ3(ctx, j),
+	                                                    cycle.getCycleDurationZ3()
+	                                                )
+	                                            )
+	                                        ),
+	                                    
+	                                        ctx.mkEq( 
+	                                            this.scheduledTime(ctx, i, flowFrag),
+	                                            this.arrivalTime(ctx, i, flowFrag)
+	                                        )
+	                                    
+	                                    )               
+	                            ); 
+	                		}     
+	                		/**/           		
+	                	}
+	                }
+	
+	                //auxExp = ctx.mkOr((BoolExpr)ctx.mkFalse(), (BoolExpr)auxExp2);
+	                auxExp = ctx.mkOr((BoolExpr)auxExp, (BoolExpr)auxExp2);
+	                
+	                
+	                if(exp == null) {
+	                    exp = auxExp;
+	                } else {
+	                    exp = ctx.mkAnd((BoolExpr) exp, (BoolExpr) auxExp);
+	                }
+	                auxExp = ctx.mkFalse();
+	                auxExp2 = ctx.mkTrue();
+	            }
+	        }
+	        
+	        solver.add(
+	        		ctx.mkImplies(
+	        				ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
+	        				(BoolExpr)exp
+        			)
+    		);
         }
-
-        solver.add((BoolExpr)exp);
+        
         
         auxExp = null;
         exp = ctx.mkFalse(); 
         
         //Every packet must be transmitted inside a timeslot (transmit inside a time slot constraint)
-        for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
-            for(int j = 0; j < this.cycleUpperBoundRange; j++) {
-            	for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
-            		indexZ3 = ctx.mkInt(index);
-                    auxExp = ctx.mkAnd(
-                             ctx.mkGe(
-	                            this.scheduledTime(ctx, i, flowFrag), 
-	                            ctx.mkAdd(
-	                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-	                                cycle.cycleStartZ3(ctx, j),
-	                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
-	                            )      
-  	                        ),
-	                        ctx.mkLe(
-	                            this.scheduledTime(ctx, i, flowFrag), 
-	                            ctx.mkAdd(
-	                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-	                                cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-	                                cycle.cycleStartZ3(ctx, j)
-	                            )     
-	                        )                        
-                    ); 
-	                    
-                    exp = ctx.mkOr((BoolExpr) exp, (BoolExpr) auxExp);
-            	}
-            }
-            solver.add((BoolExpr) exp);
-            exp = ctx.mkFalse();
+        for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+	        for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
+	            for(int j = 0; j < this.cycleUpperBoundRange; j++) {
+	            	for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
+	            		indexZ3 = ctx.mkInt(index);
+	                    auxExp = ctx.mkAnd(
+	                             ctx.mkGe(
+		                            this.scheduledTime(ctx, i, flowFrag), 
+		                            ctx.mkAdd(
+		                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+		                                cycle.cycleStartZ3(ctx, j),
+		                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
+		                            )      
+	  	                        ),
+		                        ctx.mkLe(
+		                            this.scheduledTime(ctx, i, flowFrag), 
+		                            ctx.mkAdd(
+		                                cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+		                                cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+		                                cycle.cycleStartZ3(ctx, j)
+		                            )     
+		                        )                        
+	                    ); 
+		                    
+	                    exp = ctx.mkOr((BoolExpr) exp, (BoolExpr) auxExp);
+	            	}
+	            }
+	            solver.add(
+	        		ctx.mkImplies(
+        				ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
+        				(BoolExpr) exp
+    				)
+				);
+	            exp = ctx.mkFalse();
+	        }
         }
         
         
@@ -753,9 +809,71 @@ public class Port implements Serializable {
             );
         }
         /**/
-        
-        
-        
+
+        Expr wtExp = null;
+        if(this.cycle.getWrapTransmission()){
+
+            for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+	            //A packet either ends at the start of another packet
+	            for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
+	                for (FlowFragment auxFlowFrag : this.flowFragments) {
+	                    for (int j = 0; j < auxFlowFrag.getNumOfPacketsSent(); j++) {
+	
+	                        if(flowFrag.name.equals(auxFlowFrag.name) && i!=j){
+	                            continue;
+	                        }
+	
+	                        if(wtExp == null){
+	                            wtExp = ctx.mkImplies(
+	                                    ctx.mkEq(auxFlowFrag.getFragmentPriorityZ3(), flowFrag.getFragmentPriorityZ3()),
+	                                    ctx.mkEq(
+	                                        this.arrivalTime(ctx, j, auxFlowFrag),
+	                                        this.scheduledTime(ctx, i, flowFrag)
+	                                    )
+	                            );
+	                        } else {
+	                            wtExp = ctx.mkOr((BoolExpr) wtExp,
+	                                    ctx.mkImplies(
+	                                        ctx.mkEq(auxFlowFrag.getFragmentPriorityZ3(), flowFrag.getFragmentPriorityZ3()),
+	                                        ctx.mkEq(
+	                                            this.arrivalTime(ctx, j, auxFlowFrag),
+	                                            this.scheduledTime(ctx, i, flowFrag)
+	                                        )
+	                                    )
+	                            );
+	                        }
+	                    }
+	                }
+	
+	                //Or ends at the end of a cycle
+	                for(int j = 0; j < this.cycleUpperBoundRange; j++) {
+	                    for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
+	                        indexZ3 = ctx.mkInt(index);
+	                        wtExp = ctx.mkOr((BoolExpr) wtExp,
+	                                ctx.mkEq(
+	                                    this.scheduledTime(ctx, i, flowFrag),
+	                                    ctx.mkAdd(
+	                                        cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                        cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
+	                                        cycle.cycleStartZ3(ctx, j)
+	                                    )
+	                                )
+	                        );
+	                    }
+	                }
+	            }
+	            if(wtExp != null){
+		            solver.add(
+		        		ctx.mkImplies(
+	        				ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
+	        				(BoolExpr) wtExp
+	    				)
+					);
+	            }
+        	}
+        }
+
+
         for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
             for(FlowFragment auxFlowFrag : this.flowFragments) {
                 for(int j = 0; j < auxFlowFrag.getNumOfPacketsSent(); j++) {
@@ -908,20 +1026,21 @@ public class Port implements Serializable {
             slotDuration[i] = ctx.mkRealConst(this.name + "SlotDuration" + i);
         }
         
-        for(FlowFragment f : this.flowFragments) {
+        for(int numericFlowPriority = 0; numericFlowPriority < this.cycle.getNumOfPrts(); numericFlowPriority++) {
+        	IntExpr flowPriority = ctx.mkInt(numericFlowPriority);
             // RealExpr sumOfSlotsStart = ctx.mkReal(0);
             RealExpr sumOfSlotsDuration = ctx.mkReal(0);
         	
-        	for(int i = 0; i < this.cycle.getNumOfSlots(); i++) {
-        		sumOfSlotsDuration = (RealExpr) ctx.mkAdd(cycle.slotDurationZ3(ctx, f.getFragmentPriorityZ3(), ctx.mkInt(i)));
+        	for(int i = 0; i < this.cycle.getNumOfSlots(numericFlowPriority); i++) {
+        		sumOfSlotsDuration = (RealExpr) ctx.mkAdd(cycle.slotDurationZ3(ctx, flowPriority, ctx.mkInt(i)));
         	}
         	
         	/**/
-            for(int i = 1; i <= 8; i++) {
+            for(int i = 0; i < 8; i++) {
                 solver.add(
                     ctx.mkImplies(
                         ctx.mkEq(
-                            f.getFragmentPriorityZ3(),
+                        	flowPriority,
                             ctx.mkInt(i)
                         ),
                         ctx.mkEq(
@@ -936,19 +1055,20 @@ public class Port implements Serializable {
             
         }
         
-        for(int i = 1; i<=8; i++) {
+        for(int i = 0; i<8; i++) {
             firstPartOfImplication = null;
             
-            for(FlowFragment f : this.flowFragments) {
+            for(int numericFlowPriority = 0; numericFlowPriority < this.cycle.getNumOfPrts(); numericFlowPriority++) {
+            	IntExpr flowPriority = ctx.mkInt(numericFlowPriority);
                 if(firstPartOfImplication == null) {
                     firstPartOfImplication = ctx.mkNot(ctx.mkEq(
-                                                f.getFragmentPriorityZ3(),
+                    							flowPriority,
                                                 ctx.mkInt(i)
                                              ));
                 } else {
                     firstPartOfImplication = ctx.mkAnd(firstPartOfImplication, 
                                              ctx.mkNot(ctx.mkEq(
-                                                 f.getFragmentPriorityZ3(),
+                                        		 flowPriority,
                                                  ctx.mkInt(i)
                                              )));
                 } 
@@ -975,7 +1095,8 @@ public class Port implements Serializable {
             }
         }
         
-        
+
+
         solver.add( // Best-effort bandwidth reservation constraint
             ctx.mkLe(
                 sumOfPrtTime,
@@ -988,7 +1109,7 @@ public class Port implements Serializable {
                 )
             )
         );
-        
+
         /*
         solver.add(
                 ctx.mkLe(
@@ -1101,21 +1222,10 @@ public class Port implements Serializable {
      */
     public void setUpHyperCycle(Solver solver, Context ctx) {
         int numOfPacketsScheduled = 0;
-        
-        /*
-        for(FlowFragment flowFrag : this.flowFragments) {
-            System.out.println(flowFrag.getStartDevice());
-            listOfPeriods.add(flowFrag.getStartDevice().getPacketPeriodicity());
-        }
-        for(Float periodicity : this.listOfPeriods) {
-        	System.out.println("Periodicidade: " + periodicity);
-        }
-        */
-        
+
         float hyperCycleSize = findLCM((ArrayList<Float>) listOfPeriods.clone());
         
         this.definedHyperCycleSize = hyperCycleSize;
-        this.cycle.setCycleDuration(hyperCycleSize);
         
         this.cycleUpperBoundRange = 1;
 
@@ -1134,6 +1244,7 @@ public class Port implements Serializable {
         // System.out.println("Num of Cycles: " + this.cycleUpperBoundRange);
         
         this.cycle.setNumOfSlots(numOfPacketsScheduled);
+        
                
         // In order to use the value cycle time obtained, we must override the minimum and maximum cycle times
         this.cycle.setUpperBoundCycleTime(hyperCycleSize + 1);
@@ -1157,7 +1268,7 @@ public class Port implements Serializable {
             listOfPeriods.add(flowFrag.getStartDevice().getPacketPeriodicity());
         }
         */
-        
+
         this.microCycleSize = findGCD((ArrayList<Float>) listOfPeriods.clone());
         float hyperCycleSize = findLCM((ArrayList<Float>) listOfPeriods.clone());
         
@@ -1191,80 +1302,9 @@ public class Port implements Serializable {
     	
     	// Ideia = se a prioridade de um flow e' igual a um numero, 
     	// ctx.mkeq nele com o slot the cycle (getSlotS/D(prt, slotnum))
-    	for(FlowFragment frag : this.flowFragments) {
-    		
-    		for(int i = 0; i < this.cycle.getNumOfPrts(); i++) {
-    			for(int j = 0; j < this.cycle.getNumOfSlots(); j++) {    				
-    				/*
-    				solver.add(
-						ctx.mkITE(
-							ctx.mkAnd(
-								ctx.mkEq(frag.getFlowPriority(), ctx.mkInt(i)), 
-								ctx.mkEq(frag.get, ctx.mkInt(j))
-							)
-								, 
-								)
-					);
-    				*/
-    			}
-    		}
-    	}
-    	
-    }
-    
-    /**
-     * [Method]: setUpCycle
-     * [Usage]: If the port is configured to use a specific automated
-     * application period methodology, it will configure its cycle size.
-     * Also calls the toZ3 method for the cycle
-     * 
-     * @param solver        z3 solver object used to discover the variables' values
-     * @param ctx           z3 context which specify the environment of constants, functions and variables
-     */
-    public void setUpCycle(Solver solver, Context ctx) {
-
-    	this.cycle.toZ3(ctx);
-    	
-    	// System.out.println("On port: " + this.name + " with: " + this.listOfPeriods.size() + " fragments");
-
-    	if(this.listOfPeriods.size() < 1) {
-    		return;
-    	}
-    	
-    	
-    	if(useMicroCycles && this.listOfPeriods.size() > 0) {
-            setUpMicroCycles(solver, ctx);
-                        
-            solver.add(
-	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Float.toString(this.microCycleSize)))
-	        );
-        } else if (useHyperCycle && this.listOfPeriods.size() > 0) {
-        	setUpHyperCycle(solver, ctx);
-
-        	solver.add(
-	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Float.toString(this.definedHyperCycleSize)))
-	        );
-        } 
-    	
-    }
-    
-    /**
-     * [Method]: zeroOutNonUsedSlots
-     * [Usage]: Iterates over the slots adding a constraint that states that
-     * if no packet its transmitted inside it, its size must be 0. Can be used
-     * to filter out non-used slots and avoid losing bandwidth.
-     * 
-     * @param solver
-     * @param ctx
-     */
-    public void zeroOutNonUsedSlots(Solver solver, Context ctx) {
-    	BoolExpr exp1;
-    	BoolExpr exp2;
-    	IntExpr indexZ3;
-    	
     	for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
     		for(FlowFragment frag : this.flowFragments) {	
-        		for(int slotIndex = 0; slotIndex < this.cycle.getNumOfSlots(); slotIndex++) {
+        		for(int slotIndex = 0; slotIndex < this.cycle.getNumOfSlots(prtIndex); slotIndex++) {
             		solver.add(
         				ctx.mkImplies(
         					ctx.mkEq(frag.getFragmentPriorityZ3(), ctx.mkInt(prtIndex)),
@@ -1284,17 +1324,98 @@ public class Port implements Serializable {
         	}
     	}
     	
+    }
+    
+    /**
+     * [Method]: setUpCycle
+     * [Usage]: If the port is configured to use a specific automated
+     * application period methodology, it will configure its cycle size.
+     * Also calls the toZ3 method for the cycle
+     * 
+     * @param solver        z3 solver object used to discover the variables' values
+     * @param ctx           z3 context which specify the environment of constants, functions and variables
+     */
+    public void setUpCycle(Solver solver, Context ctx) {
 
+    	if(this.cycle.getFirstCycleStartZ3() == null) {
+        	this.cycle.toZ3(ctx);
+        }
+
+    	// System.out.println("On port: " + this.name + " with: " + this.listOfPeriods.size() + " fragments");
+
+    	if(this.listOfPeriods.size() < 1) {
+    		return;
+    	}
+    	
+    	
+    	if(useMicroCycles && this.listOfPeriods.size() > 0) {
+            setUpMicroCycles(solver, ctx);
+                        
+            solver.add(
+	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Float.toString(this.microCycleSize)))
+	        );
+            this.cycle.setCycleDuration(this.microCycleSize);
+        } else if (useHyperCycle && this.listOfPeriods.size() > 0) {
+        	setUpHyperCycle(solver, ctx);
+
+        	solver.add(
+	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Float.toString(this.definedHyperCycleSize)))
+	        );
+            this.cycle.setCycleDuration(this.definedHyperCycleSize);
+
+        }
+
+    }
+    
+    /**
+     * [Method]: zeroOutNonUsedSlots
+     * [Usage]: Iterates over the slots adding a constraint that states that
+     * if no packet its transmitted inside it, its size must be 0. Can be used
+     * to filter out non-used slots and avoid losing bandwidth.
+     * 
+     * @param solver
+     * @param ctx
+     */
+    public void zeroOutNonUsedSlots(Solver solver, Context ctx) {
+    	BoolExpr exp1;
+    	BoolExpr exp2;
+    	IntExpr indexZ3;
+    	
+    	
+    	/* BINDTIMESLOTS CONSTRAINT
+    	for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
+    		for(FlowFragment frag : this.flowFragments) {	
+        		for(int slotIndex = 0; slotIndex < this.cycle.getNumOfSlots(prtIndex); slotIndex++) {
+            		solver.add(
+        				ctx.mkImplies(
+        					ctx.mkEq(frag.getFragmentPriorityZ3(), ctx.mkInt(prtIndex)),
+        					ctx.mkAnd(
+    							ctx.mkEq(
+									cycle.slotStartZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)), 
+									cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex)) 
+								),
+    							ctx.mkEq(
+									cycle.slotDurationZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)), 
+									cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex)) 
+								)
+							)
+        				)	
+        			);
+        		}
+        	}
+    	}
+    	*/
+    	
 		for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
 			for(int cycleNum = 0; cycleNum < this.cycleUpperBoundRange; cycleNum++) {
-				for(int indexNum = 0; indexNum < this.cycle.getNumOfSlots(); indexNum++) {
+				for(int indexNum = 0; indexNum < this.cycle.getNumOfSlots(prtIndex); indexNum++) {
 					indexZ3 = ctx.mkInt(indexNum);
     				exp1 = ctx.mkTrue();
         			for(FlowFragment frag : this.flowFragments) {
         				for(int packetNum = 0; packetNum < frag.getNumOfPacketsSent(); packetNum++) {
         					exp1 = ctx.mkAnd(
         							exp1,
-        							ctx.mkAnd(
+        							//ctx.mkAnd(
     									ctx.mkNot(
 	        								ctx.mkAnd(
 	    		    							ctx.mkGe(
@@ -1313,9 +1434,9 @@ public class Port implements Serializable {
 	    		                                    )
 	    										)
 	    									)	
-	    								),
-    									ctx.mkEq(ctx.mkInt(prtIndex), frag.getFragmentPriorityZ3())
-									)
+	    								)
+    									//,ctx.mkEq(ctx.mkInt(prtIndex), frag.getFragmentPriorityZ3())
+									//)
         					);
         				}    	
 
@@ -1324,7 +1445,7 @@ public class Port implements Serializable {
     				solver.add(
     					ctx.mkImplies(
 							exp1, 	
-							ctx.mkEq(cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3), ctx.mkInt(0)) 
+							ctx.mkEq(cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3), ctx.mkReal(0)) 
 						)
     				);
     			}   
@@ -1347,19 +1468,24 @@ public class Port implements Serializable {
      * @param ctx           z3 context which specify the environment of constants, functions and variables
      */
     public void setupSchedulingRules(Solver solver, Context ctx) {
+
     	
+
+    	/**/
     	if (this.flowFragments.size() == 0) {
     		solver.add(ctx.mkEq( 
                 ctx.mkReal(Float.toString(0)), 
                 this.cycle.getCycleDurationZ3()
             ));
-    	    //	solver.add(ctx.mkEq( 
+    		// solver.add(ctx.mkEq( 
             //    ctx.mkReal(Float.toString(0)), 
             //    this.cycle.getFirstCycleStartZ3()
             // ));
     		
     		return;
     	}
+    	/**/
+    	
     	
         /*
     	if(useMicroCycles && this.flowFragments.size() > 0) {
@@ -1381,6 +1507,8 @@ public class Port implements Serializable {
         
     	
         setUpCycleRules(solver, ctx);
+
+    	bindTimeSlots(solver,ctx);
         zeroOutNonUsedSlots(solver, ctx);
         
         /*
@@ -1447,8 +1575,8 @@ public class Port implements Serializable {
     	RealExpr departureTime;
     	int cycleNum = 0;
         
-    	
         if(auxIndex + 1 > flowFrag.getNumOfPacketsSent()) {
+
 			cycleNum = (auxIndex - (auxIndex % flowFrag.getNumOfPacketsSent()))/flowFrag.getNumOfPacketsSent();
 
         	auxIndex = (auxIndex % flowFrag.getNumOfPacketsSent());
@@ -1456,10 +1584,15 @@ public class Port implements Serializable {
         	departureTime = (RealExpr)
         			ctx.mkAdd(
     					flowFrag.getDepartureTimeZ3(auxIndex), 
-    					ctx.mkMul(ctx.mkReal(cycleNum), this.cycle.getCycleDurationZ3())
+    					ctx.mkMul(
+                            ctx.mkReal(cycleNum),
+                            ctx.mkMul(
+                                this.cycle.getCycleDurationZ3(),
+                                ctx.mkReal(this.cycleUpperBoundRange)
+                            )
+                        )
 					);
-        	
-        	
+
         	return departureTime;
         }
         
@@ -1567,7 +1700,13 @@ public class Port implements Serializable {
         	scheduledTime = (RealExpr)
         			ctx.mkAdd(
     					ctx.mkRealConst(flowFrag.getName() + "ScheduledTime" + index.toString()), 
-    					ctx.mkMul(ctx.mkReal(cycleNum), this.cycle.getCycleDurationZ3())
+    					ctx.mkMul(
+                            ctx.mkReal(cycleNum),
+                            ctx.mkMul(
+                                this.cycle.getCycleDurationZ3(),
+                                ctx.mkReal(this.cycleUpperBoundRange)
+                            )
+                        )
 					);
         	
         	
@@ -1608,7 +1747,9 @@ public class Port implements Serializable {
      */
     public void loadZ3(Context ctx, Solver solver) {
     	
-    	this.cycle.loadZ3(ctx, solver);
+//    	System.out.println("Loading port " + this.name + " with duration " + this.cycle.getCycleDurationZ3());
+    	
+		this.cycle.loadZ3(ctx, solver);
     	
     	for(FlowFragment frag : this.flowFragments) {
     		
@@ -1627,7 +1768,7 @@ public class Port implements Serializable {
 			);
     		*/
     		
-    		for(int index = 0; index < this.cycle.getNumOfSlots(); index++) {
+    		for(int index = 0; index < this.cycle.getNumOfSlots(frag.getFragmentPriority()); index++) {
     			solver.add(
 					ctx.mkEq(
 						this.cycle.slotDurationZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(index)), 
@@ -1684,7 +1825,6 @@ public class Port implements Serializable {
     	
     	
     }
-    
     
     /*
      * GETTERS AND SETTERS:
@@ -1861,5 +2001,45 @@ public class Port implements Serializable {
                     prevPacketST
                 );
     }
+    
+    public float getPortSpeed() {
+		return portSpeed;
+	}
 
+
+	public void setPortSpeed(float portSpeed) {
+		this.portSpeed = portSpeed;
+	}
+
+
+	public Boolean getIsModifiedOrCreated() {
+		return isModifiedOrCreated;
+	}
+
+	public void setIsModifiedOrCreated(Boolean isModifiedOrCreated) {
+		this.isModifiedOrCreated = isModifiedOrCreated;
+	}
+
+
+	public Boolean getUseMicroCycles() {
+		return useMicroCycles;
+	}
+
+
+	public void setUseMicroCycles(Boolean useMicroCycles) {
+		this.useMicroCycles = useMicroCycles;
+	}
+
+
+	public Boolean getUseHyperCycle() {
+		return useHyperCycle;
+	}
+
+
+	public void setUseHyperCycle(Boolean useHyperCycle) {
+		this.useHyperCycle = useHyperCycle;
+	}
+
+		
+	
 }
