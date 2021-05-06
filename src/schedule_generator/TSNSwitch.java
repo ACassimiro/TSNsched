@@ -79,26 +79,30 @@ public class TSNSwitch extends Switch implements Serializable {
      * [Method]: TSNSwitch
      * [Usage]: Overloaded constructor method of this class.
      * Instantiates a new TSNSwitch object setting up its properties
-     * that are given as parameters. Used for simplified configurations. 
-     * Other constructors either are deprecated or set parameters 
-     * that will be used in future works.
+     * that are given as parameters. There is no transmission time here,
+     * as this method is used when considering that it will be calculated 
+     * by the packet size divided by the port speed 
+     * 
+     * @param name                  Name of the switch
+     * @param maxPacketSize         Maximum packet size supported by the switch
+     * @param timeToTravel          Time that a packet takes to leave its port and reach the destination
+     * @param portSpeed             Transmission speed of the port
+     * @param gbSize                Size of the guard bands used to separate non consecutive time slots
      */
     public TSNSwitch(String name,
-                     float gbSize,
-					 float portSpeed,
-					 float timeToTravel,
-                     float transmissionTime) {
-        this.name = "dev" + indexCounter++;
+                     float maxPacketSize,
+                     float timeToTravel,
+                     float portSpeed,
+                     float gbSize) {
+        this.name = name;
+        this.maxPacketSize = maxPacketSize;
         this.timeToTravel = timeToTravel;
-		this.portSpeed = portSpeed;
-        this.transmissionTime = transmissionTime;
+        this.transmissionTime = 0;
+        this.portSpeed = portSpeed;
+        this.gbSize = gbSize;
         this.ports = new ArrayList<Port>();
         this.connectsTo = new ArrayList<String>();
-        this.maxPacketSize = 0;
-        this.portSpeed = 0;
-        this.gbSize = gbSize;
     }
-
     
     /**
      * [Method]: TSNSwitch
@@ -166,7 +170,20 @@ public class TSNSwitch extends Switch implements Serializable {
         this.cycleDurationUpperBound = cycleDurationUpperBound;
     }
     
+    public TSNSwitch(String name,
+            float timeToTravel,
+            float portSpeed,
+            float gbSize) {
+		this.name = name;
+		this.timeToTravel = timeToTravel;
+		this.transmissionTime = 0;
+		this.portSpeed = portSpeed;
+		this.gbSize = gbSize;
+		this.ports = new ArrayList<Port>();
+		this.connectsTo = new ArrayList<String>();
+	}
     
+
     /**
      * [Method]: toZ3
      * [Usage]: After setting all the numeric input values of the class,
