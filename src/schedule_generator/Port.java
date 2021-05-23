@@ -1287,6 +1287,8 @@ public class Port implements Serializable {
         // In order to use the value cycle time obtained, we must override the minimum and maximum cycle times
         this.cycle.setUpperBoundCycleTime(microCycleSize + 1);
         this.cycle.setLowerBoundCycleTime(microCycleSize - 1);
+        
+        this.cycle.setNumOfSlots(1);
     }
     
     
