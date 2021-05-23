@@ -296,8 +296,6 @@ public class TSNSwitch extends Switch implements Serializable {
             return; // [TODO]: THROW ERROR
   
         this.createPort(destinationName, cycle);
-        
-        this.portNum++;
     }
     
     /**
