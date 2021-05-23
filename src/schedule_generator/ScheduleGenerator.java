@@ -21,8 +21,6 @@ package schedule_generator;
 
 import java.io.*;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalTime;
 import java.util.*;
 

@@ -25,6 +25,9 @@ public class Main {
     public static void main(String[] args)
     {
         GeneratedCode g = new GeneratedCode();
+        
+//        SmallScenario g = new SmallScenario();
+        
         g.runTestCase();
     }
 }

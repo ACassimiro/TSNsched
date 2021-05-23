@@ -1243,12 +1243,14 @@ public class Port implements Serializable {
         
         // System.out.println("Num of Cycles: " + this.cycleUpperBoundRange);
         
-        this.cycle.setNumOfSlots(numOfPacketsScheduled);
+        
         
                
         // In order to use the value cycle time obtained, we must override the minimum and maximum cycle times
         this.cycle.setUpperBoundCycleTime(hyperCycleSize + 1);
         this.cycle.setLowerBoundCycleTime(hyperCycleSize - 1);
+        
+        this.cycle.setNumOfSlots(numOfPacketsScheduled);
         
     }
     
@@ -1511,7 +1513,7 @@ public class Port implements Serializable {
         setUpCycleRules(solver, ctx);
 
     	bindTimeSlots(solver,ctx);
-        zeroOutNonUsedSlots(solver, ctx);
+//        zeroOutNonUsedSlots(solver, ctx);
         
         /*
          * Differently from setUpCycleRules, setupTimeSlots and setupDevPacketTimes

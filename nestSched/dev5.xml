@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schedules>
+  <defaultcycle>500.0us</defaultcycle>
+  <host max="1" name="dev5">
+    <cycle>500.0us</cycle>
+    <entry>
+      <start>0.0us</start>
+      <queue>5</queue>
+      <dest>255:0:00:00:00:12</dest>
+      <size>1470.0B</size>
+      <flowId>12</flowId>
+    </entry>
+    <entry>
+      <start>12.0us</start>
+      <queue>4</queue>
+      <dest>255:0:00:00:00:10</dest>
+      <size>1470.0B</size>
+      <flowId>10</flowId>
+    </entry>
+    <entry>
+      <start>26.0us</start>
+      <queue>7</queue>
+      <dest>255:0:00:00:00:13</dest>
+      <size>1470.0B</size>
+      <flowId>13</flowId>
+    </entry>
+  </host>
+</schedules>

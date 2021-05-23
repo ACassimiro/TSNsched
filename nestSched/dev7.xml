@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schedules>
+  <defaultcycle>800.0us</defaultcycle>
+  <host max="5" name="dev7">
+    <cycle>800.0us</cycle>
+    <entry>
+      <start>12.0us</start>
+      <queue>0</queue>
+      <dest>255:0:00:00:00:14</dest>
+      <size>1470.0B</size>
+      <flowId>14</flowId>
+    </entry>
+  </host>
+</schedules>

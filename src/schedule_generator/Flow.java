@@ -53,7 +53,7 @@ public class Flow implements Serializable {
     private int type = 0;
     private int totalNumOfPackets = 0;
     
-    private boolean fixedPriority = false;
+    private boolean fixedPriority = true;
     private int priorityValue = -1;
 
 	//Specifying the type of the flow:
