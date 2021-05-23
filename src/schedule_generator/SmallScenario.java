@@ -1,7 +1,4 @@
 package schedule_generator;
-import java.util.*;
-import java.io.*;
-import schedule_generator.*;
 
 
 public class SmallScenario {
@@ -40,7 +37,6 @@ public class SmallScenario {
 		/*
 		 * GENERATING FLOWS
 		 */
-		LinkedList<PathNode> nodeList;
 
 		Flow flow1 = new Flow(Flow.UNICAST);
 		flow1.setStartDevice(dev1);
@@ -68,10 +64,6 @@ public class SmallScenario {
 		net.addDevice(dev3);
 		net.addDevice(dev4);
 		net.addSwitch(switch0);
-		
-//		flow1.setPriorityValue(0);
-//		flow2.setPriorityValue(1);
-//		flow3.setPriorityValue(2);
 		
 		net.addFlow(flow1);
 		net.addFlow(flow2);
