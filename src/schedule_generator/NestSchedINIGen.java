@@ -43,16 +43,17 @@ public class NestSchedINIGen {
 			
 			// Writes the MAC addresses of the devices in the topology
 			out.println("#MAC Addresses");
+			int counter = 1;
 			for(Switch currentSwitch : net.getSwitches()) {
 				if(currentSwitch instanceof TSNSwitch) {
 					for(String currentDev : ((TSNSwitch) currentSwitch).getConnectsTo()) {
-						if(!currentDev.contains("switch")) {
-							if(Integer.parseInt(currentDev.substring(3)) < 10) {
+						if(net.getSwitch(currentDev) == null) {
+							if(counter < 10) {
 								out.println("**." + currentDev + ".eth.address = " + "\"00-00-00-00-00-0" 
-										+ currentDev.substring(3) + "\"");
+										+ counter++ + "\"");
 							} else {
 								out.println("**." + currentDev + ".eth.address = " + "\"00-00-00-00-00-" 
-										+ currentDev.substring(3) + "\"");
+										+ counter++ + "\"");
 							}
 						}
 					}
@@ -103,7 +104,7 @@ public class NestSchedINIGen {
 			for(Switch currentSwitch : net.getSwitches()) {
 				if(currentSwitch instanceof TSNSwitch) {
 					for(String currentDev : ((TSNSwitch) currentSwitch).getConnectsTo()) {
-						if(!talkers.contains(currentDev) && !currentDev.contains("switch")){
+						if(!talkers.contains(currentDev) && net.getSwitch(currentDev)==null){
 							out.println("**." + currentDev +".trafGenSchedApp.initialSchedule = xmldoc(\"emptyFlow.xml\")");
 						}
 					}

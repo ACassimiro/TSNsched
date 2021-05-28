@@ -2,6 +2,7 @@ package schedule_generator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 
 // Class to generate the Network Description and Device files the for the Nesting Simulator 
@@ -46,7 +47,7 @@ public class NestSchedNEDGen {
 				if(currentSwitch instanceof TSNSwitch) {
 					// Instantiate the devices
 					for(String currentDev : ((TSNSwitch) currentSwitch).getConnectsTo()) {
-						if(!currentDev.contains("switch")) {
+						if(net.getSwitch(currentDev)==null) {
 							out.println("\t\t" +currentDev + ": NestSchedDev;");
 						}
 					}
@@ -65,14 +66,16 @@ public class NestSchedNEDGen {
 			
 			// Writes the connections between the devices
 			out.println("\tconnections:");
+			ArrayList<String> aux = new ArrayList<>();
 			for(Switch currentSwitch : net.getSwitches()) {				
 				if(currentSwitch instanceof TSNSwitch) {
 					for(String currentDev : ((TSNSwitch) currentSwitch).getConnectsTo()) {
 						int i = ((TSNSwitch) currentSwitch).getPortOf(currentDev).getPortNum();
-						if(currentDev.contains("switch")) {
+						if(net.getSwitch(currentDev)!=null) {
 							int j = ((TSNSwitch) net.getSwitch(currentDev)).getPortOf(currentSwitch.getName()).getPortNum();
-							if((Integer.parseInt(currentDev.substring(6)) > 
-												Integer.parseInt(currentSwitch.getName().substring(6)))) {
+							if(!aux.contains(currentDev+j+currentSwitch.getName()+i) && !aux.contains(currentSwitch.getName()+i+currentDev+j)) {	
+								aux.add(currentSwitch.getName()+i+currentDev+j);
+								aux.add(currentDev+j+currentSwitch.getName()+i);
 								out.println("\t\t" + currentSwitch.getName() + ".ethg[" + i + "] <--> C <--> " 
 										+ currentDev + ".ethg[" + j + "];");
 							}

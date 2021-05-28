@@ -7,11 +7,11 @@ public class SmallScenario {
 		/*
 		 * GENERATING DEVICES
 		 */
-		Device dev0 = new Device(1000, 0, 1000, 1250);
-		Device dev1 = new Device(200, 0, 1000, 1250);
+		Device dev0 = new Device(400, 0, 1000, 1250);
+		Device dev1 = new Device(400, 0, 1000, 1250);
 		Device dev2 = new Device(400, 0, 1000, 1250);
-		Device dev3 = new Device(600, 0, 1000, 1250);
-		Device dev4 = new Device(1000, 0, 1000, 1250);
+		Device dev3 = new Device(400, 0, 1000, 1250);
+		Device dev4 = new Device(400, 0, 1000, 1250);
 
 
 		/*

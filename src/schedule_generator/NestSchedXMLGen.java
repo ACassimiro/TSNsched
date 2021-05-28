@@ -4,9 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,6 +17,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -346,7 +347,7 @@ public class NestSchedXMLGen {
             for(Switch currentSwitch : net.getSwitches()) {
             	if(currentSwitch instanceof TSNSwitch) {
             		for(String currentDev : ((TSNSwitch) currentSwitch).getConnectsTo()) {
-            			if(!currentDev.contains("switch") && !talkers.contains(currentDev)) {
+            			if(net.getSwitch(currentDev) == null && !talkers.contains(currentDev)) {
         	                Element host = doc.createElement(HOST);
         	                host.setAttribute(NAME, currentDev);
 //        	                host.setAttribute(MAX, Integer.toString(0));
