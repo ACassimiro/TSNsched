@@ -31,6 +31,17 @@ import com.microsoft.z3.IntExpr;
 import com.microsoft.z3.Model;
 import com.microsoft.z3.Solver;
 
+import network.Cycle;
+import network.Flow;
+import network.FlowFragment;
+import network.Network;
+import network.PathNode;
+import network.PathTree;
+import network.Port;
+import nodes.Device;
+import nodes.Switch;
+import nodes.TSNSwitch;
+
 public class Printer {
 
 	public Printer () {

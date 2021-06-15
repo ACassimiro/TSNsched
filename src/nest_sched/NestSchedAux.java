@@ -1,4 +1,4 @@
-package schedule_generator;
+package nest_sched;
 
 import java.util.ArrayList;
 import java.util.Comparator;

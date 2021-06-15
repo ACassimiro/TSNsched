@@ -17,10 +17,14 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package schedule_generator;
+package network;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import nodes.Device;
+import nodes.Switch;
+import nodes.TSNSwitch;
 
 
 /**

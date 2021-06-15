@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <schedules>
-  <defaultcycle>400.0us</defaultcycle>
-  <host max="1" name="dev3">
-    <cycle>400.0us</cycle>
+  <defaultcycle>700.0us</defaultcycle>
+  <host max="1" name="dev6">
+    <cycle>700.0us</cycle>
     <entry>
-      <start>0.0us</start>
-      <queue>4</queue>
+      <start>587.25us</start>
+      <queue>1</queue>
       <dest>255:0:00:00:00:03</dest>
-      <size>1220.0B</size>
+      <size>720.0B</size>
       <flowId>3</flowId>
     </entry>
   </host>

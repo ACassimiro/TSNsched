@@ -1,5 +1,11 @@
-package schedule_generator;
+package generated_scenarios;
 
+import network.Cycle;
+import network.Flow;
+import network.Network;
+import nodes.Device;
+import nodes.TSNSwitch;
+import schedule_generator.ScheduleGenerator;
 
 public class SmallScenario {
 	public void runTestCase(){

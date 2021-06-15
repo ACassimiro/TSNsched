@@ -1,4 +1,4 @@
-package schedule_generator;
+package nest_sched;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,6 +22,14 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import network.Cycle;
+import network.Flow;
+import network.FlowFragment;
+import network.Network;
+import network.Port;
+import nodes.Switch;
+import nodes.TSNSwitch;
 
 
 public class NestSchedXMLGen {

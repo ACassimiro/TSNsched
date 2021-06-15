@@ -1,5 +1,13 @@
-package schedule_generator;
+package generated_scenarios;
 import java.util.*;
+
+import network.Cycle;
+import network.Flow;
+import network.Network;
+import network.PathNode;
+import nodes.Device;
+import nodes.TSNSwitch;
+import schedule_generator.ScheduleGenerator;
 
 
 public class GeneratedCode {

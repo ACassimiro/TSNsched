@@ -17,7 +17,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package schedule_generator;
+package network;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +25,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import com.microsoft.z3.*;
+
+import nodes.Device;
+import nodes.Switch;
+import nodes.TSNSwitch;
 
 
 /**
@@ -44,7 +48,7 @@ public class Flow implements Serializable {
 	private Boolean isModifiedOrCreated = false;
 
 	private static final long serialVersionUID = 1L;
-	static int instanceCounter = 0;
+	public static int instanceCounter = 0;
 	private int instance = 0;
 
     

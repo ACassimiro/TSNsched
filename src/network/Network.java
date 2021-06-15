@@ -17,7 +17,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package schedule_generator;
+package network;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Stack;
 
 import com.microsoft.z3.*;
+
+import nodes.Device;
+import nodes.Switch;
+import nodes.TSNSwitch;
 
 /**
  * [Class]: Network

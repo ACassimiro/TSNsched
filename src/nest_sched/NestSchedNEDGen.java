@@ -1,8 +1,13 @@
-package schedule_generator;
+package nest_sched;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import network.Flow;
+import network.Network;
+import nodes.Switch;
+import nodes.TSNSwitch;
 
 
 // Class to generate the Network Description and Device files the for the Nesting Simulator 

@@ -12,4 +12,7 @@ module NestSchedDev extends VlanEtherHostSched {
 	@signal[criticalFlowSig3](type=inet::Packet);
 	@statistic[criticalFlowSig3Received](title="criticalFlowSig3Received"; source="dataAge(criticalFlowSig3)"; unit=s; record=histogram,vector; interpolationmode=linear);
 
+	@signal[criticalFlowSig4](type=inet::Packet);
+	@statistic[criticalFlowSig4Received](title="criticalFlowSig4Received"; source="dataAge(criticalFlowSig4)"; unit=s; record=histogram,vector; interpolationmode=linear);
+
 }
