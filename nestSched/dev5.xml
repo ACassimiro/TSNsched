@@ -4,8 +4,8 @@
   <host max="5" name="dev5">
     <cycle>300.0us</cycle>
     <entry>
-      <start>87.0us</start>
-      <queue>0</queue>
+      <start>148.5625us</start>
+      <queue>7</queue>
       <dest>255:0:00:00:00:02</dest>
       <size>720.0B</size>
       <flowId>2</flowId>

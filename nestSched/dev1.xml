@@ -5,7 +5,7 @@
     <cycle>500.0us</cycle>
     <entry>
       <start>0.0us</start>
-      <queue>3</queue>
+      <queue>7</queue>
       <dest>255:0:00:00:00:04</dest>
       <size>720.0B</size>
       <flowId>4</flowId>
