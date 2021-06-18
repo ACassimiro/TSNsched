@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<filteringDatabases>
+  <filteringDatabase id="switch0">
+    <static>
+      <forward>
+        <!--Forward packets addressed to flow4 to switch2-->
+        <!--Forward packets addressed to flow1 to switch1-->
+        <!--Forward packets addressed to flow3 to switch1-->
+        <multicastAddress macAddress="255-0-00-00-00-04" ports="0"/>
+        <multicastAddress macAddress="255-0-00-00-00-01" ports="1"/>
+        <multicastAddress macAddress="255-0-00-00-00-03" ports="1"/>
+      </forward>
+    </static>
+  </filteringDatabase>
+  <filteringDatabase id="switch1">
+    <static>
+      <forward>
+        <!--Forward packets addressed to flow4 to switch0-->
+        <!--Forward packets addressed to flow1 to dev2-->
+        <!--Forward packets addressed to flow3 to dev3-->
+        <multicastAddress macAddress="255-0-00-00-00-04" ports="0"/>
+        <multicastAddress macAddress="255-0-00-00-00-01" ports="2"/>
+        <multicastAddress macAddress="255-0-00-00-00-03" ports="3"/>
+      </forward>
+    </static>
+  </filteringDatabase>
+  <filteringDatabase id="switch2">
+    <static>
+      <forward>
+        <!--Forward packets addressed to flow3 to switch0-->
+        <!--Forward packets addressed to flow2 to dev4-->
+        <!--Forward packets addressed to flow4 to dev4-->
+        <multicastAddress macAddress="255-0-00-00-00-03" ports="0"/>
+        <multicastAddress macAddress="255-0-00-00-00-02" ports="1"/>
+        <multicastAddress macAddress="255-0-00-00-00-04" ports="1"/>
+      </forward>
+    </static>
+  </filteringDatabase>
+</filteringDatabases>

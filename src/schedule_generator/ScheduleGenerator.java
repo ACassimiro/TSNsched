@@ -21,12 +21,20 @@ package schedule_generator;
 
 import java.io.*;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalTime;
 import java.util.*;
 
 import com.microsoft.z3.*;
+
+import nest_sched.NestSchedINIGen;
+import nest_sched.NestSchedNEDGen;
+import nest_sched.NestSchedXMLGen;
+import network.Flow;
+import network.Network;
+import network.Port;
+import nodes.Switch;
+import nodes.TSNSwitch;
+import sched2netconf.XMLExporter;
 
 /**
  * [Class]: ScheduleGenerator
@@ -37,6 +45,7 @@ import com.microsoft.z3.*;
 public class ScheduleGenerator {
 		private Boolean exportModel = false;
 		private Boolean generateXMLFiles = false;
+		private Boolean generateSimulationFiles = true;
 		private Boolean serializeNetwork = true;
 		private Boolean loadNetwork = false;
     
@@ -331,6 +340,8 @@ public class ScheduleGenerator {
 
 		       startTime = System.nanoTime();
 
+		       
+		       
                System.out.println("\n==================================================");
    	    	   System.out.println("[DATA LOGGING]");
     	       if(this.exportModel) {
@@ -359,8 +370,39 @@ public class ScheduleGenerator {
 		   long totalExecutionTime = totalEndTime - totalStartTime;
 		
 		   System.out.println("Execution time: " + ((float) totalExecutionTime)/1000000000 + " seconds\n ");
+		   
+		   if(generateSimulationFiles) {
+			   generateSimulationFiles(net);
+		   }
 	   }
 
+	   /**
+	    * [Method]: generateSimulationFiles
+	    * [Usage]: Generate the XML, INI and NED files
+	    * needed to the Nesting simulation.
+	    * 
+	    * @param net		Network object to be serialized
+	    */
+	   public void generateSimulationFiles(Network net) {
+		 //Create the folder and the simulation files
+	       File folder = new File(System.getProperty("user.dir") + "/nestSched");
+	       if(!folder.exists()) {
+	    	   if(folder.mkdir()) {
+		    	   new NestSchedXMLGen(net);
+				   new NestSchedINIGen(net);
+				   new NestSchedNEDGen(net);
+	    	   }
+	       } else {
+	    	   String[]entries = folder.list();
+	    	   for(String s: entries){
+		           File currentFile = new File(folder.getPath(),s);
+		           currentFile.delete();
+		       }
+	    	   new NestSchedXMLGen(net);
+			   new NestSchedINIGen(net);
+			   new NestSchedNEDGen(net);
+	       }
+	   }
 
 	   /**
 	    * [Method]: serializateNetwork

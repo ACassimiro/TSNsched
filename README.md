@@ -19,6 +19,9 @@ Time Sensitive Networking**](Academic%20work/FMCAD%202019%20-%20TSNsched:%20Auto
   * [Executing the program](#executing-the-program-1)
   * [The output](#the-output-1)
 - [Generating topologies](#generating-topologies)
+- [Simulation Parser](#simulation-parser)
+  * [Generating Simulation Files](#generating-simulation-files)
+  * [Running the Simulation](#running-the-simulation)
 - [Overview of Classes](#overview-of-classes)
 - [Frequently Asked Questions](#frequently-asked-questions)
 
@@ -235,6 +238,36 @@ cycle.getSlotDuration(int prt);     // Index of a priority
 ## Generating topologies
 
 Check the full description on how to generate arbitrary TSNsched input topologies [here](ScenarioGenerator/README.md).
+
+## Simulation Parser
+
+TSNsched offers means of validation through the translation of the values contained in the Network object created in the scheduling generation process. Using the Network object, the parser creates the necessary files for the [NeSTiNg](https://gitlab.com/ipvs/nesting) simulation model that uses the [OMNeT++](https://omnetpp.org/) and [INET Framework](https://inet.omnetpp.org/).
+
+### Generating Simulation Files
+
+The generation of simulation files is fully automated. The user only needs to enable it at the topology file with the command **scheduleGenerator.generateSimulationFiles(true);**  At the end of the default TSNsched scheduling generation, the creation of the necessary files for the simulation begins, being these files:
+
+* Network Description (.ned)
+* Initialization (.ini)
+* Port Scheduling (.xml)
+* Routing (.xml)
+* Traffic Generator (.xml)
+
+All of these files can be found in the folder named [nestsched](nestSched/).
+
+### Running the Simulation
+
+To run the simulation and validade the generated scheduling, it's necessary to have NeSTiNg, a simulation model for Time Sensitive Networking that currently uses OMNeT++ version 5.5.1 and INET version 4.1.2.
+
+With the tools properly installed, it is now necessary to make some changes to the source code of NeSTiNg and INET so that it is possible to generate the analysis signals that we need and calculate the latency of communication between devices.
+
+The first change to be made is in the INET Framework, more precisely in the [Ethernet.h](https://github.com/inet-framework/inet/blob/master/src/inet/linklayer/ethernet/Ethernet.h) file. In this file, it is necessary to change the value of the constant that defines [INTERFRAME_GAP_BITS](https://github.com/inet-framework/inet/blob/master/src/inet/linklayer/ethernet/Ethernet.h#L36) from 96 to 0. The Interframe Gap is the minimum pause necessary for the receiver to be able to make clock recoveries, allowing it to prepare itself for receiving the next packet. This change is necessary because TSNsched does not take Interframe Gap into account when generating the network schedule.
+
+Next we need to change the [QueuingFrames.h](https://gitlab.com/ipvs/nesting/-/blob/master/src/nesting/ieee8021q/queue/QueuingFrames.h) file in the NeSTiNg. In this file, the [last line of the matrix standardTrafficClassMapping](https://gitlab.com/ipvs/nesting/-/blob/master/src/nesting/ieee8021q/queue/QueuingFrames.h#L54) has to follow the ascending order from 0 to 7, so that the packets can be routed correctly according to the TSNsched configuration.
+
+And finally we need to change the [VlanEtherTafGenSched.cc](https://gitlab.com/ipvs/nesting/-/blob/master/src/nesting/application/ethernet/VlanEtherTrafGenSched.cc) and [VlanEtherTafGenSched.h](https://gitlab.com/ipvs/nesting/-/blob/master/src/nesting/application/ethernet/VlanEtherTrafGenSched.h) files. In these files, we need to change three things: (i) we need to track the number of packets sent, so the maximum number of packets determined by the generated schedule are followed. (ii) we need to change the packet name, putting the flowId in the beginning of the name, so we can easily track that information later. (iii) and we need to create and initialize the flowId signals and generate them when a packet is received.
+
+With all these changes made, now you just have to generate the network scheduling with TSNsched, copy the [nestsched folder](nestSched/) into the [NeSTiNg examples folder](https://gitlab.com/ipvs/nesting/-/tree/master/simulations/examples) and run the simulation in the OMNeT++.
 
 
 ## Overview of Classes

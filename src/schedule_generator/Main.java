@@ -1,3 +1,4 @@
+package schedule_generator;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
 //    Copyright (C) 2021  Aellison Cassimiro
@@ -17,14 +18,20 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package schedule_generator;
 
+
+import generated_scenarios.MediumScenario;
 
 public class Main {
     
     public static void main(String[] args)
     {
-        GeneratedCode g = new GeneratedCode();
+//        GeneratedCode g = new GeneratedCode();
+        
+//        SmallScenario g = new SmallScenario();
+    	
+    	MediumScenario g = new MediumScenario();
+        
         g.runTestCase();
     }
 }
