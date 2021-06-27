@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public class ScenarioGenerator {
-
+	
 	public static void main(String []args){
 		Random rand = new Random();
 
@@ -18,7 +18,7 @@ public class ScenarioGenerator {
 		// MAIN CONFIGURATION VARIABLES
 		int numOfFlows = 11; // Number of distinct flows in the network
 		int configuration = 1; // 1 - small, 2 - medium, 3 - large
-		int packetPeriodicity = 2000; // 2000 - normal, 1000 - high, 500 - very high
+		int packetPeriodicity = 1000; // 2000 - normal, 1000 - high, 500 - very high
 		int maxBranching = 2; // Maximum branching of the path tree
 		
 		if (args.length > 0) {
@@ -58,11 +58,14 @@ public class ScenarioGenerator {
 		*/
 		int hardConstraintTime = 1000;  // Hard constraint time is used within 
 		int firstT1Time = 0; // Guessed by z3
+		int packetSize = 72; // Bytes
 		
 		//Switch properties
-		int timeToTravel = 1; // Since the time to travel taken is in nanosseconds, leave it at 1. It is actually faster
+		int timeToTravel = 8; // Since the time to travel taken is in nanosseconds, leave it at 1. It is actually faster
 		int transmissionTime = 13; // Taken from "Traffic Planning for Time-Sensitive Communication", Steiner et al., 2018.
 		int gbSize = 1; 
+		int portSpeed = 125; // Bytes per microssecond
+		int maxPacketSize = 100; // Not beign used yet
 		
 		//Cycle properties
 		int upperBoundCycleTime = 3000;
@@ -72,10 +75,6 @@ public class ScenarioGenerator {
 		
 		int firstCycleStart = 0;
 		int softConstraintTime = 0; // Not beign used yet
-		int packetSize = 1625; // Bytes
-		int portSpeed = 125; // Bytes per microssecond
-		int maxPacketSize = 100; // Not beign used yet
-
 
 		String startDevice = "";
 		ArrayList<String> endDevices = new ArrayList<String>();
@@ -98,6 +97,14 @@ public class ScenarioGenerator {
 			PrintWriter out = new PrintWriter("GeneratedCode.java");
 
 			out.println("package schedule_generator;");
+			
+			out.println("import com.tsnsched.core.interface_manager.JSONParser;\n");
+			out.println("import com.tsnsched.core.network.*;\n");
+			out.println("import com.tsnsched.core.nodes.*;\n");
+			out.println("import com.tsnsched.core.components.*;\n");
+			out.println("import com.tsnsched.core.schedule_generator.*;\n");
+			out.println("import com.tsnsched.core.interface_manager.*;\n\n");
+
 
 			out.println("import java.util.*;");
 			out.println("import java.io.*;\n\n");
@@ -114,16 +121,14 @@ public class ScenarioGenerator {
 			}
 
 			
-			out.println("");
-			out.println("");
+			out.println("\n\n");
 			out.println("\t\t/* \n\t\t* GENERATING SWITCHES\n\t\t*/");
 			// GENERATING SWITCHES
 			for(int i = 0; i < numOfSwitches; i++){
 				out.println("\t\tTSNSwitch switch" + i + " = new TSNSwitch(" + "\"switch" + i + "\"," + maxPacketSize + ", " + timeToTravel + ", " + portSpeed + ", " + gbSize + ", " + lowerBoundCycleTime + ", " + upperBoundCycleTime + ");");
 			}
 
-			out.println("");
-			out.println("");
+			out.println("\n\n");
 			out.println("\t\t/* \n\t\t* GENERATING PORTS\n\t\t*/");
 			// CREATING PORTS 
 			auxCycleCount = 0;

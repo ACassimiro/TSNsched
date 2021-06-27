@@ -1,6 +1,12 @@
-package schedule_generator;
+import com.tsnsched.core.interface_manager.JSONParser;
+import com.tsnsched.core.network.*;
+import com.tsnsched.core.nodes.*;
+import com.tsnsched.core.components.*;
+import com.tsnsched.core.schedule_generator.*;
+import com.tsnsched.core.interface_manager.*;
 import java.util.*;
 import java.io.*;
+
 
 
 public class GeneratedCode {

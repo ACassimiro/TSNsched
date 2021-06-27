@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <schedule>
   <defaultcycle>1000us</defaultcycle>
-  <host flowId="0" name="dev2">
-    <cycle>1000us</cycle>
-  </host>
-  <host flowId="0" name="dev3">
-    <cycle>1000us</cycle>
-  </host>
-  <host flowId="0" name="dev4">
-    <cycle>1000us</cycle>
-  </host>
 </schedule>

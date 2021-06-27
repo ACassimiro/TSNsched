@@ -3,94 +3,54 @@
   <defaultcycle>1000us</defaultcycle>
   <switch name="switch0">
     <port id="0">
-      <schedule cycleTime="500.0us">
+      <schedule cycleTime="250.0us">
         <entry>
-          <length>17.5us</length>
-          <bitvector>01111111</bitvector>
+          <length>12.958333us</length>
+          <bitvector>11110100</bitvector>
         </entry>
         <entry>
-          <length>6.0us</length>
-          <bitvector>10000000</bitvector>
+          <length>12.041667us</length>
+          <bitvector>00001000</bitvector>
         </entry>
         <entry>
-          <length>476.5us</length>
-          <bitvector>01111111</bitvector>
+          <length>12.041667us</length>
+          <bitvector>00000001</bitvector>
+        </entry>
+        <entry>
+          <length>99.0us</length>
+          <bitvector>11110100</bitvector>
+        </entry>
+        <entry>
+          <length>50.0us</length>
+          <bitvector>00000010</bitvector>
+        </entry>
+        <entry>
+          <length>63.95833us</length>
+          <bitvector>11110100</bitvector>
         </entry>
       </schedule>
     </port>
     <port id="1">
-      <schedule cycleTime="1400.0us">
+      <schedule cycleTime="500.0us">
         <entry>
-          <length>80.875us</length>
-          <bitvector>01111111</bitvector>
+          <length>87.083336us</length>
+          <bitvector>11011001</bitvector>
         </entry>
         <entry>
-          <length>0.0625us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>12.0us</length>
+          <bitvector>00000100</bitvector>
         </entry>
         <entry>
           <length>50.0us</length>
-          <bitvector>10000000</bitvector>
+          <bitvector>00000010</bitvector>
         </entry>
         <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>12.0us</length>
+          <bitvector>00100000</bitvector>
         </entry>
         <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>6.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>194.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>12.0625us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>7.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>338.9167us</length>
+          <bitvector>11011001</bitvector>
         </entry>
       </schedule>
     </port>
@@ -99,122 +59,252 @@
     <port id="0">
       <schedule cycleTime="500.0us">
         <entry>
-          <length>6.9375us</length>
-          <bitvector>01111111</bitvector>
+          <length>37.041668us</length>
+          <bitvector>11111101</bitvector>
         </entry>
         <entry>
-          <length>6.0625us</length>
-          <bitvector>10000000</bitvector>
+          <length>12.0us</length>
+          <bitvector>00000010</bitvector>
         </entry>
         <entry>
-          <length>487.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>450.95834us</length>
+          <bitvector>11111101</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="1">
+      <schedule cycleTime="500.0us">
+        <entry>
+          <length>12.958333us</length>
+          <bitvector>10111111</bitvector>
+        </entry>
+        <entry>
+          <length>12.041667us</length>
+          <bitvector>01000000</bitvector>
+        </entry>
+        <entry>
+          <length>475.0us</length>
+          <bitvector>10111111</bitvector>
         </entry>
       </schedule>
     </port>
     <port id="2">
-      <schedule cycleTime="200.0us">
+      <schedule cycleTime="50.0us">
         <entry>
-          <length>150.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>1.0833334us</length>
+          <bitvector>01111010</bitvector>
         </entry>
         <entry>
-          <length>6.0us</length>
+          <length>12.083333us</length>
+          <bitvector>00000001</bitvector>
+        </entry>
+        <entry>
+          <length>0.50000095us</length>
+          <bitvector>01111010</bitvector>
+        </entry>
+        <entry>
+          <length>12.041667us</length>
+          <bitvector>00000100</bitvector>
+        </entry>
+        <entry>
+          <length>12.166666us</length>
+          <bitvector>01111010</bitvector>
+        </entry>
+        <entry>
+          <length>12.125us</length>
           <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>44.0us</length>
-          <bitvector>01111111</bitvector>
         </entry>
       </schedule>
     </port>
     <port id="3">
-      <schedule cycleTime="700.0us">
+      <schedule cycleTime="500.0us">
         <entry>
-          <length>693.9375us</length>
+          <length>25.041666us</length>
           <bitvector>01111111</bitvector>
         </entry>
         <entry>
-          <length>6.0625us</length>
+          <length>12.0us</length>
           <bitvector>10000000</bitvector>
+        </entry>
+        <entry>
+          <length>462.95834us</length>
+          <bitvector>01111111</bitvector>
         </entry>
       </schedule>
     </port>
   </switch>
   <switch name="switch2">
     <port id="0">
-      <schedule cycleTime="700.0us">
+      <schedule cycleTime="500.0us">
         <entry>
-          <length>680.0us</length>
-          <bitvector>01111111</bitvector>
+          <length>50.0us</length>
+          <bitvector>11011001</bitvector>
         </entry>
         <entry>
-          <length>20.0us</length>
-          <bitvector>10000000</bitvector>
+          <length>12.041667us</length>
+          <bitvector>00000010</bitvector>
+        </entry>
+        <entry>
+          <length>12.0us</length>
+          <bitvector>00100000</bitvector>
+        </entry>
+        <entry>
+          <length>12.0us</length>
+          <bitvector>00000100</bitvector>
+        </entry>
+        <entry>
+          <length>413.95834us</length>
+          <bitvector>11011001</bitvector>
         </entry>
       </schedule>
     </port>
     <port id="1">
-      <schedule cycleTime="1500.0us">
+      <schedule cycleTime="250.0us">
         <entry>
-          <length>24.4375us</length>
-          <bitvector>01111111</bitvector>
+          <length>38.0us</length>
+          <bitvector>11111110</bitvector>
         </entry>
         <entry>
-          <length>6.0625us</length>
-          <bitvector>10000000</bitvector>
+          <length>12.041667us</length>
+          <bitvector>00000001</bitvector>
         </entry>
         <entry>
-          <length>74.8125us</length>
-          <bitvector>01111111</bitvector>
+          <length>199.95833us</length>
+          <bitvector>11111110</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="2">
+      <schedule cycleTime="250.0us">
+        <entry>
+          <length>187.0us</length>
+          <bitvector>11111101</bitvector>
         </entry>
         <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
+          <length>12.041667us</length>
+          <bitvector>00000010</bitvector>
         </entry>
         <entry>
-          <length>0.1875us</length>
-          <bitvector>01111111</bitvector>
+          <length>50.95833us</length>
+          <bitvector>11111101</bitvector>
         </entry>
+      </schedule>
+    </port>
+    <port id="3">
+      <schedule cycleTime="500.0us">
         <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>275.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>225.0us</length>
-          <bitvector>01111111</bitvector>
-        </entry>
-        <entry>
-          <length>50.0us</length>
-          <bitvector>10000000</bitvector>
-        </entry>
-        <entry>
-          <length>218.9375us</length>
-          <bitvector>01111111</bitvector>
+          <length>1.0us</length>
+          <bitvector>10111111</bitvector>
         </entry>
         <entry>
           <length>50.0us</length>
-          <bitvector>10000000</bitvector>
+          <bitvector>01000000</bitvector>
         </entry>
         <entry>
-          <length>237.125us</length>
+          <length>449.0us</length>
+          <bitvector>10111111</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="4">
+      <schedule cycleTime="50.0us">
+        <entry>
+          <length>13.875us</length>
+          <bitvector>11110100</bitvector>
+        </entry>
+        <entry>
+          <length>12.041667us</length>
+          <bitvector>00000010</bitvector>
+        </entry>
+        <entry>
+          <length>12.083333us</length>
+          <bitvector>00001000</bitvector>
+        </entry>
+        <entry>
+          <length>12.0us</length>
+          <bitvector>00000001</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="5">
+      <schedule cycleTime="500.0us">
+        <entry>
+          <length>12.958333us</length>
           <bitvector>01111111</bitvector>
         </entry>
         <entry>
-          <length>50.0us</length>
+          <length>26.041666us</length>
           <bitvector>10000000</bitvector>
         </entry>
         <entry>
-          <length>138.4375us</length>
+          <length>461.0us</length>
           <bitvector>01111111</bitvector>
+        </entry>
+      </schedule>
+    </port>
+  </switch>
+  <switch name="switch3">
+    <port id="0">
+      <schedule cycleTime="500.0us">
+        <entry>
+          <length>25.0us</length>
+          <bitvector>00000100</bitvector>
+        </entry>
+        <entry>
+          <length>475.0us</length>
+          <bitvector>11111011</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="1">
+      <schedule cycleTime="500.0us">
+        <entry>
+          <length>36.958332us</length>
+          <bitvector>01111111</bitvector>
+        </entry>
+        <entry>
+          <length>12.041667us</length>
+          <bitvector>10000000</bitvector>
+        </entry>
+        <entry>
+          <length>451.0us</length>
+          <bitvector>01111111</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="2">
+      <schedule cycleTime="50.0us">
+        <entry>
+          <length>12.041667us</length>
+          <bitvector>00000010</bitvector>
+        </entry>
+        <entry>
+          <length>12.0us</length>
+          <bitvector>00000001</bitvector>
+        </entry>
+        <entry>
+          <length>0.04166603us</length>
+          <bitvector>01111100</bitvector>
+        </entry>
+        <entry>
+          <length>25.916666us</length>
+          <bitvector>10000000</bitvector>
+        </entry>
+      </schedule>
+    </port>
+    <port id="3">
+      <schedule cycleTime="500.0us">
+        <entry>
+          <length>12.958333us</length>
+          <bitvector>11101111</bitvector>
+        </entry>
+        <entry>
+          <length>24.041666us</length>
+          <bitvector>00010000</bitvector>
+        </entry>
+        <entry>
+          <length>463.0us</length>
+          <bitvector>11101111</bitvector>
         </entry>
       </schedule>
     </port>

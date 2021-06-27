@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <schedules>
-  <defaultcycle>200.0us</defaultcycle>
-  <host max="7" name="dev0">
-    <cycle>200.0us</cycle>
+  <defaultcycle>250.0us</defaultcycle>
+  <host max="1" name="dev0">
+    <cycle>250.0us</cycle>
     <entry>
-      <start>73.875us</start>
-      <queue>7</queue>
+      <start>0.0us</start>
+      <queue>3</queue>
+      <dest>255:0:00:00:00:02</dest>
+      <size>1470.0B</size>
+      <flowId>2</flowId>
+    </entry>
+    <entry>
+      <start>12.041666us</start>
+      <queue>0</queue>
       <dest>255:0:00:00:00:01</dest>
-      <size>720.0B</size>
+      <size>1470.0B</size>
       <flowId>1</flowId>
+    </entry>
+    <entry>
+      <start>161.04167us</start>
+      <queue>1</queue>
+      <dest>255:0:00:00:00:03</dest>
+      <size>1470.0B</size>
+      <flowId>3</flowId>
     </entry>
   </host>
 </schedules>
