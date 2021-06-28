@@ -32,6 +32,7 @@ import com.tsnsched.nest_sched.NestSchedNEDGen;
 import com.tsnsched.nest_sched.NestSchedXMLGen;
 import com.tsnsched.core.components.Flow;
 import com.tsnsched.core.components.Port;
+import com.tsnsched.core.interface_manager.ParserManager;
 import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.network.Network;
 import com.tsnsched.core.nodes.Switch;
@@ -50,6 +51,8 @@ public class ScheduleGenerator {
 		private Boolean generateSimulationFiles = false;
 		private Boolean serializeNetwork = false;
 		private Boolean loadNetwork = false;
+		
+		private ParserManager parserManager = null;
     
 	   @SuppressWarnings("serial")
 	   class TestFailedException extends Exception
@@ -195,6 +198,11 @@ public class ScheduleGenerator {
 	    */
 	   public void generateSchedule(Network net) 
 	   {
+		   
+		   if(this.parserManager == null) {
+			   this.parserManager = new ParserManager();
+		   }
+		   
 			long totalStartTime = System.nanoTime();
 		   
 		   Context ctx = this.createContext(); //Creating the z3 context
@@ -227,7 +235,7 @@ public class ScheduleGenerator {
 		   
 	       if(this.loadNetwork) {
 	    	   System.out.println("- Loading network and modifications");
-	    	   this.serializeNetwork = false;
+	    	   this.serializeNetwork = false; 
 	    	   net.loadNetwork(ctx, solver);	
 	    	   // Sets up the hard constraint for each individual flow in the network
 	           net.setJitterUpperBoundRangeZ3(ctx, 25);
@@ -333,6 +341,8 @@ public class ScheduleGenerator {
 	    			   System.out.println("- Generating simulation files");
 	    	    	   generateSimulationFiles(net);			   
 	    		   }
+	    	       
+	    	       this.parserManager.parseOutput(net);
 	    	       
 	           } else
 	           {
@@ -512,6 +522,18 @@ public class ScheduleGenerator {
 
 		public void setGenerateXMLFiles(Boolean generateXMLFiles) {
 			this.generateXMLFiles = generateXMLFiles;
+		}
+
+
+
+		public ParserManager getParserManager() {
+			return parserManager;
+		}
+
+
+
+		public void setParserManager(ParserManager parserManager) {
+			this.parserManager = parserManager;
 		}
 
 

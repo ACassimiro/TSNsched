@@ -3,6 +3,8 @@ package com.tsnsched.core.interface_manager;
 import com.tsnsched.core.nodes.*;
 import com.tsnsched.core.components.Cycle;
 import com.tsnsched.core.components.Flow;
+import com.tsnsched.core.components.FlowFragment;
+import com.tsnsched.core.components.PathNode;
 import com.tsnsched.core.components.Port;
 import com.tsnsched.core.network.*;
 import com.tsnsched.core.schedule_generator.*;
@@ -572,6 +574,25 @@ public class JSONParser implements GenericParser {
 		return switchInfoList;
 	}
 	
+	private void recursiveHopInfoGathering(PathNode node, ArrayList<Map<String, Object>> flowHopInfoList) {
+		
+		if(node.getFlowFragments() == null)
+			return;
+		
+		for(FlowFragment frag : node.getFlowFragments()) {
+			Map<String, Object> flowHopInfo = new HashMap<>();
+			flowHopInfo.put("currentNodeName", frag.getNodeName());
+			flowHopInfo.put("nextNodeName", frag.getNextHop());
+			flowHopInfo.put("priority", frag.getFragmentPriority());
+			flowHopInfoList.add(flowHopInfo);
+		}
+		
+		for(PathNode childNode : node.getChildren()) {
+			this.recursiveHopInfoGathering(childNode, flowHopInfoList);
+		}
+		
+	}
+	
 	public ArrayList<Map<String, Object>> extractFlowInfoList(Network net) {
 
 		ArrayList<Map<String, Object>> flowInfoList = new ArrayList<Map<String, Object>>();
@@ -584,6 +605,16 @@ public class JSONParser implements GenericParser {
 			flowInfo.put("firstSendingTime", flow.getFlowFirstSendingTime());
 			flowInfo.put("averageLatency", flow.getAverageLatency());			
 			flowInfo.put("jitter", flow.getAverageJitter());
+			
+			if(flow.isFixedPriority()) {
+				flowInfo.put("flowPriority", flow.getPriorityValue());
+			} else {
+				PathNode node = flow.getPathTree().getRoot();
+				node = node.getChildren().get(0); // First 
+				ArrayList<Map<String, Object>> flowHopInfoList = new ArrayList<Map<String, Object>>();
+				this.recursiveHopInfoGathering(node, flowHopInfoList);
+				flowInfo.put("hops", flowHopInfoList);	
+			}
 			
 			flowInfoList.add(flowInfo);
 		}
@@ -608,7 +639,6 @@ public class JSONParser implements GenericParser {
 
 	    
 		try {
-
 		    Writer writer = new FileWriter(outputPath);
 			gson.toJson(networkInfo, writer);
 			writer.close();

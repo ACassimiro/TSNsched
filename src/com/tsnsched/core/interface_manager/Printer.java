@@ -323,9 +323,10 @@ public class Printer {
                //out.println("    Flow priority:" + model.eval(f.getFlowPriority(), false));
                //out.println("    Flow latency:" + model.eval(f.getFlowPriority(), false));
                //out.println("    Flow latency:" + model.eval(f.getJitterZ3(), false));
-               out.println("    Start dev. first t1: " + model.eval(f.getStartDevice().getFirstT1TimeZ3(), false));
-               out.println("    Start dev. HC: " + model.eval(f.getStartDevice().getHardConstraintTimeZ3(), false));
-               out.println("    Start dev. packet periodicity: " + model.eval(f.getStartDevice().getPacketPeriodicityZ3(), false));
+               out.println("    Start first t1: " + model.eval(f.getFlowFirstSendingTimeZ3(), false));
+               f.setFlowFirstSendingTime(this.stringToDouble(model.eval(f.getFlowFirstSendingTimeZ3(), false).toString()));
+               out.println("    Start HC: " + f.getFlowMaximumLatency());
+               out.println("    Start packet periodicity: " + model.eval(f.getFlowSendingPeriodicityZ3(), false));
                
                
                // IF FLOW IS UNICAST

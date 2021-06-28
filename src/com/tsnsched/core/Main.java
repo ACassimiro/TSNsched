@@ -52,7 +52,7 @@ public class Main {
 			Network net = parser.parseFromFile();
 			
 			ScheduleGenerator gen = new ScheduleGenerator();
-			
+			gen.setParserManager(parser);		
 			gen.generateSchedule(net);
 			
 		}

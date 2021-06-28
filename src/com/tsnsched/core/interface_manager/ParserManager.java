@@ -93,6 +93,13 @@ public class ParserManager {
 		return net;
 	}
 	
+	public void parseOutput(Network net) {
+		
+		JSONParser parser = new JSONParser();
+		parser.generateOutput(net);
+		
+	}
+	
 	public static void main(String []args) {
 		
 		ParserManager parserManager = new ParserManager("src/com/tsnsched/generated_scenarios/input.xml");
