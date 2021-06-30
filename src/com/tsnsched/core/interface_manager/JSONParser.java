@@ -57,18 +57,41 @@ public class JSONParser implements GenericParser {
 	    			Device dev = new Device(deviceObject.get("name").getAsString());
 	    			
 	    			if(deviceObject.has("defaultFirstSendingTime")) {
-	    				dev.setFirstT1Time(this.convertTimeUnits(deviceObject.get("defaultFirstSendingTime").getAsString()));
-	    			}
+	    				dev.setFirstT1Time(
+    						this.convertTimeUnits(
+								deviceObject.get("defaultFirstSendingTime").getAsDouble(),
+								(deviceObject.has("defaultFirstSendingTimeUnit") ? deviceObject.get("defaultFirstSendingTimeUnit").getAsString() : "")
+							)
+						);
+	    			} 
+	    			
 	    			if(deviceObject.has("defaultPacketPeriodicity")) {
-	    				dev.setPacketPeriodicity(this.convertTimeUnits(deviceObject.get("defaultPacketPeriodicity").getAsString()));
-	    			}
+	    				dev.setPacketPeriodicity(
+    						this.convertTimeUnits(
+								deviceObject.get("defaultPacketPeriodicity").getAsDouble(),
+								(deviceObject.has("defaultPacketPeriodicityUnit") ? deviceObject.get("defaultPacketPeriodicityUnit").getAsString() : "")
+							)
+						);
+	    			} 
+	    			
 	    			if(deviceObject.has("defaultHardConstraintTime")) {
-	    				dev.setHardConstraintTime(this.convertTimeUnits(deviceObject.get("defaultHardConstraintTime").getAsString()));
-	    			}
-	    			if(deviceObject.has("defaultPacketSize")) {
-	    				dev.setPacketSize(this.convertSizeUnits(deviceObject.get("defaultPacketSize").getAsString()));
+	    				dev.setHardConstraintTime(
+    						this.convertTimeUnits(
+								deviceObject.get("defaultHardConstraintTime").getAsDouble(),
+								(deviceObject.has("defaultHardConstraintTimeUnit") ? deviceObject.get("defaultHardConstraintTimeUnit").getAsString() : "")
+							)
+						);
 	    			}
 
+	    			if(deviceObject.has("defaultPacketSize")) {
+	    				dev.setPacketSize(
+    						this.convertSizeUnits(
+								deviceObject.get("defaultPacketSize").getAsDouble(), 
+								(deviceObject.has("defaultPacketSizeUnit") ? deviceObject.get("defaultPacketSizeUnit").getAsString() : "")
+							)
+						);
+	    			}
+	    			
 	    			listOfDevices.add(dev);
 	    			
 	    		}
@@ -110,24 +133,56 @@ public class JSONParser implements GenericParser {
 	    		    			
 	    		    			JsonObject portObject = portJsonElement.getAsJsonObject();
 
-	    		    			cycle = new Cycle(this.convertTimeUnits(portObject.get("maximumSlotDuration").getAsString()));
+	    		    			cycle = null;
+	    		    			
+	    		    			if(portObject.has("maximumSlotDuration")) {
+	    		    				cycle = new Cycle(
+    		    						this.convertTimeUnits(
+		    								portObject.get("maximumSlotDuration").getAsDouble(),
+		    								(portObject.has("maximumSlotDurationUnit") ? portObject.get("maximumSlotDurationUnit").getAsString() : "")
+	    								)
+		    						);
+	    		    			} else {
+	    		    				cycle = new Cycle(10000);
+	    		    			}
 	    		    			
 	    		    			port = swt.createPort(portObject.get("connectsTo").getAsString(), cycle);
 	    		    			
 	    		    			if(portObject.has("portSpeed")) {
-	    		    				port.setPortSpeed(this.convertSpeedUnits(portObject.get("portSpeed").getAsString()));
+	    		    				port.setPortSpeed(
+    		    						this.convertSpeedUnits(
+		    								portObject.get("portSpeed").getAsDouble(),
+		    								(portObject.has("portSpeedSizeUnit") ? portObject.get("portSpeedSizeUnit").getAsString() : ""),
+    										(portObject.has("portSpeedTimeUnit") ? portObject.get("portSpeedTimeUnit").getAsString() : "")		    								
+	    								)
+		    						);
 	    		    			}
 	    		    			
 	    		    			if(portObject.has("timeToTravel")) {
-	    		    				port.setTimeToTravel(this.convertTimeUnits(portObject.get("timeToTravel").getAsString()));
+	    		    				port.setTimeToTravel(
+    		    						this.convertTimeUnits(
+		    								portObject.get("timeToTravel").getAsDouble(),
+		    								(portObject.has("timeToTravelUnit") ? portObject.get("timeToTravelUnit").getAsString() : "")
+	    								)
+		    						);
 	    		    			}
 	    		    			
 	    		    			if(portObject.has("guardBandSize")) {
-	    		    				port.setGbSize(this.convertTimeUnits(portObject.get("guardBandSize").getAsString()));
+	    		    				port.setGbSize(
+    		    						this.convertTimeUnits(
+		    								portObject.get("guardBandSize").getAsDouble(),
+		    								(portObject.has("guardBandSizeUnit") ? portObject.get("guardBandSizeUnit").getAsString() : "")
+	    								)
+		    						);
 	    		    			}
 	    		    			
 	    		    			if(portObject.has("cycleStart")) {
-	    		    				port.setCycleStart(portObject.get("cycleStart").getAsDouble());
+	    		    				port.setCycleStart(
+    		    						this.convertTimeUnits(
+		    								portObject.get("cycleStart").getAsDouble(),
+		    								(portObject.has("cycleStartUnit") ? portObject.get("cycleStartUnit").getAsString() : "")
+	    								)
+		    						);
 	    		    			}
 	    		    			
 	    		    			if(portObject.has("scheduleType")) {
@@ -202,15 +257,31 @@ public class JSONParser implements GenericParser {
 	    			TSNSwitch swt = new TSNSwitch(switchObject.get("name").getAsString());
 	    			
 	    			if(switchObject.has("defaultTimeToTravel")) {
-	    				swt.setTimeToTravel(this.convertTimeUnits(switchObject.get("defaultTimeToTravel").getAsString()));
+	    				swt.setTimeToTravel(
+    						this.convertTimeUnits(
+								switchObject.get("defaultTimeToTravel").getAsDouble(),
+								(switchObject.has("defaultTimeToTravelUnit") ? switchObject.get("defaultTimeToTravelUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    			
 	    			if(switchObject.has("defaultGuardBandSize")) {
-	    				swt.setGbSize(this.convertTimeUnits(switchObject.get("defaultGuardBandSize").getAsString()));
+	    				swt.setGbSize(
+    						this.convertTimeUnits(
+								switchObject.get("defaultGuardBandSize").getAsDouble(),
+								(switchObject.has("defaultGuardBandSizeUnit") ? switchObject.get("defaultGuardBandSizeUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    				    			
 	    			if(switchObject.has("defaultPortSpeed")) {
-	    				swt.setPortSpeed(this.convertSpeedUnits(switchObject.get("defaultPortSpeed").getAsString()));
+	    				swt.setPortSpeed(
+    						this.convertSpeedUnits(
+								switchObject.get("defaultPortSpeed").getAsDouble(),
+								(switchObject.has("defaultPortSpeedSizeUnit") ? switchObject.get("defaultPortSpeedSizeUnit").getAsString() : ""),
+								(switchObject.has("defaultPortSpeedTimeUnit") ? switchObject.get("defaultPortSpeedTimeUnit").getAsString() : "")	
+							)
+						);
 	    			}
 	    			if(switchObject.has("defaultScheduleType")) {
 	    				String scheduleType = switchObject.get("defaultScheduleType").getAsString().toLowerCase();
@@ -258,11 +329,21 @@ public class JSONParser implements GenericParser {
 	    			flow = new Flow(flowObject.get("name").getAsString(), Flow.PUBLISH_SUBSCRIBE);
 	    			
 	    			if(flowObject.has("packetPeriodicity")) {
-	    				flow.setFlowSendingPeriodicity(this.convertTimeUnits(flowObject.get("packetPeriodicity").getAsString()));
+	    				flow.setFlowSendingPeriodicity(
+    						this.convertTimeUnits(
+								flowObject.get("packetPeriodicity").getAsDouble(),
+								(flowObject.has("packetPeriodicityUnit") ? flowObject.get("packetPeriodicityUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    			
 	    			if(flowObject.has("firstSendingTime")) {
-	    				flow.setFlowFirstSendingTime(this.convertTimeUnits(flowObject.get("firstSendingTime").getAsString()));
+	    				flow.setFlowFirstSendingTime(
+    						this.convertTimeUnits(
+								flowObject.get("firstSendingTime").getAsDouble(),
+								(flowObject.has("firstSendingTimeUnit") ? flowObject.get("firstSendingTimeUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    			
 	    			if(flowObject.has("fixedPriority")) {
@@ -279,11 +360,21 @@ public class JSONParser implements GenericParser {
 	    			
 
 	    			if(flowObject.has("maximumJitter")) {
-	    				flow.setFlowMaximumJitter(this.convertTimeUnits(flowObject.get("maximumJitter").getAsString()));
+	    				flow.setFlowMaximumJitter(
+    						this.convertTimeUnits(
+								flowObject.get("maximumJitter").getAsDouble(),
+								(flowObject.has("maximumJitterUnit") ? flowObject.get("maximumJitterUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    			
 	    			if(flowObject.has("hardConstraintTime")) {
-	    				flow.setFlowMaximumLatency(this.convertTimeUnits(flowObject.get("hardConstraintTime").getAsString()));
+	    				flow.setFlowMaximumLatency(
+    						this.convertTimeUnits(
+								flowObject.get("hardConstraintTime").getAsDouble(),
+								(flowObject.has("hardConstraintTimeUnit") ? flowObject.get("hardConstraintTimeUnit").getAsString() : "")
+							)
+						);
 	    			}
 	    			
 	    			if(flowObject.has("endDevices")) {
@@ -358,7 +449,6 @@ public class JSONParser implements GenericParser {
 	}
 	
 	public Network parseInputContent(String content) {
-		
 		JsonObject networkJson = new Gson().fromJson(content, JsonObject.class);
 		
 		Network net = new Network();
@@ -382,16 +472,51 @@ public class JSONParser implements GenericParser {
 		return net;
 		
 	}
-	
+
+	public double convertSpeedUnits(Double value, String sizeUnit, String timeUnit) {
+		
+		double returnValue = value;
+		
+		if(
+			(sizeUnit == null || sizeUnit.isEmpty()) &&
+			(timeUnit == null || timeUnit.isEmpty())				
+		) {
+			return returnValue;
+		} else if (sizeUnit == null || sizeUnit.isEmpty()){
+			sizeUnit = "Byte";
+		} else if (timeUnit == null || timeUnit.isEmpty()) {
+			timeUnit = "us";
+		}
+		
+		try {
+			
+			SizeUnits.valueOf(sizeUnit.toUpperCase());
+			TimeUnits.valueOf(timeUnit.toUpperCase());
+
+			returnValue = this.convertSpeedUnits(Double.toString(value) + " " + sizeUnit + "/" + timeUnit);
+			
+			return returnValue;
+			
+		} catch (Exception e) {
+
+			System.out.println("WARNING: Problem with the value unit \"" + sizeUnit + "/" + timeUnit + "\". Using default unit.");
+			
+		}
+		
+		return returnValue;
+		
+	}
 	
 	public double convertSpeedUnits(String value) {
 		double valueDouble = -1;
 		
-		String valueString = value.replaceAll("[123456789., ]", "");
+		String valueString = value.replaceAll("[0123456789.,\\s]", "");
 		
 		value = value.replaceAll("[^ .0-9]", "");
 		
 		valueDouble = Double.parseDouble(value);
+
+		valueString = valueString.toLowerCase();
 		
 		if(valueString.contains("B") || valueString.contains("Byte") || valueString.contains("byte")) {
 			;
@@ -399,7 +524,6 @@ public class JSONParser implements GenericParser {
 			valueDouble = valueDouble/8;
 		} 
 
-		valueString = valueString.toLowerCase();
 
 		if(valueString.startsWith("kilo") || valueString.startsWith("k")) {
 			valueDouble *= 1000;
@@ -426,28 +550,55 @@ public class JSONParser implements GenericParser {
 		
 		return valueDouble;
 	}
+
+	public double convertSizeUnits(double value, String stringValue) {
+		
+		double returnValue = value;
+		
+		if(stringValue == null || stringValue.isEmpty()) {
+			return returnValue;
+		}
+		
+		try {
+			
+			SizeUnits.valueOf(stringValue.toUpperCase());
+
+			returnValue = this.convertSizeUnits(Double.toString(value) + " " + stringValue);
+			
+			return returnValue;
+			
+		} catch (Exception e) {
+
+			System.out.println("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
+			
+		}
+		
+		return returnValue;
+		
+	}
 	
 	
 	public double convertSizeUnits(String value) {
 		
 		double valueDouble = -1;
-		
-		String valueString = value.replaceAll("[123456789., ]", "");
+		String valueString = value.replaceAll("[0123456789.,\\s]", "");
 		
 		value = value.replaceAll("[^ .0-9]", "");
 
 		valueDouble = Double.parseDouble(value);
 		
-		if(valueString.contains("B")) { //Byte
+		if(valueString.contains("B") || valueString.toLowerCase().contains("byte")) { //Byte
 			valueString = valueString.toLowerCase();
-
-			if(valueString.contains("k")) {
+			
+			if(valueString.startsWith("k")) {
 				valueDouble*=1000;
-			} else if (valueString.contains("m")) {
+			} else if (valueString.startsWith("m")) {
 				valueDouble*=(1000*1000);				
+			} else if (valueString.startsWith("g")) {
+				valueDouble*=(1000*1000*1000);				
 			} 
 			
-		} else if (valueString.contains("b")) { // bit
+		} else if (valueString.contains("b") || valueString.toLowerCase().contains("bit")) { // bit
 			valueString = valueString.toLowerCase();
 			
 			valueDouble = valueDouble/8;
@@ -456,23 +607,53 @@ public class JSONParser implements GenericParser {
 				valueDouble*=1000;
 			} else if (valueString.contains("m")) {
 				valueDouble*=(1000*1000);				
+			} else if (valueString.startsWith("g")) {
+				valueDouble*=(1000*1000*1000);				
 			} 
 			
 		}
-		
 		
 		return valueDouble;
 		
 	}
 	
+	public double convertTimeUnits(double value, String stringValue) {
+		
+		double returnValue = value;
+
+		
+		if(stringValue == null || stringValue.isEmpty()) {
+			return returnValue;
+		}
+		
+		try {
+			
+			TimeUnits.valueOf(stringValue.toUpperCase());
+
+			returnValue = this.convertTimeUnits(Double.toString(value) + " " + stringValue);
+			
+			return returnValue;
+			
+		} catch (Exception e) {
+
+			System.out.println("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
+			
+		}
+		
+		return returnValue;
+		
+	}
+	
+	
 	public double convertTimeUnits(String value) {
 		
 		double valueDouble = -1;
 		
-		String valueString = value.replaceAll("[123456789., ]", "");
+		String valueString = value.replaceAll("[0123456789.,\\s]", "");
 		valueString = valueString.toLowerCase();
 				
 		value = value.replaceAll("[^ .0-9]", "");
+	
 		
 		valueDouble = Double.parseDouble(value);
 		
@@ -483,7 +664,7 @@ public class JSONParser implements GenericParser {
 		} else if (valueString.equals("us") || valueString.contains("microsecond")) {
 			;
 		}
-					
+
 		return valueDouble;
 	}
 	

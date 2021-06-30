@@ -66,7 +66,7 @@ public class XMLParser implements GenericParser {
 		} catch(JSONException je) {
 			System.out.println(je.toString());
 		}
-		
+
 		JSONParser jsonParser = new JSONParser();
 		net = jsonParser.parseInputContent(jsonPrettyPrintString);
 		

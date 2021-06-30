@@ -137,13 +137,13 @@ public class Port implements Serializable {
      * @param ctx      Context variable containing the z3 environment used
      */
     public void toZ3(Context ctx) {
-        this.gbSizeZ3 = ctx.mkReal(Double.toString(gbSize));
         this.maxPacketSizeZ3 = ctx.mkReal(Double.toString(this.maxPacketSize));
         this.timeToTravelZ3 = ctx.mkReal(Double.toString(this.timeToTravel));
         this.transmissionTimeZ3 = ctx.mkReal(Double.toString(this.transmissionTime));
         this.portSpeedZ3 = ctx.mkReal(Double.toString(portSpeed));
         this.bestEffortPercentZ3 = ctx.mkReal(Double.toString(bestEffortPercent));
         this.interframeGapSizeZ3 = ctx.mkReal(Double.toString(this.interframeGapSize));
+        this.gbSizeZ3 = ctx.mkRealConst(this.name + "guardBand");
         
         if(this.cycle.getFirstCycleStartZ3() == null) {
         	this.cycle.toZ3(ctx);
@@ -162,6 +162,15 @@ public class Port implements Serializable {
      */
     private void setUpCycleRules(Solver solver, Context ctx) {
     	
+    	solver.add(
+			ctx.mkEq(
+				this.gbSizeZ3, 
+				ctx.mkDiv(
+					ctx.mkReal(Double.toString(this.gbSize)),
+					this.portSpeedZ3
+				)
+			)
+		);
 
         for(int numericFlowPriority = 0; numericFlowPriority < this.cycle.getNumOfPrts(); numericFlowPriority++) {
         	for(int index = 0; index < this.cycle.getNumOfSlots(numericFlowPriority); index++) {

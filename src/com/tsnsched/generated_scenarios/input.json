@@ -3,8 +3,11 @@
       {
         "name": "switch1",
         "defaultScheduleType": "hypercycle",
-        "defaultTimeToTravel": 1,
-        "defaultPortSpeed": "1 Gbit/s",
+        "defaultTimeToTravel": 0.001,  
+        "defaultTimeToTravelUnit": "ms",    
+        "defaultPortSpeed": 1,
+        "defaultPortSpeedSizeUnit": "Gbit",
+        "defaultPortSpeedTimeUnit": "s",
         "ports": [
           {
             "name": "eth0",
@@ -32,7 +35,8 @@
             "defaultFirstSendingTime": 0,
             "defaultPacketPeriodicity": 1000,
             "defaultHardConstraintTime": 1000,
-            "defaultPacketSize": 1500
+            "defaultPacketSize": 1.5,
+            "defaultPacketSizeUnit": "KByte"
         },
         {
             "name": "endDevice",
