@@ -290,52 +290,45 @@ public class Port implements Serializable {
                  * If 2 slots are not consecutive, then there must be a space
                  * of at least gbSize (the size of the guard band) between them
                  * (guard band constraint).
-                 *
-                for (FlowFragment auxFrag : this.flowFragments) {
-                    for(int auxIndex = 0; auxIndex < this.cycle.getNumOfSlots(); auxIndex++) {
-                    	IntExpr auxIndexZ3 = ctx.mkInt(auxIndex);
-                    	
-                    	if(auxFrag.equals(frag)) {
-                    		continue;
-                    	}
-                    	
-                    	IntExpr auxFlowPriority = auxFrag.getFragmentPriorityZ3();
-                    	
-                    	solver.add(
-                			ctx.mkImplies(
-            					ctx.mkAnd(
-        							ctx.mkNot(
-    									ctx.mkAnd(
-											ctx.mkEq(flowPriority, auxFlowPriority),
-											ctx.mkEq(indexZ3, auxIndexZ3)
-										)
-									),
-        							ctx.mkNot(
-    									ctx.mkEq(
-											cycle.slotStartZ3(ctx, flowPriority, indexZ3), 
-											ctx.mkAdd(
-												cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3),
-												cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3)
-											)                                                
-										)
-									),
-        							ctx.mkGt(
-    									cycle.slotStartZ3(ctx, flowPriority, indexZ3), 
-    									cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3)
-									)
-    							),
-            					ctx.mkGe(
-        							cycle.slotStartZ3(ctx, flowPriority, indexZ3),
-        							ctx.mkAdd(
-    									cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3),
-    									cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3),
-    									gbSizeZ3
-									)   
-    							)                        
-        					)
-            			);
-                    }
-                }
+                 */
+                	for(int prt = 0; prt < this.cycle.getNumOfPrts(); prt ++) {
+                		for(int auxIndex = 0; auxIndex < this.cycle.getNumOfSlots(prt); auxIndex++) {
+                        	IntExpr auxIndexZ3 = ctx.mkInt(auxIndex);
+                        	IntExpr auxFlowPriority = ctx.mkInt(prt);
+                        	
+                        	solver.add(
+                    			ctx.mkImplies(
+                					ctx.mkAnd(
+            							ctx.mkNot(
+    											ctx.mkEq(auxFlowPriority, flowPriority)
+    									),
+            							ctx.mkNot(
+        									ctx.mkEq(
+    											cycle.slotStartZ3(ctx, flowPriority, indexZ3), 
+    											ctx.mkAdd(
+    												cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3),
+    												cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3)
+    											)                                                
+    										)
+    									),
+            							ctx.mkGt(
+        									cycle.slotStartZ3(ctx, flowPriority, indexZ3), 
+        									cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3)
+    									)
+        							),
+                					ctx.mkGe(
+            							cycle.slotStartZ3(ctx, flowPriority, indexZ3),
+            							ctx.mkAdd(
+        									cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3),
+        									cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3),
+        									gbSizeZ3
+    									)   
+        							)                        
+            					)
+                			);
+                        }
+                	}                    
+                
                 /**/
         	}
         	
