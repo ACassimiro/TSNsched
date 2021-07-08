@@ -219,8 +219,8 @@ public class Network implements Serializable {
                             solver.add( // Maximum Allowed Latency constraint
                                 ctx.mkLe(
                                 		ctx.mkAdd(
-                                				ctx.mkReal(Double.toString(ffrag.getPacketSize()/
-                                						((TSNSwitch) root.getChildren().get(0).getNode()).getPortSpeed()))                              				
+                                				ctx.mkReal(Double.toString(ffrag.getParent().getPacketSize()/
+                                						((TSNSwitch) root.getChildren().get(0).getNode()).getPortOf(ffrag.getParent().getStartDeviceName()).getPortSpeed()))                              				
                                 				,ctx.mkSub(
                                                         ((TSNSwitch) parent.getNode()).scheduledTime(ctx, i, ffrag),
                                                         ((TSNSwitch) root.getChildren().get(0).getNode()).departureTime(ctx, i, 

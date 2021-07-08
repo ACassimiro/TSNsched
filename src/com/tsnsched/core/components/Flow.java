@@ -1299,6 +1299,7 @@ public class Flow implements Serializable {
      */
     public RealExpr getLatencyZ3(Solver solver, Device dev, Context ctx, int index) {
         //index += 1;
+
         RealExpr latency = ctx.mkRealConst(this.name + "latencyOfPacket" + index + "For" + dev.getName());
         
         ArrayList<PathNode> nodes = this.getNodesFromRootToNode(dev);
@@ -1773,6 +1774,10 @@ public class Flow implements Serializable {
 		return this.packetSize;
 	}
 
+	public double setPacketSize(double packetSize) {
+		return this.packetSize = packetSize;
+	}
+	
 	public RealExpr getPacketSizeZ3() {
 		return this.startDevice.getPacketSizeZ3();
 	}
@@ -1872,4 +1877,8 @@ public class Flow implements Serializable {
 		this.flowMaximumLatency = flowMaximumLatency;
 	}
 	
+	public String getStartDeviceName() {
+		return this.startDevice.getName();
+	}
+
 }

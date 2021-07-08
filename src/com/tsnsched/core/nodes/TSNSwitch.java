@@ -342,8 +342,8 @@ public class TSNSwitch extends Switch implements Serializable {
         		newPort.setUseHyperCycle(true);
         		break;
         	case DEFAULT:
-        		newPort.setUseHyperCycle(true);
-        		//newPort.setUseMicroCycles(true);
+        		//newPort.setUseHyperCycle(true);
+        		newPort.setUseMicroCycles(true);
         		break;
         }
         

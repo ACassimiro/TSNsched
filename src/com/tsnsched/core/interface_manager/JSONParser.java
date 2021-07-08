@@ -337,6 +337,15 @@ public class JSONParser implements GenericParser {
 						);
 	    			}
 	    			
+	    			if(flowObject.has("packetSize")) {
+	    				flow.setPacketSize(
+    						this.convertSizeUnits(
+								flowObject.get("packetSize").getAsDouble(),
+								(flowObject.has("packetSizeUnit") ? flowObject.get("packetSizeUnit").getAsString() : "")
+							)
+						);
+	    			}
+	    			
 	    			if(flowObject.has("firstSendingTime")) {
 	    				flow.setFlowFirstSendingTime(
     						this.convertTimeUnits(

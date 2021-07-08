@@ -58,11 +58,14 @@ public class XMLParser implements GenericParser {
 		Network net = null;
 		String jsonPrettyPrintString = null;
 		
+		System.out.println(content);		
 		try {
 	        JSONObject json = XML.toJSONObject(content); // converts xml to json
 	        jsonPrettyPrintString = json.toString(4); // json pretty print
 	        jsonPrettyPrintString = jsonPrettyPrintString.replace("{\"network\": ", "");
 	        jsonPrettyPrintString = jsonPrettyPrintString.substring(0,jsonPrettyPrintString.length()-1);  
+
+			System.out.println(jsonPrettyPrintString);
 		} catch(JSONException je) {
 			System.out.println(je.toString());
 		}
@@ -84,7 +87,11 @@ public class XMLParser implements GenericParser {
 		
 		//System.out.println(value);
 	
-		XMLParser parser = new XMLParser("src/com/tsnsched/generated_scenarios/input.xml");
+		//XMLParser parser = new XMLParser("src/com/tsnsched/generated_scenarios/input.xml");
+		XMLParser parser = new XMLParser("/home/acassimiro/Documents/inputEMF.xml");
+		
+		
+
 		parser.parseInput();
 		
 		
