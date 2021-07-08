@@ -176,7 +176,7 @@ public class JSONParser implements GenericParser {
 	    		    			
 	    		    			if(portObject.has("guardBandSize")) {
 	    		    				port.setGbSize(
-    		    						this.convertTimeUnits(
+    		    						this.convertSizeUnits(
 		    								portObject.get("guardBandSize").getAsDouble(),
 		    								(portObject.has("guardBandSizeUnit") ? portObject.get("guardBandSizeUnit").getAsString() : "")
 	    								)
@@ -274,7 +274,7 @@ public class JSONParser implements GenericParser {
 	    			
 	    			if(switchObject.has("defaultGuardBandSize")) {
 	    				swt.setGbSize(
-    						this.convertTimeUnits(
+    						this.convertSizeUnits(
 								switchObject.get("defaultGuardBandSize").getAsDouble(),
 								(switchObject.has("defaultGuardBandSizeUnit") ? switchObject.get("defaultGuardBandSizeUnit").getAsString() : "")
 							)
