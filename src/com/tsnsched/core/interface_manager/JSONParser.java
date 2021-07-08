@@ -148,6 +148,13 @@ public class JSONParser implements GenericParser {
 	    		    			
 	    		    			port = swt.createPort(portObject.get("connectsTo").getAsString(), cycle);
 	    		    			
+
+	    		    			if(portObject.has("name")) {
+	    		    				System.out.println(port.getName());
+	    		    				port.setName(portObject.get("name").getAsString());   	
+	    		    				System.out.println(port.getName());	    				
+	    		    			}
+	    		    			
 	    		    			if(portObject.has("portSpeed")) {
 	    		    				port.setPortSpeed(
     		    						this.convertSpeedUnits(
@@ -359,8 +366,8 @@ public class JSONParser implements GenericParser {
 	    				flow.setFixedPriority(flowObject.get("fixedPriority").getAsBoolean());
 	    			}
 	    			
-	    			if(flowObject.has("priority")) {
-	    				flow.setPriorityValue(flowObject.get("priority").getAsInt());
+	    			if(flowObject.has("priorityValue")) {
+	    				flow.setPriorityValue(flowObject.get("priorityValue").getAsInt());
 	    			}
 	    			
 	    			if(flowObject.has("sourceDevice")) {
