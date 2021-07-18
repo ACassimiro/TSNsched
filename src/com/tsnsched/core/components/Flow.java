@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.microsoft.z3.*;
+import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.network.Network;
 import com.tsnsched.core.nodes.Device;
 import com.tsnsched.core.nodes.Switch;
@@ -52,7 +53,7 @@ public class Flow implements Serializable {
 	static int instanceCounter = 0;
 	private int instance = 0;
 
-    
+	private Printer printer;    
     
 	protected String name;
     private int type = 0;
@@ -232,7 +233,7 @@ public class Flow implements Serializable {
     		PathNode pathNode = pathTree.searchNode(nameOfSource, pathTree.getRoot());
     		
     		if(pathNode == null) {
-    			System.out.println("[ERROR] SPECIFIED SOURCE NODE " + nameOfSource + " NOT FOUND IN TREE OF FLOW");
+    			this.printer.printIfLoggingIsEnabled("[ERROR] SPECIFIED SOURCE NODE " + nameOfSource + " NOT FOUND IN TREE OF FLOW");
     		} else {
     			pathNode.addChild(destination);
     		}	
@@ -324,7 +325,7 @@ public class Flow implements Serializable {
             this.flowSendingPeriodicityZ3 = ctx.mkReal(Double.toString(this.flowSendingPeriodicity));
 
          
-            //System.out.println("On flow " + this.name + " - " + this.flowSendingPeriodicityZ3 + "; " + this.flowFirstSendingTimeZ3 );
+            //this.printer.printIfLoggingIsEnabled("On flow " + this.name + " - " + this.flowSendingPeriodicityZ3 + "; " + this.flowFirstSendingTimeZ3 );
 
             this.nodeToZ3(ctx, this.pathTree.getRoot(), null);
             
@@ -347,7 +348,7 @@ public class Flow implements Serializable {
         int numberOfPackets = Network.PACKETUPPERBOUNDRANGE;
 
         /*
-        System.out.println("On node " +
+        this.printer.printIfLoggingIsEnabled("On node " +
                 (node.getNode() instanceof Device ?
                 ((Device) node.getNode()).getName() :
                 ((TSNSwitch) node.getNode()).getName())
@@ -356,7 +357,7 @@ public class Flow implements Serializable {
 
         // If, by chance, the given node has no child, then its a leaf
         if(node.getChildren().size() == 0) {
-            //System.out.println("On flow " + this.name + " leaving on node " + ((Device) node.getNode()).getName());
+            //this.printer.printIfLoggingIsEnabled("On flow " + this.name + " leaving on node " + ((Device) node.getNode()).getName());
             return flowFrag;
         }
 
@@ -366,7 +367,7 @@ public class Flow implements Serializable {
             // If child is a device, then its a leaf. Do nothing
             /*
             if(auxN.getNode() instanceof Device) {
-                System.out.println("On flow " + this.name + " leaving on node " + ((Device) auxN.getNode()).getName());
+                this.printer.printIfLoggingIsEnabled("On flow " + this.name + " leaving on node " + ((Device) auxN.getNode()).getName());
                 continue;
             }
             */
@@ -462,7 +463,7 @@ public class Flow implements Serializable {
                 //Adding fragment to the fragment list and to the switch's fragment list
                 auxN.addFlowFragment(flowFrag);
                 ((TSNSwitch)auxN.getNode()).addToFragmentList(flowFrag);
-                // System.out.println("Adding fragment to switch " + ((TSNSwitch)auxN.getNode()).getName() + " has " + auxN.getChildren().size() + " children");
+                // this.printer.printIfLoggingIsEnabled("Adding fragment to switch " + ((TSNSwitch)auxN.getNode()).getName() + " has " + auxN.getChildren().size() + " children");
 
             }
 
@@ -475,7 +476,7 @@ public class Flow implements Serializable {
             }
 
             // Recursively repeats process to children
-            // System.out.println("Calling node: " + (auxN.getNode() instanceof Device ? ((Device) auxN.getNode()).getName() : ((TSNSwitch) auxN.getNode()).getName()));
+            // this.printer.printIfLoggingIsEnabled("Calling node: " + (auxN.getNode() instanceof Device ? ((Device) auxN.getNode()).getName() : ((TSNSwitch) auxN.getNode()).getName()));
             FlowFragment nextFragment = this.nodeToZ3(ctx, auxN, flowFrag);
 
 
@@ -566,7 +567,7 @@ public class Flow implements Serializable {
             for(FlowFragment childFrag : frag.getNextFragments()){
 
                 for (int i = 0; i < this.numOfPacketsSentInFragment; i++){
-//                    System.out.println("On fragment " + frag.getName() + " making " + frag.getPort().scheduledTime(ctx, i, frag) + " = " + childFrag.getPort().departureTime(ctx, i, childFrag) + " that leads to " + childFrag.getPort().scheduledTime(ctx, i, childFrag)
+//                    this.printer.printIfLoggingIsEnabled("On fragment " + frag.getName() + " making " + frag.getPort().scheduledTime(ctx, i, frag) + " = " + childFrag.getPort().departureTime(ctx, i, childFrag) + " that leads to " + childFrag.getPort().scheduledTime(ctx, i, childFrag)
 //                            + " on cycle of port " + frag.getPort().getCycle().getFirstCycleStartZ3());
                     solver.add(
                             ctx.mkEq(
@@ -616,13 +617,13 @@ public class Flow implements Serializable {
         double firstPortCycleDuration = getFirstHopCycleDuration();
 
         if(this.getPacketSize()/firstPortSpeed >= this.flowFirstSendingTime && (this.flowFirstSendingTime>=0)){
-            System.out.println("Alert: First packet of flow " + this.name + " must have enough time to leave source. Making first sending time a variable.");
+            this.printer.printIfLoggingIsEnabled("Alert: First packet of flow " + this.name + " must have enough time to leave source. Making first sending time a variable.");
             this.flowFirstSendingTime = -1;
         }
 
 
         if(this.flowFirstSendingTime >= 0){
-            System.out.println("Alert: " + this.name + " Assert first sending time to " + this.flowFirstSendingTime);
+            this.printer.printIfLoggingIsEnabled("Alert: " + this.name + " Assert first sending time to " + this.flowFirstSendingTime);
 
             solver.add(
                 ctx.mkEq(
@@ -635,7 +636,7 @@ public class Flow implements Serializable {
         }
 
         /**/
-        //System.out.println(
+        //this.printer.printIfLoggingIsEnabled(
         solver.add(
             ctx.mkGe(
                 this.flowFirstSendingTimeZ3,
@@ -646,7 +647,7 @@ public class Flow implements Serializable {
         /**/
 
         /**/
-        //System.out.println(
+        //this.printer.printIfLoggingIsEnabled(
         solver.add(
             ctx.mkLe(
                 this.flowFirstSendingTimeZ3,
@@ -833,7 +834,7 @@ public class Flow implements Serializable {
         			port = swt.getPortOf(((TSNSwitch) child.getNode()).getName());  
     				this.setUpPeriods(child);
     			} else {
-    				System.out.println("Unrecognized node");
+    				this.printer.printIfLoggingIsEnabled("Unrecognized node");
     				return;
     			}
     			
@@ -1230,7 +1231,7 @@ public class Flow implements Serializable {
         
         double firstTransmissionDelay = ((double)this.getPacketSize())/this.getFirstPortSpeed();
         
-        //System.out.println( this.name + " average latency for " + dev.getName() + " of " + this.getAverageLatency());
+        //this.printer.printIfLoggingIsEnabled( this.name + " average latency for " + dev.getName() + " of " + this.getAverageLatency());
         
         for(int i = 0; i < this.getNumOfPacketsSent(); i++) {
             averageJitter += 
@@ -1600,11 +1601,11 @@ public class Flow implements Serializable {
 					this.numOfPacketsSentInFragment = frag.getNumOfPacketsSent();
                 }
 				
-				// System.out.println("On node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");			
-				// System.out.println("Node has: " + node.getFlowFragments().size() + " frags");
-				// System.out.println("Node has: " + node.getChildren().size() + " children");
+				// this.printer.printIfLoggingIsEnabled("On node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");			
+				// this.printer.printIfLoggingIsEnabled("Node has: " + node.getFlowFragments().size() + " frags");
+				// this.printer.printIfLoggingIsEnabled("Node has: " + node.getChildren().size() + " children");
 				// for(PathNode n : node.getChildren()) {
-				// 		System.out.println("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
+				// 		this.printer.printIfLoggingIsEnabled("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
 				// }
 				
 				this.setNumberOfPacketsSent(node.getChildren().get(index));
@@ -1879,6 +1880,16 @@ public class Flow implements Serializable {
 	
 	public String getStartDeviceName() {
 		return this.startDevice.getName();
+	}
+
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
 	}
 
 }

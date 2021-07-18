@@ -25,6 +25,7 @@ import com.microsoft.z3.*;
 import com.tsnsched.core.components.Cycle;
 import com.tsnsched.core.components.FlowFragment;
 import com.tsnsched.core.components.Port;
+import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.network.*;
 import com.tsnsched.core.nodes.*;
 import com.tsnsched.core.schedule_generator.*;
@@ -49,6 +50,8 @@ public class TSNSwitch extends Switch implements Serializable {
     private ArrayList<Port> ports;
     private double cycleDurationUpperBound;
     private double cycleDurationLowerBound;
+    
+    private Printer printer;
     
     private double gbSize;
     private transient RealExpr gbSizeZ3; // Size of the guardBand
@@ -367,16 +370,16 @@ public class TSNSwitch extends Switch implements Serializable {
         int index = this.connectsTo.indexOf(flowFrag.getNextHop());
         
         /*
-        System.out.println("Current node: " + flowFrag.getNodeName());
-        System.out.println("Next hop: " + flowFrag.getNextHop());
-        System.out.println("Index of port: " + index);	
+        this.printer.printIfLoggingIsEnabled("Current node: " + flowFrag.getNodeName());
+        this.printer.printIfLoggingIsEnabled("Next hop: " + flowFrag.getNextHop());
+        this.printer.printIfLoggingIsEnabled("Index of port: " + index);	
         System.out.print("Connects to: ");
         for(String connect : this.connectsTo) {
             System.out.print(connect + ", ");
         }
         
-        System.out.println("");
-        System.out.println("------------------");
+        this.printer.printIfLoggingIsEnabled("");
+        this.printer.printIfLoggingIsEnabled("------------------");
         
         /**/
         
@@ -395,7 +398,7 @@ public class TSNSwitch extends Switch implements Serializable {
     public Port getPortOf(String name) {
         int index = this.connectsTo.indexOf(name);
         
-        //System.out.println("On switch " + this.getName() + " looking for port to " + name);
+        //this.printer.printIfLoggingIsEnabled("On switch " + this.getName() + " looking for port to " + name);
          
         Port port = this.ports.get(index);
         
@@ -544,13 +547,13 @@ public class TSNSwitch extends Switch implements Serializable {
     	
     	if(!ports.isEmpty()) {
     		for(Port port : this.ports) {
-    			//System.out.println(port.getIsModifiedOrCreated());
+    			//this.printer.printIfLoggingIsEnabled(port.getIsModifiedOrCreated());
     			if(!port.getIsModifiedOrCreated()) {
-    				// System.out.println("Loading port " + port.getName());
+    				// this.printer.printIfLoggingIsEnabled("Loading port " + port.getName());
     				port.loadZ3(ctx, solver);    		    			    				
     			} else {
     				;
-    				//System.out.println("Not loading port " + port.getName());
+    				//this.printer.printIfLoggingIsEnabled("Not loading port " + port.getName());
     			}
     		}
     	}
@@ -642,6 +645,14 @@ public class TSNSwitch extends Switch implements Serializable {
 
 	public void setScheduleType(ScheduleType scheduleType) {
 		this.scheduleType = scheduleType;
+	}
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
 	}
     
 }

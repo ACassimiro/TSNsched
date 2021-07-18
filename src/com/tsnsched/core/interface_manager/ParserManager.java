@@ -11,7 +11,7 @@ import com.tsnsched.core.network.Network;
 public class ParserManager {
 	private String inputFile = "";
 	private String fileContent = "";
-	
+	private Printer printer;
 	
 	public ParserManager() {
 		;
@@ -37,21 +37,23 @@ public class ParserManager {
 		
 		switch(this.getFirstNonWhitespace(content)) {
 			case '<':
-				System.out.println("Input is XML");
+				this.printer.printIfLoggingIsEnabled("Input is XML");
 				parser = new XMLParser(this.inputFile);
 				break;
 			case '{':
-				System.out.println("Input is JSON");
+				this.printer.printIfLoggingIsEnabled("Input is JSON");
 				parser = new JSONParser(this.inputFile);
 				break;
 			case '[':
-				System.out.println("Input is JSON");
+				this.printer.printIfLoggingIsEnabled("Input is JSON");
 				parser = new JSONParser(this.inputFile);
 				break;
 			default:
-				System.out.println("Input not recognized");
+				this.printer.printIfLoggingIsEnabled("Input not recognized");
 				break;		
 		}
+		
+		parser.setPrinter(this.printer);
 		
 		return parser;
 	}
@@ -63,7 +65,8 @@ public class ParserManager {
 			return net;
 		}
 		
-		System.out.println("Trying to detect type of input.");
+		this.printer.printIfLoggingIsEnabled("Trying to detect type of input.");
+		
 		List<String> contentListOfLines; 
 		try {
 			contentListOfLines = Files.readAllLines(Paths.get(this.inputFile), Charset.forName("UTF-8"));
@@ -106,5 +109,13 @@ public class ParserManager {
 		
 		parserManager.parseFromFile();
 		
+	}
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
 	}
 }

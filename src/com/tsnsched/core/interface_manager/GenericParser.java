@@ -6,4 +6,5 @@ public interface GenericParser {
 
 	public Network parseInput();
 	public Network parseInputContent(String content);
+	public void setPrinter(Printer printer);
 }

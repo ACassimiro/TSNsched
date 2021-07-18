@@ -30,7 +30,10 @@ public class JSONParser implements GenericParser {
 	String inputFilePath = "";
 	String outputFilePath = "";
 	String fileContent = "";
+
+	private Printer printer;
 	
+
 
 	public JSONParser() {
 		;
@@ -150,9 +153,7 @@ public class JSONParser implements GenericParser {
 	    		    			
 
 	    		    			if(portObject.has("name")) {
-	    		    				System.out.println(port.getName());
-	    		    				port.setName(portObject.get("name").getAsString());   	
-	    		    				System.out.println(port.getName());	    				
+	    		    				port.setName(portObject.get("name").getAsString());   		    				
 	    		    			}
 	    		    			
 	    		    			if(portObject.has("portSpeed")) {
@@ -176,7 +177,7 @@ public class JSONParser implements GenericParser {
 	    		    			
 	    		    			if(portObject.has("guardBandSize")) {
 	    		    				port.setGbSize(
-    		    						this.convertSizeUnits(
+    		    						this.convertTimeUnits(
 		    								portObject.get("guardBandSize").getAsDouble(),
 		    								(portObject.has("guardBandSizeUnit") ? portObject.get("guardBandSizeUnit").getAsString() : "")
 	    								)
@@ -205,7 +206,7 @@ public class JSONParser implements GenericParser {
 	    		    		        		port.setUseMicroCycles(true);
 	    		    						break;
 	    		    					default:
-	    		    						System.out.println("[ALERT] Schedule type for port " + portObject.get("name").getAsString() + " not recognized");
+	    		    						this.printer.printIfLoggingIsEnabled("[ALERT] Schedule type for port " + portObject.get("name").getAsString() + " not recognized");
 	    		    				}
 	    		    			}
 	    		    				    		    			
@@ -274,7 +275,7 @@ public class JSONParser implements GenericParser {
 	    			
 	    			if(switchObject.has("defaultGuardBandSize")) {
 	    				swt.setGbSize(
-    						this.convertSizeUnits(
+    						this.convertTimeUnits(
 								switchObject.get("defaultGuardBandSize").getAsDouble(),
 								(switchObject.has("defaultGuardBandSizeUnit") ? switchObject.get("defaultGuardBandSizeUnit").getAsString() : "")
 							)
@@ -301,7 +302,7 @@ public class JSONParser implements GenericParser {
 	    						swt.setScheduleType(ScheduleType.MICROCYCLES);
 	    						break;
 	    					default:
-	    						System.out.println("[ALERT] Schedule type for switch " + switchObject.get("name").getAsString() + " not recognized");
+	    						this.printer.printIfLoggingIsEnabled("[ALERT] Schedule type for switch " + switchObject.get("name").getAsString() + " not recognized");
 	    				}
 	    			}
 
@@ -449,7 +450,6 @@ public class JSONParser implements GenericParser {
 
 	public Network parseInput() {
 
-		System.out.println("Trying to deserialize");
 		List<String> contentListOfLines; 
 		try {
 			contentListOfLines = Files.readAllLines(Paths.get(this.inputFilePath), Charset.forName("UTF-8"));
@@ -482,9 +482,7 @@ public class JSONParser implements GenericParser {
 		for(Flow flw : this.getListOfFlows(networkJson, net)) {
 			net.addFlow(flw);
 		}
-		
-		System.out.println("Deserialization succedeed");
-		
+				
 		return net;
 		
 	}
@@ -515,7 +513,7 @@ public class JSONParser implements GenericParser {
 			
 		} catch (Exception e) {
 
-			System.out.println("WARNING: Problem with the value unit \"" + sizeUnit + "/" + timeUnit + "\". Using default unit.");
+			this.printer.printIfLoggingIsEnabled("WARNING: Problem with the value unit \"" + sizeUnit + "/" + timeUnit + "\". Using default unit.");
 			
 		}
 		
@@ -585,7 +583,7 @@ public class JSONParser implements GenericParser {
 			
 		} catch (Exception e) {
 
-			System.out.println("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
+			this.printer.printIfLoggingIsEnabled("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
 			
 		}
 		
@@ -652,7 +650,7 @@ public class JSONParser implements GenericParser {
 			
 		} catch (Exception e) {
 
-			System.out.println("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
+			this.printer.printIfLoggingIsEnabled("WARNING: Problem with the value unit \"" + stringValue + "\". Using default unit.");
 			
 		}
 		
@@ -847,5 +845,12 @@ public class JSONParser implements GenericParser {
 		
 	}
 		
-		
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+	}
 }

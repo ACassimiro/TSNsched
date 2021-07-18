@@ -48,12 +48,9 @@ public class Main {
 			
 		} else {
 			
-			ParserManager parser = new ParserManager(args[0]);
-			Network net = parser.parseFromFile();
-			
 			ScheduleGenerator gen = new ScheduleGenerator();
-			gen.setParserManager(parser);		
-			gen.generateSchedule(net);
+			gen.setParameters(args);
+			gen.generateSchedule(args[0]);
 			
 		}
     

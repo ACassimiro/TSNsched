@@ -41,6 +41,10 @@ import com.tsnsched.core.nodes.*;
 
 public class Printer {
 
+	private Boolean enableConsoleOutput;
+	private Boolean enableLoggerFile;
+	
+
 	public Printer () {
 		
 	}
@@ -96,7 +100,7 @@ public class Printer {
        IntExpr indexZ3 = null;
     
        if((pathNode.getNode() instanceof Device) && (pathNode.getParent() != null)) {
-           out.println("    [END OF BRANCH]");
+           this.logIfLoggingIsEnabled(out , "    [END OF BRANCH]");
        }
        
        /*
@@ -114,19 +118,19 @@ public class Printer {
             for(FlowFragment ffrag : child.getFlowFragments()) {
             	
             	/*
-            	System.out.println("Fragment " + ffrag.getName() + " : " + 
+            	this.printIfLoggingIsEnabled("Fragment " + ffrag.getName() + " : " + 
             						((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getName()
     			);
             	*/
             	int prt = Integer.parseInt(model.eval(ffrag.getFragmentPriorityZ3(), false).toString());
             	
-                out.println("    Fragment name: " + ffrag.getName());
-                out.println("        Fragment node: " + ffrag.getNodeName());
-                out.println("        Fragment next hop: " + ffrag.getNextHop());
-                out.println("        Fragment priority: " + model.eval(ffrag.getFragmentPriorityZ3(), false));
+                this.logIfLoggingIsEnabled(out ,"    Fragment name: " + ffrag.getName());
+                this.logIfLoggingIsEnabled(out , "        Fragment node: " + ffrag.getNodeName());
+                this.logIfLoggingIsEnabled(out, "        Fragment next hop: " + ffrag.getNextHop());
+                this.logIfLoggingIsEnabled(out, "        Fragment priority: " + model.eval(ffrag.getFragmentPriorityZ3(), false));
                 for(int index = 0; index < ((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getNumOfSlots(prt); index++) {
              	   indexZ3 = ctx.mkInt(index);
-             	   out.println("        Fragment slot start " + index + ": " 
+             	   this.logIfLoggingIsEnabled(out, "        Fragment slot start " + index + ": " 
                             + this.stringToDouble(
                                     model.eval(((TSNSwitch) child.getNode())
                                            .getPortOf(ffrag.getNextHop())
@@ -140,7 +144,7 @@ public class Printer {
                                    .slotStartZ3(ctx, ffrag.getFragmentPriorityZ3(), indexZ3) 
                                    , false).toString()
              			   );
-             	   out.println("        Fragment slot duration " + index + " : " 
+             	   this.logIfLoggingIsEnabled(out, "        Fragment slot duration " + index + " : " 
                              + this.stringToDouble(
                                  model.eval(((TSNSwitch) child.getNode())
                                             .getPortOf(ffrag.getNextHop())
@@ -156,15 +160,15 @@ public class Printer {
          
                 }
                 
-                out.println("        Fragment times-");
+                this.logIfLoggingIsEnabled(out, "        Fragment times-");
                 ffrag.getParent().addToTotalNumOfPackets(ffrag.getNumOfPacketsSent());
                 
                 for(int i = 0; i < ffrag.getParent().getNumOfPacketsSent(); i++) {
              	   if(i < ffrag.getNumOfPacketsSent()) {
-	                	   out.println("          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
-	                	   out.println("          (" + Integer.toString(i) + ") Fragment arrival time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).arrivalTime(ctx, i, ffrag) , false).toString()));
-	                       out.println("          (" + Integer.toString(i) + ") Fragment scheduled time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) , false).toString()));
-	                       out.println("          ----------------------------");
+	                	   this.logIfLoggingIsEnabled(out, "          (" + Integer.toString(i) + ") Fragment departure time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).departureTime(ctx, i, ffrag) , false).toString()));
+	                	   this.logIfLoggingIsEnabled(out, "          (" + Integer.toString(i) + ") Fragment arrival time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).arrivalTime(ctx, i, ffrag) , false).toString()));
+	                       this.logIfLoggingIsEnabled(out, "          (" + Integer.toString(i) + ") Fragment scheduled time: " + this.stringToDouble(model.eval(((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) , false).toString()));
+	                       this.logIfLoggingIsEnabled(out, "          ----------------------------");
              	   }
                     
              	   ffrag.setFragmentPriority(
@@ -190,7 +194,7 @@ public class Printer {
                     );
                     
                     /*
-                    System.out.println(
+                    this.printIfLoggingIsEnabled(
                 		((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) 
                 		+
                 		" : "
@@ -247,32 +251,37 @@ public class Printer {
 	
    
    public void generateLog(String logName, Network net, Context ctx, Model model) {
-	   System.out.println("- Model generated successfully.");
+	   this.printIfLoggingIsEnabled("- Model generated successfully.");
        
        try {
-           PrintWriter out = new PrintWriter("log.txt");
+           PrintWriter out = null; 
            
-           out.println("SCHEDULER LOG:\n\n");
+           if(this.enableLoggerFile) {        	   
+        	   out = new PrintWriter("log.txt");
+           }
+           
+           
+           this.logIfLoggingIsEnabled(out, "SCHEDULER LOG:\n\n");
            	                   
-           out.println("SWITCH LIST:");
+           this.logIfLoggingIsEnabled(out, "SWITCH LIST:");
            
            // For every switch in the network, store its information in the log
            for(Switch auxSwt : net.getSwitches()) {
-               out.println("  Switch name: " + auxSwt.getName());
-               out.println("    Max packet size: " + auxSwt.getMaxPacketSize());
-               out.println("    Port speed: " + auxSwt.getPortSpeed());
-               out.println("    Time to Travel: " + auxSwt.getTimeToTravel());
-               out.println("    Transmission time: " + auxSwt.getTransmissionTime());
-               // out.println("    Cycle information -");
-               // out.println("        First cycle start: " + model.eval(((TSNSwitch)auxSwt).getCycleStart(), false));
-               // out.println("        Cycle duration: " + model.eval(((TSNSwitch)auxSwt).getCycleDuration(), false));
-               out.println("");
+               this.logIfLoggingIsEnabled(out, "  Switch name: " + auxSwt.getName());
+               this.logIfLoggingIsEnabled(out, "    Max packet size: " + auxSwt.getMaxPacketSize());
+               this.logIfLoggingIsEnabled(out, "    Port speed: " + auxSwt.getPortSpeed());
+               this.logIfLoggingIsEnabled(out, "    Time to Travel: " + auxSwt.getTimeToTravel());
+               this.logIfLoggingIsEnabled(out, "    Transmission time: " + auxSwt.getTransmissionTime());
+               // this.logIfLoggingIsEnabled(out, "    Cycle information -");
+               // this.logIfLoggingIsEnabled(out, "        First cycle start: " + model.eval(((TSNSwitch)auxSwt).getCycleStart(), false));
+               // this.logIfLoggingIsEnabled(out, "        Cycle duration: " + model.eval(((TSNSwitch)auxSwt).getCycleDuration(), false));
+               this.logIfLoggingIsEnabled(out, "");
                /*
                for (Port port : ((TSNSwitch)auxSwt).getPorts()) {
-                   out.println("        Port name (Virtual Index): " + port.getName());
-                   out.println("        First cycle start: " + model.eval(port.getCycle().getFirstCycleStartZ3(), false));
-                   out.println("        Cycle duration: " + model.eval(port.getCycle().getCycleDurationZ3(), false));
-                   out.println(""); 
+                   this.logIfLoggingIsEnabled(out, "        Port name (Virtual Index): " + port.getName());
+                   this.logIfLoggingIsEnabled(out, "        First cycle start: " + model.eval(port.getCycle().getFirstCycleStartZ3(), false));
+                   this.logIfLoggingIsEnabled(out, "        Cycle duration: " + model.eval(port.getCycle().getCycleDurationZ3(), false));
+                   this.logIfLoggingIsEnabled(out, ""); 
                }
                */
                
@@ -301,15 +310,15 @@ public class Printer {
                
            }
            
-           out.println("");
+           this.logIfLoggingIsEnabled(out, "");
 
-           out.println("FLOW LIST:");
+           this.logIfLoggingIsEnabled(out, "FLOW LIST:");
            //For every flow in the network, store its information in the log
            for(Flow f : net.getFlows()) {
         	   /*
-        	   System.out.println(f.getName());
+        	   this.printIfLoggingIsEnabled(f.getName());
         	   if(f.getName().equals("flow1")) {
-        		   System.out.println(
+        		   this.printIfLoggingIsEnabled(
     				   model.eval(
 						   f.getPathTree().getRoot().getChildren().get(0).getFlowFragments().get(0).getPort().scheduledTime(ctx,
 								   0, f.getPathTree().getRoot().getChildren().get(0).getFlowFragments().get(0))
@@ -319,14 +328,14 @@ public class Printer {
         	   }
         	   */
         	   
-               out.println("  Flow name: " + f.getName());
-               //out.println("    Flow priority:" + model.eval(f.getFlowPriority(), false));
-               //out.println("    Flow latency:" + model.eval(f.getFlowPriority(), false));
-               //out.println("    Flow latency:" + model.eval(f.getJitterZ3(), false));
-               out.println("    Start first t1: " + model.eval(f.getFlowFirstSendingTimeZ3(), false));
+               this.logIfLoggingIsEnabled(out, "  Flow name: " + f.getName());
+               //this.logIfLoggingIsEnabled(out, "    Flow priority:" + model.eval(f.getFlowPriority(), false));
+               //this.logIfLoggingIsEnabled(out, "    Flow latency:" + model.eval(f.getFlowPriority(), false));
+               //this.logIfLoggingIsEnabled(out, "    Flow latency:" + model.eval(f.getJitterZ3(), false));
+               this.logIfLoggingIsEnabled(out, "    Start first t1: " + model.eval(f.getFlowFirstSendingTimeZ3(), false));
                f.setFlowFirstSendingTime(this.stringToDouble(model.eval(f.getFlowFirstSendingTimeZ3(), false).toString()));
-               out.println("    Start HC: " + f.getFlowMaximumLatency());
-               out.println("    Start packet periodicity: " + model.eval(f.getFlowSendingPeriodicityZ3(), false));
+               this.logIfLoggingIsEnabled(out, "    Start HC: " + f.getFlowMaximumLatency());
+               this.logIfLoggingIsEnabled(out, "    Start packet periodicity: " + model.eval(f.getFlowSendingPeriodicityZ3(), false));
                
                
                // IF FLOW IS UNICAST
@@ -359,27 +368,27 @@ public class Printer {
                    pathTree = f.getPathTree();
                    pathNode = pathTree.getRoot();
                    
-                   out.println("    Flow type: Multicast");
+                   this.logIfLoggingIsEnabled(out, "    Flow type: Multicast");
                    ArrayList<PathNode> auxNodes;
                    ArrayList<FlowFragment> auxFlowFragments;
                    int auxCount = 0;
                    
-                   out.print("    List of leaves: ");
+                   this.logInLineIfLoggingIsEnabled(out, "    List of leaves: ");
                    for(PathNode node : f.getPathTree().getLeaves()) {
-                       out.print(((Device) node.getNode()).getName() + ", ");                                           
+                       this.logInLineIfLoggingIsEnabled(out, ((Device) node.getNode()).getName() + ", ");                                           
                    }
-                   out.println("");
+                   this.logIfLoggingIsEnabled(out, "");
                    for(PathNode node : f.getPathTree().getLeaves()) {
                        auxNodes = f.getNodesFromRootToNode((Device) node.getNode());
                        auxFlowFragments = f.getFlowFromRootToNode((Device) node.getNode());
                        
-                       out.print("    Path to " + ((Device) node.getNode()).getName() + ": ");
+                       this.logInLineIfLoggingIsEnabled(out, "    Path to " + ((Device) node.getNode()).getName() + ": ");
                        auxCount = 0;
                        for(PathNode auxNode : auxNodes) {
                            if(auxNode.getNode() instanceof Device) {
-                               out.print(((Device) auxNode.getNode()).getName() + ", ");                                           
+                               this.logInLineIfLoggingIsEnabled(out, ((Device) auxNode.getNode()).getName() + ", ");                                           
                            } else if (auxNode.getNode() instanceof TSNSwitch) {
-                               out.print(
+                               this.logInLineIfLoggingIsEnabled(out, 
                                    ((TSNSwitch) auxNode.getNode()).getName() + 
                                    "(" + 
                                    auxFlowFragments.get(auxCount).getName() +
@@ -388,19 +397,21 @@ public class Printer {
                            }
                            
                        }
-                       out.println("");
+                       this.logIfLoggingIsEnabled(out, "");
                    }
-                   out.println("");
+                   this.logIfLoggingIsEnabled(out, "");
                    
                    //Start the data storing and log printing process from the root
                    this.writePathTree(pathNode, model, ctx, out);                                
                }
                
-               out.println("");
+               this.logIfLoggingIsEnabled(out, "");
                
            }
 
-           out.close();
+           if(this.enableLoggerFile) {
+        	   out.close();        	   
+           }
            
        } catch (FileNotFoundException e) {
            e.printStackTrace();
@@ -414,7 +425,7 @@ public class Printer {
        IntExpr indexZ3 = null;
     
        if((pathNode.getNode() instanceof Device) && (pathNode.getParent() != null)) {
-           System.out.println("    [END OF BRANCH]");
+    	   this.printIfLoggingIsEnabled("    [END OF BRANCH]");
        }
        
        /*
@@ -431,7 +442,7 @@ public class Printer {
             
             for(FlowFragment ffrag : child.getFlowFragments()) {
             	
-            	System.out.println("Fragment " + ffrag.getName() + " : " + 
+            	this.printIfLoggingIsEnabled("Fragment " + ffrag.getName() + " : " + 
             						((TSNSwitch) child.getNode()).getPortOf(ffrag.getNextHop()).getCycle().getName()
     			);
                          
@@ -439,7 +450,7 @@ public class Printer {
              	   ;
                     
                     /*
-                    System.out.println(
+                    this.printIfLoggingIsEnabled(
                 		((TSNSwitch) child.getNode()).scheduledTime(ctx, i, ffrag) 
                 		+
                 		" : "
@@ -481,8 +492,8 @@ public class Printer {
 		int numOfFramesScheduled = 0;
 		double overallAverageJitter = 0;
 		double overallAverageLatency = 0;
-		System.out.println("");
-		System.out.println("");
+		this.printIfLoggingIsEnabled("");
+		this.printIfLoggingIsEnabled("");
 		int auxCount = 0;
 		ArrayList<PathNode> auxNodes;
 		ArrayList<FlowFragment> auxFlowFragments;
@@ -505,35 +516,35 @@ public class Printer {
 			if(flagContinueLoop == 1) {
 				continue;
 			}
-			System.out.println("\n\n>>>> INFORMATION OF SWITCH: " + auxSwt.getName() + " <<<<");
-			System.out.println("    Port list - ");
+			this.printIfLoggingIsEnabled("\n\n>>>> INFORMATION OF SWITCH: " + auxSwt.getName() + " <<<<");
+			this.printIfLoggingIsEnabled("    Port list - ");
 			for(Port port : auxSwt.getPorts()) {
 				if(port.getCycle().getSlotsUsed().size() == 0) {
 					continue;
 				}
-				System.out.println("        => Port name:       " + port.getName());
-				System.out.println("        Connects to:     " + port.getConnectsTo());
+				this.printIfLoggingIsEnabled("        => Port name:       " + port.getName());
+				this.printIfLoggingIsEnabled("        Connects to:     " + port.getConnectsTo());
 
-				System.out.println("        Cycle start:    " + port.getCycle().getCycleStart());
-				System.out.println("        Cycle duration: " + port.getCycle().getCycleDuration());
-				System.out.print("        Fragments:       ");
+				this.printIfLoggingIsEnabled("        Cycle start:    " + port.getCycle().getCycleStart());
+				this.printIfLoggingIsEnabled("        Cycle duration: " + port.getCycle().getCycleDuration());
+				this.printInLineIfLoggingIsEnabled("        Fragments:       ");
 				for(FlowFragment ffrag : port.getFlowFragments()) {
-					System.out.print(ffrag.getName() + ", ");
+					this.printInLineIfLoggingIsEnabled(ffrag.getName() + ", ");
 				}
-				System.out.println();
+				this.printIfLoggingIsEnabled("");
 
 				auxCycle = port.getCycle();
-				//System.out.println("        Slots per prt:   " +  auxCycle.getNumOfSlots());
+				//this.printIfLoggingIsEnabled("        Slots per prt:   " +  auxCycle.getNumOfSlots());
 				for(int i = 0; i < auxCycle.getSlotsUsed().size(); i++) {
-					System.out.println("        Priority number: " + auxCycle.getSlotsUsed().get(i));
-					for(int j = 0; j < auxCycle.getNumOfSlots(auxCycle.getSlotsUsed().get(i)); j++) {						System.out.println("          Index " + j + " Slot start:      " + auxCycle.getSlotStart(auxCycle.getSlotsUsed().get(i), j));
-						System.out.println("          Index " + j + " Slot duration:   " + auxCycle.getSlotDuration(auxCycle.getSlotsUsed().get(i), j));
-					}					System.out.println("        ------------------------");
+					this.printIfLoggingIsEnabled("        Priority number: " + auxCycle.getSlotsUsed().get(i));
+					for(int j = 0; j < auxCycle.getNumOfSlots(auxCycle.getSlotsUsed().get(i)); j++) {						this.printIfLoggingIsEnabled("          Index " + j + " Slot start:      " + auxCycle.getSlotStart(auxCycle.getSlotsUsed().get(i), j));
+						this.printIfLoggingIsEnabled("          Index " + j + " Slot duration:   " + auxCycle.getSlotDuration(auxCycle.getSlotsUsed().get(i), j));
+					}					this.printIfLoggingIsEnabled("        ------------------------");
 				}
 			}
 		}
 
-		System.out.println("");
+		this.printIfLoggingIsEnabled("");
 
 		double sumOfAvgLatencies = 0;
 		double sumOfLatencies;
@@ -541,78 +552,118 @@ public class Printer {
 		for(Flow flw : net.getFlows()){
 
 
-			System.out.println("\n\n>>>> INFORMATION OF FLOW" + flowCounter++ + " <<<<\n");
+			this.printIfLoggingIsEnabled("\n\n>>>> INFORMATION OF FLOW" + flowCounter++ + " <<<<\n");
 
-			System.out.println("    Total number of packets scheduled: " + flw.getTotalNumOfPackets());
+			this.printIfLoggingIsEnabled("    Total number of packets scheduled: " + flw.getTotalNumOfPackets());
 			numOfFramesScheduled = numOfFramesScheduled + flw.getTotalNumOfPackets();
-			System.out.println("    Path tree of the flow:");
+			this.printIfLoggingIsEnabled("    Path tree of the flow:");
 			for(PathNode node : flw.getPathTree().getLeaves()) {
 				auxNodes = flw.getNodesFromRootToNode((Device) node.getNode());
 				auxFlowFragments = flw.getFlowFromRootToNode((Device) node.getNode());
-				System.out.print("        Path to " + ((Device) node.getNode()).getName() + ": ");
+				this.printInLineIfLoggingIsEnabled("        Path to " + ((Device) node.getNode()).getName() + ": ");
 				auxCount = 0;
 				for(PathNode auxNode : auxNodes) {
 					if(auxNode.getNode() instanceof Device) {
-						System.out.print(((Device) auxNode.getNode()).getName() + ", ");
+						this.printInLineIfLoggingIsEnabled(((Device) auxNode.getNode()).getName() + ", ");
 					} else if (auxNode.getNode() instanceof TSNSwitch) {
-						System.out.print(((TSNSwitch) auxNode.getNode()).getName() +	"(" + auxFlowFragments.get(auxCount).getName() + "), ");
+						this.printInLineIfLoggingIsEnabled(((TSNSwitch) auxNode.getNode()).getName() +	"(" + auxFlowFragments.get(auxCount).getName() + "), ");
 						auxCount++;
 					}
 				}
-				System.out.println("");
+				this.printInLineIfLoggingIsEnabled("\n");
 			}
 
 
-			System.out.println();
-			System.out.println();
+			this.printIfLoggingIsEnabled("");
+			this.printIfLoggingIsEnabled("");
 			for(PathNode node : flw.getPathTree().getLeaves()) {
 				Device dev = (Device) node.getNode();
 
 				sumOfLatencies = 0;
-				System.out.println("    Packets heading to " + dev.getName() + ":");
+				this.printIfLoggingIsEnabled("    Packets heading to " + dev.getName() + ":");
 
 				for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
-					System.out.println("       Flow firstDepartureTime of packet " + i + ": " + flw.getDepartureTime(dev, 0, i));
-					System.out.println("       Flow lastScheduledTime of packet " + i + ":  " + flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i));
+					this.printIfLoggingIsEnabled("       Flow firstDepartureTime of packet " + i + ": " + flw.getDepartureTime(dev, 0, i));
+					this.printIfLoggingIsEnabled("       Flow lastScheduledTime of packet " + i + ":  " + flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i));
 					sumOfLatencies += flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i) - flw.getDepartureTime(dev, 0, i);
 				}
 
 				sumOfAvgLatencies += sumOfLatencies/flw.getNumOfPacketsSent();
-				System.out.println("       Calculated average Latency: " + (sumOfLatencies/flw.getNumOfPacketsSent()));
-				System.out.println("       Method average Latency: " + flw.getAverageLatencyToDevice(dev));
-				System.out.println("       Method average Jitter: " + flw.getAverageJitterToDevice(dev));
-				System.out.println("");
+				this.printIfLoggingIsEnabled("       Calculated average Latency: " + (sumOfLatencies/flw.getNumOfPacketsSent()));
+				this.printIfLoggingIsEnabled("       Method average Latency: " + flw.getAverageLatencyToDevice(dev));
+				this.printIfLoggingIsEnabled("       Method average Jitter: " + flw.getAverageJitterToDevice(dev));
+				this.printIfLoggingIsEnabled("");
 
 			}
-			System.out.println("    Calculated average latency of all devices: " + sumOfAvgLatencies/flw.getPathTree().getLeaves().size());
+			this.printIfLoggingIsEnabled("    Calculated average latency of all devices: " + sumOfAvgLatencies/flw.getPathTree().getLeaves().size());
 			sumOfAvgLatencies = 0;
 		}
 
-        System.out.println("\n\n\n"
+        this.printIfLoggingIsEnabled("\n\n\n"
 				+ "==================================================\n" 
 				+ "[RESULTS SUMMARY]\n");
 
 		for(Flow f : net.getFlows()){
-			System.out.println(f.getName() + " average latency: " + f.getAverageLatency());
-			System.out.println(f.getName() + " average jitter: " + f.getAverageJitter());
-			//System.out.println(f.getName() + " number of packets sent: " + f.getNumOfPacketsSent());
+			this.printIfLoggingIsEnabled(f.getName() + " average latency: " + f.getAverageLatency());
+			this.printIfLoggingIsEnabled(f.getName() + " average jitter: " + f.getAverageJitter());
+			//this.printIfLoggingIsEnabled(f.getName() + " number of packets sent: " + f.getNumOfPacketsSent());
 			overallAverageLatency += f.getAverageLatency();
 			overallAverageJitter += f.getAverageJitter();
 		}
 
 		overallAverageLatency = overallAverageLatency/net.getFlows().size();
 		overallAverageJitter = overallAverageJitter/net.getFlows().size();
-		System.out.println("\nTotal number of scheduled packets: " +  numOfFramesScheduled);
-		System.out.println("Overall average latency: " + overallAverageLatency);
-		System.out.println("Overall average jitter: " + overallAverageJitter);
-		System.out.println("\n"
+		this.printIfLoggingIsEnabled("\nTotal number of scheduled packets: " +  numOfFramesScheduled);
+		this.printIfLoggingIsEnabled("Overall average latency: " + overallAverageLatency);
+		this.printIfLoggingIsEnabled("Overall average jitter: " + overallAverageJitter);
+		this.printIfLoggingIsEnabled("\n"
 				+ "==================================================\n");
 		/*
-		System.out.println("\nNumber of nodes in the network: 1 ");
-		System.out.println("Number of flows in the network: 5 ");
-		System.out.println("Number of subscribers in the network: 1 ");
-		System.out.println("Overall average latency: " + overallAverageLatency);
-		System.out.println("Overall average jitter: " + overallAverageJitter);
+		this.printIfLoggingIsEnabled("\nNumber of nodes in the network: 1 ");
+		this.printIfLoggingIsEnabled("Number of flows in the network: 5 ");
+		this.printIfLoggingIsEnabled("Number of subscribers in the network: 1 ");
+		this.printIfLoggingIsEnabled("Overall average latency: " + overallAverageLatency);
+		this.printIfLoggingIsEnabled("Overall average jitter: " + overallAverageJitter);
 		*/
    }
+   
+   public void printIfLoggingIsEnabled(String text) {
+	   if(this.enableConsoleOutput) {
+		   System.out.println(text);  
+	   }
+   }
+
+   public void printInLineIfLoggingIsEnabled(String text) {
+	   if(this.enableConsoleOutput) {
+		   System.out.print(text);  
+	   }
+   }
+   
+   public void logIfLoggingIsEnabled(PrintWriter out, String text) {
+	   if(this.enableLoggerFile) {
+		   out.println(text);  
+	   }
+   }
+
+   public void logInLineIfLoggingIsEnabled(PrintWriter out, String text) {
+	   if(this.enableLoggerFile) {
+		   out.println(text);  
+	   }
+   }
+   
+	public Boolean getEnableConsoleOutput() {
+		return enableConsoleOutput;
+	}
+
+	public void setEnableConsoleOutput(Boolean enableConsoleOutput) {
+		this.enableConsoleOutput = enableConsoleOutput;
+	}
+	
+	public Boolean getEnableLoggerFile() {
+		return enableLoggerFile;
+	}
+
+	public void setEnableLoggerFile(Boolean enableLoggerFile) {
+		this.enableLoggerFile = enableLoggerFile;
+	}
 }

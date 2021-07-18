@@ -51,9 +51,13 @@ public class ScheduleGenerator {
 		private Boolean generateSimulationFiles = false;
 		private Boolean serializeNetwork = false;
 		private Boolean loadNetwork = false;
+		private Boolean enableConsoleOutput = false;
+		private Boolean enableLoggerFile = false;
+		private Boolean generateJSONOutput = true;
 		
 		private ParserManager parserManager = null;
-    
+		private Printer printer = new Printer(); // Used to generate output
+		
 	   @SuppressWarnings("serial")
 	   class TestFailedException extends Exception
 	   {
@@ -83,18 +87,13 @@ public class ScheduleGenerator {
 	    * @return  A z3 context
 	    */
 	   public Context createContext() {
-	       System.out.println("findSchedulerModel\n");
            
            try
            {
                 com.microsoft.z3.Global.ToggleWarningMessages(true);
-                System.out.print("Z3 Major Version: ");
-                System.out.println(Version.getMajor());
-                System.out.print("Z3 Full Version: ");
-                System.out.println(Version.getString());
-                System.out.print("Z3 Full Version String: ");
-                System.out.println(Version.getFullVersion());
-                System.out.println("\n");
+            	this.printer.printIfLoggingIsEnabled("Z3 Major Version: " + Version.getMajor());
+            	this.printer.printIfLoggingIsEnabled("Z3 Full Version: " + Version.getString());
+            	this.printer.printIfLoggingIsEnabled("Z3 Full Version String: " + Version.getFullVersion() + "\n");
 
                 
                 { // These examples need model generation turned on.
@@ -106,14 +105,10 @@ public class ScheduleGenerator {
                 }
             } catch (Z3Exception ex)
             {
-                System.out.println("Z3 Managed Exception: " + ex.getMessage());
-                System.out.println("Stack trace: ");
-                ex.printStackTrace(System.out);
+            	this.printer.printIfLoggingIsEnabled("Z3 Managed Exception: " + ex.getMessage());
             } catch (Exception ex)
             {
-                System.out.println("Unknown Exception: " + ex.getMessage());
-                System.out.println("Stack trace: ");
-                ex.printStackTrace(System.out);
+            	this.printer.printIfLoggingIsEnabled("Unknown Exception: " + ex.getMessage());
             } 
            
             return null;
@@ -137,17 +132,13 @@ public class ScheduleGenerator {
                 
                 //Log.close();
                 if (Log.isOpen())
-                    System.out.println("Log is still open!");
+                	this.printer.printIfLoggingIsEnabled("Log is still open!");
             } catch (Z3Exception ex)
             {
-                System.out.println("Z3 Managed Exception: " + ex.getMessage());
-                System.out.println("Stack trace: ");
-                ex.printStackTrace(System.out);
+            	this.printer.printIfLoggingIsEnabled("Z3 Managed Exception: " + ex.getMessage());
             } catch (Exception ex)
             {
-                System.out.println("Unknown Exception: " + ex.getMessage());
-                System.out.println("Stack trace: ");
-                ex.printStackTrace(System.out);
+            	this.printer.printIfLoggingIsEnabled("Unknown Exception: " + ex.getMessage());
             } 
 	   }
 	   
@@ -156,6 +147,7 @@ public class ScheduleGenerator {
 	   
 	   public void configureNetwork(Network net, Context ctx, Solver solver) {
 		   for(Flow flw : net.getFlows()) {
+			   flw.setPrinter(this.printer);
 		   	   flw.modifyIfUsingCustomVal();
 	    	   flw.convertUnicastFlow();
 	    	   flw.setUpPeriods(flw.getPathTree().getRoot());
@@ -163,6 +155,7 @@ public class ScheduleGenerator {
 	       
 	       for(Switch swt : net.getSwitches()) {
 	    	   TSNSwitch auxSwt = (TSNSwitch) swt;
+	    	   auxSwt.setPrinter(this.printer);
 	    	   auxSwt.setUpCycleSize(solver, ctx);
 	       }
 	       
@@ -186,6 +179,19 @@ public class ScheduleGenerator {
 	       net.secureHC(solver, ctx);
 	   }
 	   
+	   public void generateSchedule(String topologyFilePath) 
+	   {
+
+		    this.printer.setEnableConsoleOutput(this.enableConsoleOutput);
+		    this.printer.setEnableLoggerFile(this.enableLoggerFile);
+		   
+		    this.parserManager = new ParserManager(topologyFilePath);
+		    this.parserManager.setPrinter(this.printer);
+			Network net = this.parserManager.parseFromFile();
+			 
+			this.generateSchedule(net);
+		   
+	   }
 	   
 	   /**
 	    * [Method]: generateSchedule
@@ -198,10 +204,14 @@ public class ScheduleGenerator {
 	    */
 	   public void generateSchedule(Network net) 
 	   {
+		   this.printer.setEnableConsoleOutput(this.enableConsoleOutput);
 		   
 		   if(this.parserManager == null) {
 			   this.parserManager = new ParserManager();
+			   this.parserManager.setPrinter(this.printer);
 		   }
+		   
+		   net.setPrinter(printer);
 		   
 			long totalStartTime = System.nanoTime();
 		   
@@ -227,21 +237,21 @@ public class ScheduleGenerator {
 		   long totalTime;
 		   
 		   
-		   System.out.println("==================================================");
-		   System.out.println("[CREATING FRAGMENTS AND SETTING RULES]");
+		   this.printer.printIfLoggingIsEnabled("==================================================");
+		   this.printer.printIfLoggingIsEnabled("[CREATING FRAGMENTS AND SETTING RULES]");
 
 		   startTime = System.nanoTime();
-		   Printer printer = new Printer(); // Used to generate output
+		   
 		   
 	       if(this.loadNetwork) {
-	    	   System.out.println("- Loading network and modifications");
+	    	   this.printer.printIfLoggingIsEnabled("- Loading network and modifications");
 	    	   this.serializeNetwork = false; 
 	    	   net.loadNetwork(ctx, solver);	
 	    	   // Sets up the hard constraint for each individual flow in the network
 	           net.setJitterUpperBoundRangeZ3(ctx, 25);
 	           net.secureHC(solver, ctx);
 	       } else {
-	    	   System.out.println("- Creating network");
+	    	   this.printer.printIfLoggingIsEnabled("- Creating network");
 	    	   this.configureNetwork(net, ctx, solver);	    	   
 	       }
 	       
@@ -278,11 +288,11 @@ public class ScheduleGenerator {
 	       Model model = null;
 	       LocalTime time = LocalTime.now();
 	       
-	       System.out.println("Time taken to set the rules: " + ((float) totalTime)/1000000000 + " seconds\n ");
+	       this.printer.printIfLoggingIsEnabled("Time taken to set the rules: " + ((float) totalTime)/1000000000 + " seconds\n ");
 	       
-	       System.out.println("\n==================================================");
-		   System.out.println("[RULES SET. CHECKING SOLVER]");
-	       System.out.println("Current time of the day: " + time);
+	       this.printer.printIfLoggingIsEnabled("\n==================================================");
+	       this.printer.printIfLoggingIsEnabled("[RULES SET. CHECKING SOLVER]");
+	       this.printer.printIfLoggingIsEnabled("Current time of the day: " + time);
 	       
 	       startTime = System.nanoTime();
 
@@ -291,8 +301,8 @@ public class ScheduleGenerator {
 	       {
 	    	   endTime = System.nanoTime();
 	    	   totalTime = endTime - startTime;
-	    	   System.out.println("Time taken on solving: " + ((float) totalTime)/1000000000 + " seconds ");
-	    	   System.out.println("Number of assertions: " + solver.getAssertions().length);
+	    	   this.printer.printIfLoggingIsEnabled("Time taken on solving: " + ((float) totalTime)/1000000000 + " seconds ");
+	    	   this.printer.printIfLoggingIsEnabled("Number of assertions: " + solver.getAssertions().length);
 	           model = solver.getModel();
 	           
 	           /*
@@ -306,14 +316,14 @@ public class ScheduleGenerator {
 
    		       startTime = System.nanoTime();
 
-   	    	   System.out.println("\n==================================================");
-   	    	   System.out.println("[DATA LOGGING]");
+   		       this.printer.printIfLoggingIsEnabled("\n==================================================");
+   		       this.printer.printIfLoggingIsEnabled("[DATA LOGGING]");
    	    	   
    	   		   Expr v = model.evaluate(switch1CycDuration, false);
 	           if (v != null)
 	           {
-	               
-	        	   printer.generateLog("log.txt", net, ctx, model);   
+
+            	   printer.generateLog("log.txt", net, ctx, model);   	            	   
 	        	   
 	        	   /*
 	        	   for(Flow f : net.getFlows()) {
@@ -333,32 +343,34 @@ public class ScheduleGenerator {
 		           //printer.exportModel(solver);
 	    	       
 	    	       if(this.serializeNetwork) {
-	    	    	   System.out.println("- Serializing network");
+	    	    	   this.printer.printIfLoggingIsEnabled("- Serializing network");
 	    	    	   this.serializeNetwork(net, "network.ser");
 	    	       }
 	       
 	    	       if(this.generateSimulationFiles) {
-	    			   System.out.println("- Generating simulation files");
+	    	    	   this.printer.printIfLoggingIsEnabled("- Generating simulation files");
 	    	    	   generateSimulationFiles(net);			   
 	    		   }
 	    	       
-	    	       this.parserManager.parseOutput(net);
+	    	       if(this.generateJSONOutput) {
+	    	    	   this.parserManager.parseOutput(net);	    	    	   
+	    	       }
 	    	       
 	           } else
 	           {
-	               System.out.println("Failed to evaluate");
+	        	   this.printer.printIfLoggingIsEnabled("Failed to evaluate");
 	           }
 	       } else
 	       {
 	    	   endTime = System.nanoTime();
 	    	   totalTime = endTime - startTime;
-	    	   System.out.println("The specified constraints MIGHT NOT be satisfiable.");
-	    	   System.out.println("Time taken on solving: " + ((float) totalTime)/1000000000 + " seconds\n ");
+	    	   this.printer.printIfLoggingIsEnabled("The specified constraints MIGHT NOT be satisfiable.");
+	    	   this.printer.printIfLoggingIsEnabled("Time taken on solving: " + ((float) totalTime)/1000000000 + " seconds\n ");
 
 		       startTime = System.nanoTime();
 
-               System.out.println("\n==================================================");
-   	    	   System.out.println("[DATA LOGGING]");
+		       this.printer.printIfLoggingIsEnabled("\n==================================================");
+		       this.printer.printIfLoggingIsEnabled("[DATA LOGGING]");
     	       if(this.exportModel) {
     	    	   printer.exportModel(solver);
     	       }	    	   	
@@ -373,14 +385,14 @@ public class ScheduleGenerator {
 		   
     	   endTime = System.nanoTime();
     	   totalTime = endTime - startTime;
-    	   System.out.println("Time taken on logging: " + ((float) totalTime)/1000000000 + " seconds");
+    	   this.printer.printIfLoggingIsEnabled("Time taken on logging: " + ((float) totalTime)/1000000000 + " seconds");
 
-    	   System.out.println("\n==================================================");
+    	   this.printer.printIfLoggingIsEnabled("\n==================================================");
 
 		   long totalEndTime   = System.nanoTime();
 		   long totalExecutionTime = totalEndTime - totalStartTime;
 		
-		   System.out.println("Execution time: " + ((float) totalExecutionTime)/1000000000 + " seconds\n ");
+		   this.printer.printIfLoggingIsEnabled("Execution time: " + ((float) totalExecutionTime)/1000000000 + " seconds\n ");
 	   }
 	   
 	   
@@ -440,7 +452,7 @@ public class ScheduleGenerator {
 	            out.writeObject(net);
 	            out.close();
 	            fileOut.close();
-	    		System.out.println("Serialized data is saved in network.ser");
+	            this.printer.printIfLoggingIsEnabled("Serialized data is saved in network.ser");
 	         } catch (Exception i) {
 	            i.printStackTrace();
 	         }
@@ -508,6 +520,46 @@ public class ScheduleGenerator {
 	   }
 	   
 
+		
+		public void setParameters(String []args) {
+			
+			for(String argument : args) {
+				if(!argument.contains("-")) {
+					continue;
+				}
+				
+				
+				switch(argument) {
+					case "-exportModel":
+						this.exportModel=true;
+						break;
+					case "-generateXMLFiles":
+						this.generateXMLFiles=true;
+						break;
+					case "-generateSimulationFiles":
+						this.generateSimulationFiles=true;
+						break;
+					case "-serializeNetwork":
+						this.serializeNetwork=true;
+						break;
+					case "-loadNetwork":
+						this.loadNetwork=true;
+						break;
+					case "-enableConsoleOutput":
+						this.enableConsoleOutput=true;
+						break;
+					case "-enableLoggerFile":
+						this.enableLoggerFile=true;
+						break;
+					case "-disableJSONOutput":
+						this.generateJSONOutput=false;
+						break;				
+				}
+				
+			}
+			
+		}
+
 		public Boolean getExportModel() {
 			return exportModel;
 		}
@@ -524,17 +576,52 @@ public class ScheduleGenerator {
 			this.generateXMLFiles = generateXMLFiles;
 		}
 
-
-
 		public ParserManager getParserManager() {
 			return parserManager;
 		}
-
-
 
 		public void setParserManager(ParserManager parserManager) {
 			this.parserManager = parserManager;
 		}
 
+		public Boolean getGenerateSimulationFiles() {
+			return generateSimulationFiles;
+		}
 
+		public void setGenerateSimulationFiles(Boolean generateSimulationFiles) {
+			this.generateSimulationFiles = generateSimulationFiles;
+		}
+
+		public Boolean getSerializeNetwork() {
+			return serializeNetwork;
+		}
+
+		public void setSerializeNetwork(Boolean serializeNetwork) {
+			this.serializeNetwork = serializeNetwork;
+		}
+
+		public Boolean getEnableConsoleOutput() {
+			return enableConsoleOutput;
+		}
+
+		public void setEnableConsoleOutput(Boolean enableConsoleOutput) {
+			this.enableConsoleOutput = enableConsoleOutput;
+		}
+
+		public Boolean getGenerateJSONOutput() {
+			return generateJSONOutput;
+		}
+
+		public void setGenerateJSONOutput(Boolean generateJSONOutput) {
+			this.generateJSONOutput = generateJSONOutput;
+		}
+
+		public Boolean getEnableLoggerFile() {
+			return enableLoggerFile;
+		}
+
+		public void setEnableLoggerFile(Boolean enableLoggerFile) {
+			this.enableLoggerFile = enableLoggerFile;
+		}
+		
 }

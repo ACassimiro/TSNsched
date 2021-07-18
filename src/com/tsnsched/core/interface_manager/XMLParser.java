@@ -23,6 +23,8 @@ public class XMLParser implements GenericParser {
 	String outputFilePath = "";
 	String fileContent = "";
 	
+	private Printer printer;
+	
 	public XMLParser() {
 		;
 	}
@@ -34,7 +36,6 @@ public class XMLParser implements GenericParser {
 	public Network parseInput() {
 		Network net = null;
 
-		System.out.println("Trying to deserialize");
 		List<String> contentListOfLines; 
 		try {
 			contentListOfLines = Files.readAllLines(Paths.get(this.inputFilePath), Charset.forName("UTF-8"));
@@ -57,17 +58,15 @@ public class XMLParser implements GenericParser {
 
 		Network net = null;
 		String jsonPrettyPrintString = null;
-		
-		System.out.println(content);		
+			
 		try {
 	        JSONObject json = XML.toJSONObject(content); // converts xml to json
 	        jsonPrettyPrintString = json.toString(4); // json pretty print
 	        jsonPrettyPrintString = jsonPrettyPrintString.replace("{\"network\": ", "");
 	        jsonPrettyPrintString = jsonPrettyPrintString.substring(0,jsonPrettyPrintString.length()-1);  
 
-			System.out.println(jsonPrettyPrintString);
 		} catch(JSONException je) {
-			System.out.println(je.toString());
+			;
 		}
 
 		JSONParser jsonParser = new JSONParser();
@@ -102,4 +101,12 @@ public class XMLParser implements GenericParser {
 		
 	}
 	
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+	}
 }

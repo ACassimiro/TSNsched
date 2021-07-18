@@ -29,6 +29,7 @@ import com.tsnsched.core.components.Flow;
 import com.tsnsched.core.components.FlowFragment;
 import com.tsnsched.core.components.PathNode;
 import com.tsnsched.core.components.Port;
+import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.nodes.*;
 import com.tsnsched.core.nodes.Switch;
 import com.tsnsched.core.nodes.TSNSwitch;
@@ -43,6 +44,8 @@ import com.tsnsched.core.nodes.TSNSwitch;
  */
 public class Network implements Serializable {
 	private Boolean hasBeenModified = false;
+	
+	private Printer printer;
 
 	private static final long serialVersionUID = 1L;
 	String db_name;
@@ -216,7 +219,7 @@ public class Network implements Serializable {
                     for(FlowFragment ffrag : parent.getFlowFragments()) {
                     	for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
 
-                            solver.add( // Maximum Allowed Latency constraint
+                			solver.add( // Maximum Allowed Latency constraint
                                 ctx.mkLe(
                                 		ctx.mkAdd(
                                 				ctx.mkReal(Double.toString(ffrag.getParent().getPacketSize()/
@@ -345,7 +348,6 @@ public class Network implements Serializable {
     	
     }
     
-
     public void preventCollisionOnFirstHop(Solver solver, Context context) {
         List<Flow> listOfFlows = null;
 
@@ -394,7 +396,7 @@ public class Network implements Serializable {
         	}
         	
 
-    		System.out.println("Looking for flows colliding on first hop.");
+    		this.printer.printIfLoggingIsEnabled("Looking for flows colliding on first hop.");
         	
         	for(Flow flowB : listOfFlows) {
         		
@@ -412,7 +414,7 @@ public class Network implements Serializable {
            				flowA.getFlowFirstSendingTime() <= flowB.getFlowFirstSendingTime() + flowB.getPacketSize()/currentPortSpeed 
        				) 
 				) {
-        			System.out.println("ALERT: Collision found on flows with the same source device (" + listOfFlows.get(0).getStartDevice().getName() + "): " + flowA.getName() + ", and " + flowB.getName());
+        			this.printer.printIfLoggingIsEnabled("ALERT: Collision found on flows with the same source device (" + listOfFlows.get(0).getStartDevice().getName() + "): " + flowA.getName() + ", and " + flowB.getName());
         		}
         		
         	}
@@ -460,7 +462,7 @@ public class Network implements Serializable {
                         );
 
                         /* FOR DEBUGGING PURPOSES
-                        System.out.println(
+                        this.printer.printIfLoggingIsEnabled(
                             ctx.mkOr(
                                     ctx.mkGe(
                                             fragA.getPort().departureTime(ctx, i, fragA),
@@ -529,7 +531,7 @@ public class Network implements Serializable {
                         )
                     )
                 );
-                System.out.println(ctx.mkOr(
+                this.printer.printIfLoggingIsEnabled(ctx.mkOr(
                         ctx.mkGe(
                                 flowA.getFlowFirstSendingTimeZ3(),
                                 ctx.mkAdd(
@@ -584,7 +586,6 @@ public class Network implements Serializable {
         }
 
     }
-
     
     /*
      * GETTERS AND SETTERS
@@ -638,7 +639,7 @@ public class Network implements Serializable {
     public void addSwitch (Switch swt) {
         this.switches.add(swt);
     }
-    
+
 	public void addDevice(Device dev) {
 		this.devices.add(dev);
 	}
@@ -656,7 +657,7 @@ public class Network implements Serializable {
 		
 		return null;
 	}
-	
+
 	public Boolean getHasBeenModified() {
 		return hasBeenModified;
 	}
@@ -671,6 +672,13 @@ public class Network implements Serializable {
 		this.jitterUpperBoundRange = jitterUpperBoundRange;
 	}
 
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+	}
 
 
 }
