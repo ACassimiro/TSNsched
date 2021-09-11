@@ -204,7 +204,9 @@ public class ScheduleGenerator {
 	    */
 	   public void generateSchedule(Network net) 
 	   {
+
 		   this.printer.setEnableConsoleOutput(this.enableConsoleOutput);
+		   this.printer.setEnableLoggerFile(this.enableLoggerFile);
 		   
 		   if(this.parserManager == null) {
 			   this.parserManager = new ParserManager();

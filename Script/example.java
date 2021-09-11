@@ -448,6 +448,8 @@ public class GeneratedCode {
 
 
 		ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
+		scheduleGenerator.setEnableLoggerFile(true);
+		scheduleGenerator.setEnableConsoleOutput(true);
 		scheduleGenerator.generateSchedule(net);
 	}
 }

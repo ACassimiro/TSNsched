@@ -48,11 +48,11 @@ else
   java -classpath ".:${THE_CLASSPATH}" "${PROGRAM_NAME::-5}" "$1" > output.txt
 
   rm "GenerateScheduleJSONInput.class"
-  mv output.json "output/output.json"
 fi
 
 mv output.txt "output/$1.out"
 mv log.txt "output/$1.log"
+mv output.json "output/output.json"
 
 
 echo "Ending execution"
