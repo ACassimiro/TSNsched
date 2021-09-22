@@ -585,7 +585,8 @@ public class Printer {
 				for(int i = 0; i < flw.getNumOfPacketsSent(); i++) {
 					this.printIfLoggingIsEnabled("       Flow firstDepartureTime of packet " + i + ": " + flw.getDepartureTime(dev, 0, i));
 					this.printIfLoggingIsEnabled("       Flow lastScheduledTime of packet " + i + ":  " + flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i));
-					sumOfLatencies += flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i) - flw.getDepartureTime(dev, 0, i);
+					sumOfLatencies += flw.getScheduledTime(dev, flw.getFlowFromRootToNode(dev).size() - 1, i) - flw.getDepartureTime(dev, 0, i)
+							+ flw.getFlowFromRootToNode(dev).get(flw.getFlowFromRootToNode(dev).size()-1).getPort().getTimeToTravel(); 
 				}
 
 				sumOfAvgLatencies += sumOfLatencies/flw.getNumOfPacketsSent();
