@@ -248,7 +248,7 @@ public class TSNSwitch extends Switch implements Serializable {
             /**/
 
             // The cycle of every port must have the same starting point
-            /**/
+            /*
             solver.add(ctx.mkEq( // Equal cycle constraints
                 this.cycleStart, 
                 port.getCycle().getFirstCycleStartZ3()

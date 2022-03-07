@@ -284,7 +284,7 @@ public class Port implements Serializable {
         			);
                 }
 
-                
+
                 
                 /*
                  * If 2 slots are not consecutive, then there must be a space
@@ -530,7 +530,7 @@ public class Port implements Serializable {
 	                                                ctx.mkAdd( 
 	                                                    cycle.slotStartZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
 	                                                    cycle.slotDurationZ3(ctx, flowFrag.getFragmentPriorityZ3(), indexZ3),
-	                                                    cycle.cycleStartZ3(ctx, ctx.mkInt(j))
+	                                                    cycle.cycleStartZ3(ctx, ctx.mkReal(j))
 	                                                ), 
 	                                                ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3)
 	                                            )
@@ -1388,6 +1388,15 @@ public class Port implements Serializable {
 
         }
 
+		if(this.cycle.getCycleStart() > -1){
+			solver.add(
+					ctx.mkEq( // Equal cycle constraints
+							ctx.mkReal(Double.toString(this.cycle.getCycleStart())),
+							this.getCycle().getFirstCycleStartZ3()
+					)
+			);
+		}
+
     }
     
     /**
@@ -1453,7 +1462,7 @@ public class Port implements Serializable {
 	    											),
 	    											ctx.mkAdd( 
 	    		                                        cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
-	    		                                        cycle.cycleStartZ3(ctx, ctx.mkInt(cycleNum))
+	    		                                        cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
 	    		                                    )
 	    										),
 	    		    							ctx.mkLe(
@@ -1461,7 +1470,7 @@ public class Port implements Serializable {
 	    											ctx.mkAdd( 
 	    		                                        cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
 	    		                                        cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
-	    		                                        cycle.cycleStartZ3(ctx, ctx.mkInt(cycleNum))
+	    		                                        cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
 	    		                                    )
 	    										)
 	    									)	

@@ -76,7 +76,7 @@ public class Cycle implements Serializable {
     private double maximumSlotDuration;
 
     private double cycleDuration;
-    private double cycleStart;
+    private double cycleStart = -1;
 
     private transient ArrayList<ArrayList<RealExpr>> slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
 	private transient ArrayList<ArrayList<RealExpr>> slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
@@ -234,9 +234,9 @@ public class Cycle implements Serializable {
      * @param index     Index of the desired cycle
      * @return          Z3 variable containing the cycle start time
      */
-    public RealExpr cycleStartZ3(Context ctx, IntExpr index){
+    public RealExpr cycleStartZ3(Context ctx, RealExpr index){
         return (RealExpr) ctx.mkITE( 
-                ctx.mkGe(index, ctx.mkInt(1)), 
+                ctx.mkGe(index, ctx.mkInt(1)),
                 ctx.mkAdd(
                         firstCycleStartZ3,
                         ctx.mkMul(cycleDurationZ3, index)
@@ -255,7 +255,7 @@ public class Cycle implements Serializable {
      * @return          Z3 variable containing the cycle start time
      */
     public RealExpr cycleStartZ3(Context ctx, int auxIndex){
-        IntExpr index = ctx.mkInt(auxIndex);
+        RealExpr index = ctx.mkReal(auxIndex);
         
         return (RealExpr) ctx.mkITE( 
                 ctx.mkGe(index, ctx.mkInt(1)), 
@@ -299,13 +299,6 @@ public class Cycle implements Serializable {
      * @param solver	Solver object to add constraints
      */
     public void loadZ3(Context ctx, Solver solver) {
-    	// maximumSlotDurationZ3 already started on toZ3;
-    	//System.out.println("Loading cycleDuration " + this.cycleDurationZ3 );
-//    	
-//    	if(this.cycleDurationZ3.toString().equals("cycle28Duration")) {
-//    		System.out.println("RESETANDO CICLO 28");
-//    	}
-//    	
     	solver.add(
 			ctx.mkEq(
 				this.cycleDurationZ3,

@@ -269,7 +269,7 @@ public class Network implements Serializable {
                     this.avgLatencyPerDev.add(
                         (RealExpr) ctx.mkDiv(
                             flw.getSumOfJitterZ3(endDev, solver, ctx, flw.getNumOfPacketsSent() - 1),
-                            ctx.mkInt(flw.getNumOfPacketsSent())
+                            ctx.mkReal(flw.getNumOfPacketsSent())
                         )
                     );
                 }

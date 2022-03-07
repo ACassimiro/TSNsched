@@ -306,6 +306,11 @@ public class Printer {
                        .setCycleDuration(
                            this.stringToDouble("" + model.eval(port.getCycle().getCycleDurationZ3(), false))
                        );
+				   port
+					   .getCycle()
+					   .setFirstCycleStart(
+						   this.stringToDouble("" + model.eval(port.getCycle().getFirstCycleStartZ3(), false))
+					   );
                }
                
            }

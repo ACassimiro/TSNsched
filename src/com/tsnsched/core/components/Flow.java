@@ -1666,6 +1666,13 @@ public class Flow implements Serializable {
     public void setStartDevice(Device startDevice) {
         this.startDevice = startDevice;
 
+        if(this.flowFirstSendingTime == -1){
+            this.flowFirstSendingTime = startDevice.getFirstT1Time();
+        }
+
+        if(this.flowSendingPeriodicity == -1) {
+            this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
+        }
 
         if(this.type == this.PUBLISH_SUBSCRIBE) {
         	PathTree pathTree = new PathTree();
