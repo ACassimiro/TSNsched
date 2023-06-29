@@ -1,0 +1,1295 @@
+{
+  "flows": [
+    {
+      "averageLatency": 41.001000000000005,
+      "jitter": 0.0,
+      "name": "flow1",
+      "firstSendingTime": 26.096,
+      "hops": [
+        {
+          "nextNodeName": "switch1",
+          "currentNodeName": "switch0",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev9",
+          "currentNodeName": "switch1",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow2",
+      "firstSendingTime": 13.0,
+      "hops": [
+        {
+          "nextNodeName": "switch1",
+          "currentNodeName": "switch0",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev9",
+          "currentNodeName": "switch1",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.001000000000005,
+      "jitter": 0.0,
+      "name": "flow3",
+      "firstSendingTime": 39.193,
+      "hops": [
+        {
+          "nextNodeName": "switch1",
+          "currentNodeName": "switch0",
+          "priority": 0
+        },
+        {
+          "nextNodeName": "dev9",
+          "currentNodeName": "switch1",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.00000000000006,
+      "jitter": 0.0,
+      "name": "flow4",
+      "firstSendingTime": 485.96,
+      "hops": [
+        {
+          "nextNodeName": "switch3",
+          "currentNodeName": "switch2",
+          "priority": 2
+        },
+        {
+          "nextNodeName": "dev19",
+          "currentNodeName": "switch3",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow5",
+      "firstSendingTime": 472.864,
+      "hops": [
+        {
+          "nextNodeName": "switch3",
+          "currentNodeName": "switch2",
+          "priority": 2
+        },
+        {
+          "nextNodeName": "dev19",
+          "currentNodeName": "switch3",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.07299999999998,
+      "jitter": 0.0,
+      "name": "flow6",
+      "firstSendingTime": 459.766,
+      "hops": [
+        {
+          "nextNodeName": "switch3",
+          "currentNodeName": "switch2",
+          "priority": 2
+        },
+        {
+          "nextNodeName": "dev19",
+          "currentNodeName": "switch3",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "averageLatency": 67.017,
+      "jitter": 0.0,
+      "name": "flow7",
+      "firstSendingTime": 445.983,
+      "hops": [
+        {
+          "nextNodeName": "switch5",
+          "currentNodeName": "switch4",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev29",
+          "currentNodeName": "switch5",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow8",
+      "firstSendingTime": 458.992,
+      "hops": [
+        {
+          "nextNodeName": "switch5",
+          "currentNodeName": "switch4",
+          "priority": 1
+        },
+        {
+          "nextNodeName": "dev29",
+          "currentNodeName": "switch5",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow9",
+      "firstSendingTime": 432.886,
+      "hops": [
+        {
+          "nextNodeName": "switch5",
+          "currentNodeName": "switch4",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev29",
+          "currentNodeName": "switch5",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow10",
+      "firstSendingTime": 26.096,
+      "hops": [
+        {
+          "nextNodeName": "switch7",
+          "currentNodeName": "switch6",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev39",
+          "currentNodeName": "switch7",
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow11",
+      "firstSendingTime": 39.193,
+      "hops": [
+        {
+          "nextNodeName": "switch7",
+          "currentNodeName": "switch6",
+          "priority": 0
+        },
+        {
+          "nextNodeName": "dev39",
+          "currentNodeName": "switch7",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow12",
+      "firstSendingTime": 13.0,
+      "hops": [
+        {
+          "nextNodeName": "switch7",
+          "currentNodeName": "switch6",
+          "priority": 7
+        },
+        {
+          "nextNodeName": "dev39",
+          "currentNodeName": "switch7",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "averageLatency": 40.99999999999994,
+      "jitter": 0.0,
+      "name": "flow13",
+      "firstSendingTime": 485.968,
+      "hops": [
+        {
+          "nextNodeName": "switch9",
+          "currentNodeName": "switch8",
+          "priority": 1
+        },
+        {
+          "nextNodeName": "dev49",
+          "currentNodeName": "switch9",
+          "priority": 7
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow14",
+      "firstSendingTime": 459.775,
+      "hops": [
+        {
+          "nextNodeName": "switch9",
+          "currentNodeName": "switch8",
+          "priority": 0
+        },
+        {
+          "nextNodeName": "dev49",
+          "currentNodeName": "switch9",
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "averageLatency": 41.0,
+      "jitter": 0.0,
+      "name": "flow15",
+      "firstSendingTime": 472.872,
+      "hops": [
+        {
+          "nextNodeName": "switch9",
+          "currentNodeName": "switch8",
+          "priority": 0
+        },
+        {
+          "nextNodeName": "dev49",
+          "currentNodeName": "switch9",
+          "priority": 7
+        }
+      ]
+    }
+  ],
+  "switches": [
+    {
+      "name": "switch0",
+      "ports": [
+        {
+          "cycleDuration": 500.0,
+          "name": "switch0Port0",
+          "firstCycleStart": 13.975,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.097,
+                  "slotStart": 0.024
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.0,
+                  "slotStart": 26.219
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch0Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch0Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch0Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch0Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch0Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch1",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch1Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch1Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch1Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch1Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch1Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 500.0,
+          "name": "switch1Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.097,
+                  "slotStart": 41.097
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.098,
+                  "slotStart": 27.999
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "switch2",
+      "ports": [
+        {
+          "cycleDuration": 500.0,
+          "name": "switch2Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 39.193,
+                  "slotStart": 460.767
+                }
+              ],
+              "priority": 2
+            }
+          ]
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch2Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch2Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch2Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch2Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch2Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch3",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch3Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch3Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch3Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch3Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch3Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 500.0,
+          "name": "switch3Port5",
+          "firstCycleStart": 13.976,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.097,
+                  "slotStart": 473.887
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.0,
+                  "slotStart": 460.863
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "switch4",
+      "ports": [
+        {
+          "cycleDuration": 500.0,
+          "name": "switch4Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.098,
+                  "slotStart": 433.885
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.001,
+                  "slotStart": 459.991
+                }
+              ],
+              "priority": 1
+            }
+          ]
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch4Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch4Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch4Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch4Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch4Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch5",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch5Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch5Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch5Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch5Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch5Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 500.0,
+          "name": "switch5Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.0,
+                  "slotStart": 487.0
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.001,
+                  "slotStart": 473.991
+                }
+              ],
+              "priority": 1
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.001,
+                  "slotStart": 447.885
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "switch6",
+      "ports": [
+        {
+          "cycleDuration": 500.0,
+          "name": "switch6Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.097,
+                  "slotStart": 13.999
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.098,
+                  "slotStart": 40.096
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch6Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch6Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch6Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch6Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch6Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch7",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch7Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch7Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch7Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch7Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch7Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 500.0,
+          "name": "switch7Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.0485,
+                  "slotStart": 41.0475
+                }
+              ],
+              "priority": 0
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.097,
+                  "slotStart": 54.096
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.0485,
+                  "slotStart": 27.999
+                }
+              ],
+              "priority": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "switch8",
+      "ports": [
+        {
+          "cycleDuration": 500.0,
+          "name": "switch8Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 13.088,
+                  "slotStart": 486.88
+                }
+              ],
+              "priority": 1
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.098,
+                  "slotStart": 460.774
+                }
+              ],
+              "priority": 0
+            }
+          ]
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch8Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch8Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch8Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch8Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch8Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch9",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch9Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch9Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch9Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch9Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch9Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 500.0,
+          "name": "switch9Port5",
+          "firstCycleStart": 13.976,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.096,
+                  "slotStart": 473.896
+                }
+              ],
+              "priority": 7
+            },
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 26.095,
+                  "slotStart": 447.801
+                }
+              ],
+              "priority": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "switch10",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch10Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch11",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch11Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch12",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch12Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch13",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch13Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch14",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch14Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch15",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch15Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch16",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch16Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch17",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch17Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch18",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch18Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    },
+    {
+      "name": "switch19",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port2",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port3",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port4",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 0.0,
+          "name": "switch19Port5",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        }
+      ]
+    }
+  ]
+}

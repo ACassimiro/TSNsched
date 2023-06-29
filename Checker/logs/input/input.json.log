@@ -1,0 +1,38 @@
+SCHEDULER LOG:
+
+
+SWITCH LIST:
+  Switch name: switch1
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+
+FLOW LIST:
+  Flow name: flow1
+    Start first t1: 12
+    Start HC: 1000.0
+    Start packet periodicity: 1000
+    Flow type: Multicast
+    List of leaves: 
+endDevice, 
+
+    Path to endDevice: 
+sourceDevice, 
+switch1(flow1Fragment1), 
+endDevice, 
+
+
+    Fragment name: flow1Fragment1
+        Fragment node: switch1
+        Fragment next hop: endDevice
+        Fragment priority: 7
+        Fragment slot start 0: 13.25 ; 53/4
+        Fragment slot duration 0 : 12.0 ; 12
+        Fragment times-
+          (0) Fragment departure time: 12.0
+          (0) Fragment arrival time: 13.0
+          (0) Fragment scheduled time: 25.25
+          ----------------------------
+

@@ -1,69 +1,222 @@
 {
-    "switches": [
-      {
-        "name": "switch1",
-        "defaultScheduleType": "hypercycle",
-        "defaultTimeToTravel": 0.001,  
-        "defaultTimeToTravelUnit": "ms",    
-        "defaultPortSpeed": 1,
-        "defaultPortSpeedSizeUnit": "Gbit",
-        "defaultPortSpeedTimeUnit": "s",
-        "ports": [
-          {
-            "name": "eth0",
-            "connectsTo": "sourceDevice",
-            "timeToTravel": 1,
-            "scheduleType": "microcycle",
-            "maximumSlotDuration": 50,
-            "cycleStart": 0
-          },
-          {
-            "name": "eth1",
-            "connectsTo": "endDevice",
-            "timeToTravel": 1,
-            "portSpeed": 125,
-            "guardBandSize" : 5,
-            "maximumSlotDuration": 50,
-            "cycleStart": 0
-          }
-        ]
-      }
-    ],
-    "devices": [
+  devices: [
+    {
+      name: "client1"
+    },
+    {
+      name: "client2"
+    },
+    {
+      name: "server1"
+    },
+    {
+      name: "server2"
+    }
+  ],
+  flows: [
+    {
+      endDevices: [
+        "server2"
+      ],
+      fixedPriority: "true",
+      hardConstraintTime: 500,
+      hardConstraintTimeUnit: "us",
+      hops: [
         {
-            "name": "sourceDevice",
-            "defaultFirstSendingTime": 0,
-            "defaultPacketPeriodicity": 1000,
-            "defaultHardConstraintTime": 1000,
-            "defaultPacketSize": 1.5,
-            "defaultPacketSizeUnit": "KByte"
+          currentNodeName: "client1",
+          nextNodeName: "switch1"
         },
         {
-            "name": "endDevice",
-            "defaultFirstSendingTime": 0,
-            "defaultPacketPeriodicity": 1000,
-            "defaultHardConstraintTime": 1000,
-            "defaultPacketSize": 1500
+          currentNodeName: "switch1",
+          nextNodeName: "switch2"
+        },
+        {
+          currentNodeName: "switch2",
+          nextNodeName: "server2"
         }
-    ],
-    "flows": [
-      {
-        "name": "flow1",
-        "type": "unicast",
-        "sourceDevice": "sourceDevice",
-        "endDevices": [
-          "endDevice"
-        ],
-        "hops": [
-          {
-            "currentNodeName": "sourceDevice",
-            "nextNodeName": "switch1"
-          },
-          {
-            "currentNodeName": "switch1",
-            "nextNodeName": "endDevice"
-          }
-        ]
-      }
-    ]
-  }
+      ],
+      name: "flow1",
+      packetPeriodicity: 250,
+      packetPeriodicityUnit: "us",
+      packetSize: 4464,
+      packetSizeUnit: "bit",
+      priorityValue: 1,
+      sourceDevice: "client1",
+      type: "unicast"
+    },
+    {
+      endDevices: [
+        "server2"
+      ],
+      fixedPriority: "true",
+      hardConstraintTime: 500,
+      hardConstraintTimeUnit: "us",
+      hops: [
+        {
+          currentNodeName: "client2",
+          nextNodeName: "switch1"
+        },
+        {
+          currentNodeName: "switch1",
+          nextNodeName: "switch2"
+        },
+        {
+          currentNodeName: "switch2",
+          nextNodeName: "server2"
+        }
+      ],
+      name: "flow3",
+      packetPeriodicity: 250,
+      packetPeriodicityUnit: "us",
+      packetSize: 4464,
+      packetSizeUnit: "bit",
+      priorityValue: 1,
+      sourceDevice: "client2",
+      type: "unicast"
+    },
+    {
+      endDevices: [
+        "server1"
+      ],
+      fixedPriority: "true",
+      hardConstraintTime: 500,
+      hardConstraintTimeUnit: "us",
+      hops: [
+        {
+          currentNodeName: "client1",
+          nextNodeName: "switch1"
+        },
+        {
+          currentNodeName: "switch1",
+          nextNodeName: "switch2"
+        },
+        {
+          currentNodeName: "switch2",
+          nextNodeName: "server1"
+        }
+      ],
+      name: "flow0",
+      packetPeriodicity: 500,
+      packetPeriodicityUnit: "us",
+      packetSize: 8464,
+      packetSizeUnit: "bit",
+      priorityValue: 0,
+      sourceDevice: "client1",
+      type: "unicast"
+    },
+    {
+      endDevices: [
+        "server1"
+      ],
+      fixedPriority: "true",
+      hardConstraintTime: 500,
+      hardConstraintTimeUnit: "us",
+      hops: [
+        {
+          currentNodeName: "client2",
+          nextNodeName: "switch1"
+        },
+        {
+          currentNodeName: "switch1",
+          nextNodeName: "switch2"
+        },
+        {
+          currentNodeName: "switch2",
+          nextNodeName: "server1"
+        }
+      ],
+      name: "flow2",
+      packetPeriodicity: 500,
+      packetPeriodicityUnit: "us",
+      packetSize: 7464,
+      packetSizeUnit: "bit",
+      priorityValue: 0,
+      sourceDevice: "client2",
+      type: "unicast"
+    }
+  ],
+  switches: [
+    {
+      name: "switch1",
+      ports: [
+        {
+          connectsTo: "client1",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch1-eth[0]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        },
+        {
+          connectsTo: "client2",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch1-eth[1]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        },
+        {
+          connectsTo: "switch2",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch1-eth[2]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        }
+      ]
+    },
+    {
+      name: "switch2",
+      ports: [
+        {
+          connectsTo: "server1",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch2-eth[0]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        },
+        {
+          connectsTo: "server2",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch2-eth[1]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        },
+        {
+          connectsTo: "switch1",
+          maximumSlotDuration: 1000,
+          maximumSlotDurationUnit: "us",
+          name: "switch2-eth[2]",
+          portSpeed: 100,
+          portSpeedSizeUnit: "bit",
+          portSpeedTimeUnit: "us",
+          scheduleType: "Hypercycle",
+          timeToTravel: 0.05,
+          timeToTravelUnit: "us"
+        }
+      ]
+    }
+  ]
+}

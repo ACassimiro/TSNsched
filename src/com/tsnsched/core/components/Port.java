@@ -1,19 +1,7 @@
 package com.tsnsched.core.components;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -34,6 +22,8 @@ import com.microsoft.z3.IntExpr;
 import com.microsoft.z3.RealExpr;
 import com.microsoft.z3.Solver;
 import com.tsnsched.core.network.Network;
+import com.tsnsched.core.network.NetworkProperties;
+import com.tsnsched.core.nodes.TSNSwitch;
 
 /**
  * [Class]: Port
@@ -53,6 +43,7 @@ import com.tsnsched.core.network.Network;
 public class Port implements Serializable {
 	
 	private Boolean isModifiedOrCreated = true;
+	private NetworkProperties modificationType;
 	
 	private static final long serialVersionUID = 1L;
 	private Boolean useMicroCycles = false;
@@ -70,13 +61,16 @@ public class Port implements Serializable {
     private double bestEffortPercent = 0.5f;
     transient RealExpr bestEffortPercentZ3;
     
-    private Cycle cycle;
+    private TSNSwitch hostSwitch;
+	private Cycle cycle;
     private ArrayList<FlowFragment> flowFragments;
     private int packetUpperBoundRange = Network.PACKETUPPERBOUNDRANGE; // Limits the applications of rules to the packets
     private int cycleUpperBoundRange = Network.CYCLEUPPERBOUNDRANGE; // Limits the applications of rules to the cycles
 
 	private double gbSize;
-	
+
+	private int bufferSizeLimitation = -1;
+
 	protected double maxPacketSize;
     protected double timeToTravel;
     protected double transmissionTime;
@@ -84,12 +78,14 @@ public class Port implements Serializable {
    
 	protected int portNum;
 
+    private Boolean isIncremental;
+    
 	private transient RealExpr gbSizeZ3; // Size of the guardBand
     protected transient RealExpr maxPacketSizeZ3;
     protected transient RealExpr timeToTravelZ3;
     protected transient RealExpr transmissionTimeZ3;
     protected transient RealExpr portSpeedZ3;
-    protected transient RealExpr interframeGapSizeZ3;
+	protected transient RealExpr interframeGapSizeZ3;
     
     
     /**
@@ -240,7 +236,7 @@ public class Port implements Serializable {
                         
 	                    
 	                    IntExpr auxFlowPriority = ctx.mkInt(auxNumericFlowPriority);
-	                    
+
 	                    solver.add(
 	                        ctx.mkImplies(
 	                            ctx.mkNot(
@@ -267,11 +263,38 @@ public class Port implements Serializable {
 	                            )
 	                        )
 	                    );
+
                 	
+	                    /*
+	                    System.out.println(ctx.mkImplies(
+	                            ctx.mkNot(
+	                                ctx.mkEq(
+	                                    flowPriority,
+	                                    auxFlowPriority
+	                                )
+	                            ),
+	                            ctx.mkOr(
+	                                ctx.mkGe(
+	                                    cycle.slotStartZ3(ctx, flowPriority, indexZ3),
+	                                    ctx.mkAdd(
+	                                        cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3),
+	                                        cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3)
+	                                    )
+	                                ), 
+	                                ctx.mkLe(
+	                                    ctx.mkAdd(
+	                                        cycle.slotStartZ3(ctx, flowPriority, indexZ3),
+	                                        cycle.slotDurationZ3(ctx, flowPriority, indexZ3)
+	                                    ),
+	                                    cycle.slotStartZ3(ctx, auxFlowPriority, auxIndexZ3)
+	                                )
+	                            )
+	                        ));
+	                     	*/
                 	}
             	}
                 
-                
+
                 if(index < this.cycle.getNumOfSlots(numericFlowPriority) - 1) {
                 	solver.add(
             			ctx.mkLe( 
@@ -284,7 +307,7 @@ public class Port implements Serializable {
         			);
                 }
 
-
+                
                 
                 /*
                  * If 2 slots are not consecutive, then there must be a space
@@ -299,6 +322,14 @@ public class Port implements Serializable {
                         	solver.add(
                     			ctx.mkImplies(
                 					ctx.mkAnd(
+										ctx.mkGe(
+											cycle.slotDurationZ3(ctx, auxFlowPriority, auxIndexZ3),
+											ctx.mkInt(0)
+										),
+										ctx.mkGe(
+												cycle.slotDurationZ3(ctx, flowPriority, indexZ3),
+												ctx.mkInt(0)
+										),
             							ctx.mkNot(
     											ctx.mkEq(auxFlowPriority, flowPriority)
     									),
@@ -350,7 +381,8 @@ public class Port implements Serializable {
     	IntExpr indexZ3;
     	
     	// If there is a flow assigned to the slot, slotDuration must be greater than transmission time
-    	for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
+    	/*
+		for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
     		for(int index = 0; index < this.cycle.getNumOfSlots(prt); index++) {
         		solver.add(
     				ctx.mkImplies(
@@ -366,6 +398,7 @@ public class Port implements Serializable {
     			);
         	}
     	}
+		/**/
     	
 
     	for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
@@ -390,7 +423,6 @@ public class Port implements Serializable {
 			                cycle.getCycleDurationZ3()
 			            )
 		            )
-	        		
 		        );
 		    	
 	    	}
@@ -410,7 +442,7 @@ public class Port implements Serializable {
      * @param flowFrag      A fragment of a flow that goes through this port
      */
     private void setupDevPacketTimes(Solver solver, Context ctx, FlowFragment flowFrag) {
-
+    	
         // For the specified range of packets defined by [0, upperBoundRange],
         // apply the scheduling rules.
         for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
@@ -440,10 +472,10 @@ public class Port implements Serializable {
         Expr auxExp = null;
         Expr auxExp2 = ctx.mkTrue();
         Expr exp = null;
-
+        
         for(int prt = 0; prt<this.cycle.getNumOfPrts(); prt++) {
 	        for(FlowFragment auxFragment : this.flowFragments) {
-	        	
+	        		        	
 	        	/*
 	        	System.out.println("Num de pacotes escalonados:" + auxFragment.getNumOfPacketsSent());
 	        	
@@ -476,7 +508,7 @@ public class Port implements Serializable {
 	                        auxExp = ctx.mkFalse();
 	                    }
 	                	
-	                	if(auxFragment == flowFrag && i == j) {
+	                	if((auxFragment == flowFrag && i == j) && this.flowFragments.size() != 1) {
 	                        continue;
 	                    }
 	                    
@@ -761,7 +793,7 @@ public class Port implements Serializable {
 	                auxExp2 = ctx.mkTrue();
 	            }
 	        }
-	        
+
 	        solver.add(
 	        		ctx.mkImplies(
 	        				ctx.mkEq(flowFrag.getFragmentPriorityZ3(), ctx.mkInt(prt)), 
@@ -834,7 +866,7 @@ public class Port implements Serializable {
 	            //A packet either ends at the start of another packet
 	            for(int i = 0; i < flowFrag.getNumOfPacketsSent(); i++) {
 	                for (FlowFragment auxFlowFrag : this.flowFragments) {
-	                    for (int j = 0; j < auxFlowFrag.getNumOfPacketsSent(); j++) {
+	                    for (int j = 0; j < this.definedHyperCycleSize/auxFlowFrag.getParent().getFlowSendingPeriodicity(); j++) {
 	
 	                        if(flowFrag.name.equals(auxFlowFrag.name) && i!=j){
 	                            continue;
@@ -979,7 +1011,28 @@ public class Port implements Serializable {
                 	if((flowFrag.equals(auxFlowFrag) && i == j)) {
                 		continue;
                 	} 
-                	
+                	solver.add( // Packet transmission order constraint
+                            ctx.mkImplies(
+                                ctx.mkAnd(
+                                    ctx.mkGt(
+                                        this.arrivalTime(ctx, i, flowFrag),
+                                        this.arrivalTime(ctx, j, auxFlowFrag)
+                                    ),
+                                    ctx.mkEq(
+                                        flowFrag.getFragmentPriorityZ3(), 
+                                        auxFlowFrag.getFragmentPriorityZ3()
+                                    )       
+                                ),
+                                ctx.mkGe(   		
+	                            	this.scheduledTime(ctx, i, flowFrag),   
+	                    			ctx.mkAdd( 
+	                    					this.scheduledTime(ctx, j, auxFlowFrag),
+	                    			        ctx.mkDiv(flowFrag.getPacketSizeZ3(), this.portSpeedZ3),
+		                                    ctx.mkDiv(this.interframeGapSizeZ3, this.portSpeedZ3)
+	                				)	                                
+	            				)
+	                        )
+                    );
                 	solver.add( // Packet transmission order constraint
                         ctx.mkImplies(
                             ctx.mkAnd(
@@ -992,17 +1045,16 @@ public class Port implements Serializable {
                                     auxFlowFrag.getFragmentPriorityZ3()
                                 )       
                             ),
-                            ctx.mkLe(
-                                this.scheduledTime(ctx, i, flowFrag),
-                                ctx.mkSub(
-                                    this.scheduledTime(ctx, j, auxFlowFrag),
-                                    ctx.mkDiv(auxFlowFrag.getPacketSizeZ3(), this.portSpeedZ3),
-                                    ctx.mkDiv(this.interframeGapSizeZ3, this.portSpeedZ3)
-                                )
+                            	ctx.mkLe(
+	                                this.scheduledTime(ctx, i, flowFrag),
+	                                ctx.mkSub(
+	                                    this.scheduledTime(ctx, j, auxFlowFrag),
+	                                    ctx.mkDiv(auxFlowFrag.getPacketSizeZ3(), this.portSpeedZ3),
+	                                    ctx.mkDiv(this.interframeGapSizeZ3, this.portSpeedZ3)
+	                                )
             				)
                         )
                     );
-                    
                     /*
                     if(!(flowFrag.equals(auxFlowFrag) && i == j)) {
                     	solver.add(	 
@@ -1234,15 +1286,12 @@ public class Port implements Serializable {
      * [Method]: setUpHyperCycle
      * [Usage]: Set up the cycle duration and number of packets and slots
      * to be scheduled according to the hyper cycle approach.
-     * 
-     * @param solver	Solver object
-     * @param ctx		Context object for the solver
      */
-    public void setUpHyperCycle(Solver solver, Context ctx) {
+    public void setUpHyperCycle() {
         int numOfPacketsScheduled = 0;
 
         double hyperCycleSize = findLCM((ArrayList<Double>) listOfPeriods.clone());
-        
+
         this.definedHyperCycleSize = hyperCycleSize;
         
         this.cycleUpperBoundRange = 1;
@@ -1275,11 +1324,8 @@ public class Port implements Serializable {
      * [Method]: setUpMicroCycles
      * [Usage]: Set up the cycle duration and number of packets, cycles and slots
      * to be scheduled according to the micro cycle approach.
-     * 
-     * @param solver	Solver object
-     * @param ctx		Context object for the solver
      */
-    public void setUpMicroCycles(Solver solver, Context ctx) {
+    public void setUpMicroCycles() {
         
         /*       
         for(FlowFragment flowFrag : this.flowFragments) {
@@ -1290,7 +1336,7 @@ public class Port implements Serializable {
 
         this.microCycleSize = findGCD((ArrayList<Double>) listOfPeriods.clone());
         double hyperCycleSize = findLCM((ArrayList<Double>) listOfPeriods.clone());
-        
+
         this.definedHyperCycleSize = hyperCycleSize;
         
         this.cycleUpperBoundRange = (int) (hyperCycleSize/microCycleSize);
@@ -1328,7 +1374,7 @@ public class Port implements Serializable {
     	for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
     		for(FlowFragment frag : this.flowFragments) {	
         		for(int slotIndex = 0; slotIndex < this.cycle.getNumOfSlots(prtIndex); slotIndex++) {
-            		solver.add(
+        			solver.add(
         				ctx.mkImplies(
         					ctx.mkEq(frag.getFragmentPriorityZ3(), ctx.mkInt(prtIndex)),
         					ctx.mkAnd(
@@ -1343,6 +1389,7 @@ public class Port implements Serializable {
 							)
         				)	
         			);
+        			
         		}
         	}
     	}
@@ -1354,49 +1401,30 @@ public class Port implements Serializable {
      * [Usage]: If the port is configured to use a specific automated
      * application period methodology, it will configure its cycle size.
      * Also calls the toZ3 method for the cycle
-     * 
-     * @param solver        z3 solver object used to discover the variables' values
-     * @param ctx           z3 context which specify the environment of constants, functions and variables
      */
-    public void setUpCycle(Solver solver, Context ctx) {
+	public void setUpCycle() {
 
-    	if(this.cycle.getFirstCycleStartZ3() == null) {
-        	this.cycle.toZ3(ctx);
-        }
-
-    	// System.out.println("On port: " + this.name + " with: " + this.listOfPeriods.size() + " fragments");
-
+    	//System.out.println("On port: " + this.name + " with: " + this.listOfPeriods.size() + " fragments");
+		
     	if(this.listOfPeriods.size() < 1) {
     		return;
     	}
     	
-    	
     	if(useMicroCycles && this.listOfPeriods.size() > 0) {
-            setUpMicroCycles(solver, ctx);
-                        
-            solver.add(
-	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Double.toString(this.microCycleSize)))
-	        );
+            setUpMicroCycles();
             this.cycle.setCycleDuration(this.microCycleSize);
         } else if (useHyperCycle && this.listOfPeriods.size() > 0) {
-        	setUpHyperCycle(solver, ctx);
-
-        	solver.add(
-	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Double.toString(this.definedHyperCycleSize)))
-	        );
+        	setUpHyperCycle();
             this.cycle.setCycleDuration(this.definedHyperCycleSize);
 
         }
 
-		if(this.cycle.getCycleStart() > -1){
-			solver.add(
-					ctx.mkEq( // Equal cycle constraints
-							ctx.mkReal(Double.toString(this.cycle.getCycleStart())),
-							this.getCycle().getFirstCycleStartZ3()
-					)
-			);
-		}
-
+		/*
+    	for(FlowFragment frag : this.flowFragments) {
+    		frag.setNumOfPacketsSent((int)(this.definedHyperCycleSize/frag.getParent().getFlowSendingPeriodicity()));
+    	}
+    	*/
+    	
     }
     
     /**
@@ -1408,96 +1436,216 @@ public class Port implements Serializable {
      * @param solver
      * @param ctx
      */
-    public void zeroOutNonUsedSlots(Solver solver, Context ctx) {
-    	
-    	if(this.useMicroCycles) {
-    		return;
-    	}
-    	
-    	BoolExpr exp1;
-    	BoolExpr exp2;
-    	IntExpr indexZ3;
-    	
-    	
+	public void zeroOutNonUsedSlots(Solver solver, Context ctx) {
+
+		if(this.useMicroCycles) {
+			return;
+		}
+
+		BoolExpr exp1;
+		BoolExpr exp2;
+		IntExpr indexZ3;
+
+
+		int count = 0;
+
     	/* BINDTIMESLOTS CONSTRAINT
     	for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
-    		for(FlowFragment frag : this.flowFragments) {	
+    		for(FlowFragment frag : this.flowFragments) {
         		for(int slotIndex = 0; slotIndex < this.cycle.getNumOfSlots(prtIndex); slotIndex++) {
             		solver.add(
         				ctx.mkImplies(
         					ctx.mkEq(frag.getFragmentPriorityZ3(), ctx.mkInt(prtIndex)),
         					ctx.mkAnd(
     							ctx.mkEq(
-									cycle.slotStartZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)), 
-									cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex)) 
+									cycle.slotStartZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)),
+									cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex))
 								),
     							ctx.mkEq(
-									cycle.slotDurationZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)), 
-									cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex)) 
+									cycle.slotDurationZ3(ctx, frag.getFragmentPriorityZ3(), ctx.mkInt(slotIndex)),
+									cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), ctx.mkInt(slotIndex))
 								)
 							)
-        				)	
+        				)
         			);
         		}
         	}
     	}
     	*/
-    	
-		for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
-			for(int cycleNum = 0; cycleNum < this.cycleUpperBoundRange; cycleNum++) {
-				for(int indexNum = 0; indexNum < this.cycle.getNumOfSlots(prtIndex); indexNum++) {
-					indexZ3 = ctx.mkInt(indexNum);
-    				exp1 = ctx.mkTrue();
-        			for(FlowFragment frag : this.flowFragments) {
-        				for(int packetNum = 0; packetNum < frag.getNumOfPacketsSent(); packetNum++) {
-        					exp1 = ctx.mkAnd(
-        							exp1,
-        							//ctx.mkAnd(
-    									ctx.mkNot(
-	        								ctx.mkAnd(
-	    		    							ctx.mkGe(
-    		    									ctx.mkSub(
-		    											this.scheduledTime(ctx, packetNum, frag),
-	    												ctx.mkDiv(frag.getPacketSizeZ3(), this.portSpeedZ3)
-	    											),
-	    											ctx.mkAdd( 
-	    		                                        cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
-	    		                                        cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
-	    		                                    )
-	    										),
-	    		    							ctx.mkLe(
-	    											this.scheduledTime(ctx, packetNum, frag),
-	    											ctx.mkAdd( 
-	    		                                        cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
-	    		                                        cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
-	    		                                        cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
-	    		                                    )
-	    										)
-	    									)	
-	    								)
-    									//,ctx.mkEq(ctx.mkInt(prtIndex), frag.getFragmentPriorityZ3())
-									//)
-        					);
-        				}    	
 
-        			}
-    			
-    				solver.add(
-    					ctx.mkImplies(
-							exp1, 	
-							ctx.mkEq(cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3), ctx.mkReal(0)) 
+		for(int prtIndex = 0; prtIndex < this.cycle.getNumOfPrts(); prtIndex++) {
+			for (int indexNum = 0; indexNum < this.cycle.getNumOfSlots(prtIndex); indexNum++) {
+				indexZ3 = ctx.mkInt(indexNum);
+				exp1 = ctx.mkFalse();
+				for (FlowFragment frag : this.flowFragments) {
+					count += 1;
+					for (int packetNum = 0; packetNum < frag.getNumOfPacketsSent(); packetNum++) {
+
+						for (int cycleNum = 0; cycleNum < this.cycleUpperBoundRange; cycleNum++) {
+							exp1 = ctx.mkOr(
+									exp1,
+									//ctx.mkAnd(
+									//ctx.mkNot(
+									ctx.mkAnd(
+											ctx.mkGe(
+													ctx.mkSub(
+															this.scheduledTime(ctx, packetNum, frag),
+															ctx.mkDiv(frag.getPacketSizeZ3(), this.portSpeedZ3)
+													),
+													ctx.mkAdd(
+															cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
+															cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
+													)
+											),
+											ctx.mkLe(
+													this.scheduledTime(ctx, packetNum, frag),
+													ctx.mkAdd(
+															cycle.slotStartZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
+															cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3),
+															cycle.cycleStartZ3(ctx, ctx.mkReal(cycleNum))
+													)
+											)
+									)
+									//)
+									//,ctx.mkEq(ctx.mkInt(prtIndex), frag.getFragmentPriorityZ3())
+							);
+
+						}
+
+					}
+
+				}
+
+				solver.add(
+						ctx.mkImplies(
+								ctx.mkNot(exp1),
+								ctx.mkEq(cycle.slotDurationZ3(ctx, ctx.mkInt(prtIndex), indexZ3), ctx.mkReal(0))
 						)
-    				);
-    			}   
-    			
-    		}
-    		
-    	}
-    	
-    	
-    	
-    }
-    
+				);
+
+			}
+		}
+
+
+
+	}
+
+	public void setBufferLimitation(Solver solver, Context ctx){
+
+		//General idea: There are two values A and B. If more than X packages arrive before A
+		//and leave before B, than the constraint is not respected.
+
+		//More specific idea: there should not exist a value A such that A is greater than the
+		//arrival time of x packages and smaller than the scheduled time of these x packages,
+		//Can be universal (shared memory buffer) or can be divided by priority (buffer per prt).
+
+		if(this.bufferSizeLimitation <= 0){
+			return;
+		}
+
+		int numOfScheduledPackages = 0;
+
+		for(FlowFragment frag : this.flowFragments){
+			numOfScheduledPackages += frag.getNumOfPacketsSent();
+		}
+
+		if(numOfScheduledPackages < this.bufferSizeLimitation){
+			return;
+		}
+
+		ArrayList<RealExpr> listOfArrivalTimes = new ArrayList<RealExpr>();
+		ArrayList<RealExpr> listOfScheduledTimes = new ArrayList<RealExpr>();
+		ArrayList<RealExpr> tempListOfArrivalTimes = new ArrayList<RealExpr>();
+		ArrayList<RealExpr> tempListOfScheduledTimes = new ArrayList<RealExpr>();
+		RealExpr intersectionPoint = ctx.mkRealConst(this.name + "IntersectionPoint");
+
+		for(FlowFragment frag : this.flowFragments) {
+			for(int i = 0; i < frag.getNumOfPacketsSent(); i++) {
+				listOfArrivalTimes.add(this.arrivalTime(ctx, i, frag));
+				listOfScheduledTimes.add(this.scheduledTime(ctx, i, frag));
+			}
+		}
+
+		for(int i = 0; i < listOfArrivalTimes.size(); i++){
+			tempListOfArrivalTimes.add(ctx.mkRealConst(this.name + "TempArrivalTime" + i));
+			tempListOfScheduledTimes.add(ctx.mkRealConst(this.name + "TempScheduledTime" + i));
+		}
+
+		BoolExpr fullEquivalenceConstraint = ctx.mkTrue();
+		BoolExpr equivalenceOfTempArrivalTimes = ctx.mkFalse();
+		BoolExpr noRepeatedTimeVariable = ctx.mkTrue();
+		BoolExpr orderedArrivalTimes = ctx.mkTrue();
+		BoolExpr notExistsIntersectionPoint = ctx.mkTrue();
+
+		for(int j = 0; j<tempListOfArrivalTimes.size(); j++) {
+			for(int i = 0; i<listOfArrivalTimes.size(); i++) {
+				equivalenceOfTempArrivalTimes = ctx.mkOr(
+					equivalenceOfTempArrivalTimes,
+					ctx.mkAnd(
+						ctx.mkEq(tempListOfArrivalTimes.get(j), listOfArrivalTimes.get(i)),
+						ctx.mkEq(tempListOfScheduledTimes.get(j), listOfScheduledTimes.get(i))
+					)
+				);
+			}
+
+			fullEquivalenceConstraint = ctx.mkAnd(fullEquivalenceConstraint, equivalenceOfTempArrivalTimes);
+			equivalenceOfTempArrivalTimes = ctx.mkFalse();
+		}
+
+		for(int i = 0; i<tempListOfArrivalTimes.size() - 1; i++) {
+			orderedArrivalTimes = ctx.mkAnd(
+				orderedArrivalTimes,
+				ctx.mkGe(
+					tempListOfArrivalTimes.get(i+1),
+					tempListOfArrivalTimes.get(i)
+				)
+			);
+		}
+
+		for(int i = 0; i < tempListOfArrivalTimes.size(); i++) {
+			for(int j = 0; j < tempListOfArrivalTimes.size(); j++) {
+				if (i == j)
+					continue;
+
+				noRepeatedTimeVariable = ctx.mkAnd(
+					noRepeatedTimeVariable,
+					ctx.mkAnd(
+						//ctx.mkNot(ctx.mkEq(tempListOfArrivalTimes.get(i),tempListOfArrivalTimes.get(j))),
+						ctx.mkNot(ctx.mkEq(tempListOfScheduledTimes.get(i),tempListOfScheduledTimes.get(j)))
+					)
+				);
+
+			}
+		}
+
+		for (int j = 0; j<tempListOfArrivalTimes.size() - this.bufferSizeLimitation; j++){
+			notExistsIntersectionPoint = ctx.mkTrue();
+
+			intersectionPoint = ctx.mkRealConst(this.name + "IntersectionPoint" + j);
+
+			for (int i = j; i<this.bufferSizeLimitation; i++){
+				notExistsIntersectionPoint = ctx.mkAnd(
+						notExistsIntersectionPoint,
+						ctx.mkGe(intersectionPoint, tempListOfArrivalTimes.get(i)),
+						ctx.mkLe(intersectionPoint, tempListOfScheduledTimes.get(i))
+				);
+			}
+
+			solver.add(
+					ctx.mkNot(
+						ctx.mkAnd(
+								fullEquivalenceConstraint,
+								orderedArrivalTimes,
+								noRepeatedTimeVariable,
+								notExistsIntersectionPoint
+						)
+					)
+			);
+
+		}
+
+	}
+
     
     /**
      * [Method]: setupSchedulingRules
@@ -1509,58 +1657,43 @@ public class Port implements Serializable {
      */
     public void setupSchedulingRules(Solver solver, Context ctx) {
 
+    	this.isIncremental = this.checkIfHasIncrement();
     	
+    	if( (!this.isModifiedOrCreated) && (!this.isIncremental)) {
+    		return;
+    	}
 
-    	/**/
+    	this.setUpCycleZ3(solver, ctx);
+    	
     	if (this.flowFragments.size() == 0) {
     		solver.add(ctx.mkEq( 
                 ctx.mkReal(Double.toString(0)), 
                 this.cycle.getCycleDurationZ3()
             ));
-    		// solver.add(ctx.mkEq( 
-            //    ctx.mkReal(Double.toString(0)), 
-            //    this.cycle.getFirstCycleStartZ3()
-            // ));
     		
     		return;
     	}
-    	/**/
-    	
-    	
-        /*
-    	if(useMicroCycles && this.flowFragments.size() > 0) {
-    		solver.add(ctx.mkEq( 
-                ctx.mkReal(Double.toString(this.microCycleSize)), 
-                this.cycle.getCycleDurationZ3()
-            ));
-        } else if (useHyperCycle && this.flowFragments.size() > 0) {
-        	solver.add(ctx.mkEq( 
-                ctx.mkReal(Double.toString(this.definedHyperCycleSize)), 
-                this.cycle.getCycleDurationZ3()
-            ));
-        } else {
-            for(FlowFragment flowFrag : this.flowFragments) {
-                flowFrag.setNumOfPacketsSent(this.packetUpperBoundRange);
-            }
-        }
-    	/**/
-        
     	
         setUpCycleRules(solver, ctx);
 
     	bindTimeSlots(solver,ctx);
         zeroOutNonUsedSlots(solver, ctx);
-        
+		setBufferLimitation(solver, ctx);
+
         /*
          * Differently from setUpCycleRules, setupTimeSlots and setupDevPacketTimes
          * need to be called multiple times since there will be a completely new set
          * of rules for each flow fragment on this port.
          */
-        
-        
+                
         for(FlowFragment flowFrag : this.flowFragments) {
+
+        	if(this.isIncremental && flowFrag.getParent().getModificationType() != NetworkProperties.INCREMENTFLOW) {
+        		continue;
+        	}
+
             setupTimeSlots(solver, ctx, flowFrag);
-            setupDevPacketTimes(solver, ctx, flowFrag);            
+            setupDevPacketTimes(solver, ctx, flowFrag);
         }
         
         /*
@@ -1569,6 +1702,49 @@ public class Port implements Serializable {
         }
         /**/
         
+    }
+    
+    private void setUpCycleZ3(Solver solver, Context ctx) {
+    	if(useMicroCycles && this.listOfPeriods.size() > 0) {
+            solver.add(
+	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Double.toString(this.microCycleSize)))
+	        );
+        } else if (useHyperCycle && this.listOfPeriods.size() > 0) {
+        	solver.add(
+	            ctx.mkEq(this.cycle.getCycleDurationZ3(), ctx.mkReal(Double.toString(this.definedHyperCycleSize)))
+	        );
+        }
+
+		if(this.hostSwitch.getUseSameCycleStart()) {
+			solver.add(
+				ctx.mkEq( // Equal cycle constraints
+	                this.hostSwitch.getCycleStart(), 
+	                this.getCycle().getFirstCycleStartZ3()
+                )
+             );
+		} 
+
+		if(this.cycle.getCycleStart() > -1){
+			solver.add(
+				ctx.mkEq( // Equal cycle constraints
+					ctx.mkReal(Double.toString(this.cycle.getCycleStart())),
+					this.getCycle().getFirstCycleStartZ3()
+				)
+			);
+		}
+
+	}
+
+
+	public Boolean checkIfHasIncrement() {
+    	
+    	for(FlowFragment frag : this.flowFragments) {
+    		if(frag.getParent().getModificationType() == NetworkProperties.INCREMENTFLOW) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
 
     /**
@@ -1635,7 +1811,7 @@ public class Port implements Serializable {
 
         	return departureTime;
         }
-        
+       
         departureTime = flowFrag.getDepartureTimeZ3(auxIndex);
         
         return departureTime;
@@ -1736,14 +1912,14 @@ public class Port implements Serializable {
 
         	auxIndex = (auxIndex % flowFrag.getNumOfPacketsSent());
         	index = ctx.mkInt(auxIndex);
-        	
+
         	scheduledTime = (RealExpr)
         			ctx.mkAdd(
     					ctx.mkRealConst(flowFrag.getName() + "ScheduledTime" + index.toString()), 
     					ctx.mkMul(
                             ctx.mkReal(cycleNum),
                             ctx.mkMul(
-                                this.cycle.getCycleDurationZ3(),
+                                ctx.mkReal(Double.toString(this.cycle.getCycleDuration())),
                                 ctx.mkReal(this.cycleUpperBoundRange)
                             )
                         )
@@ -1787,27 +1963,48 @@ public class Port implements Serializable {
      */
     public void loadZ3(Context ctx, Solver solver) {
     	
-//    	System.out.println("Loading port " + this.name + " with duration " + this.cycle.getCycleDurationZ3());
-    	
+        this.maxPacketSizeZ3 = ctx.mkReal(Double.toString(this.maxPacketSize));
+        this.timeToTravelZ3 = ctx.mkReal(Double.toString(this.timeToTravel));
+        this.transmissionTimeZ3 = ctx.mkReal(Double.toString(this.transmissionTime));
+        this.portSpeedZ3 = ctx.mkReal(Double.toString(portSpeed));
+        this.bestEffortPercentZ3 = ctx.mkReal(Double.toString(bestEffortPercent));
+        this.interframeGapSizeZ3 = ctx.mkReal(Double.toString(this.interframeGapSize));
+        //this.gbSizeZ3 = ctx.mkRealConst(this.name + "guardBand");
+		this.gbSizeZ3 = ctx.mkReal(this.name + "guardBand");
+
 		this.cycle.loadZ3(ctx, solver);
+		
+		this.portSpeedZ3 = ctx.mkReal(Double.toString(this.portSpeed));
     	
+		if(this.modificationType==NetworkProperties.INCREMENTFLOW) {
+			;//cycle.createOpenSlots(ctx);
+		}
+		
     	for(FlowFragment frag : this.flowFragments) {
     		
-    		frag.setFragmentPriorityZ3(
-				ctx.mkInt(
-					frag.getFragmentPriority()				
-				)
-			);
+    		frag.setFragmentPriorityZ3(ctx.mkIntConst(frag.getName() + "Priority"));
+			
+			if(frag.getPacketPeriodicityZ3() == null) {
+    			frag.setPacketPeriodicityZ3(ctx.mkReal(Double.toString(frag.getParent().getFlowSendingPeriodicity())));
+    		}
+    		if(frag.getPacketSizeZ3() == null) {
+    			frag.setPacketSizeZ3(
+					ctx.mkReal(
+						Double.toString(
+							frag.getParent().getPacketSize()
+						)
+					)
+				);
+    		}
+
     		
-    		/*
     		solver.add(
-				ctx.mkEq(
-					frag.getFragmentPriorityZ3(),
-					ctx.mkInt(frag.getFragmentPriority())					
-				)
-			);
-    		*/
-    		
+    				ctx.mkEq(
+    					frag.getFragmentPriorityZ3(),
+    					ctx.mkInt(frag.getFragmentPriority())					
+    				)
+    			);
+
     		for(int index = 0; index < this.cycle.getNumOfSlots(frag.getFragmentPriority()); index++) {
     			solver.add(
 					ctx.mkEq(
@@ -1832,19 +2029,14 @@ public class Port implements Serializable {
 				);
     			
     		}
-    		
-    		for(int i = 0; i < frag.getNumOfPacketsSent(); i++) {
-    			/*
-    			solver.add(
-					ctx.mkEq(
-						this.departureTime(ctx, i, frag),
-						ctx.mkReal(Double.toString(frag.getDepartureTime(i)))
-					)
-				);
-    			*/
-    			if (i > 0)
-    				frag.addDepartureTimeZ3(ctx.mkReal(Double.toString(frag.getDepartureTime(i))));
-    			
+    		 /**/
+
+			for(int i = 0; i < frag.getNumOfPacketsSent(); i++) {
+
+    			if (i > 0) {
+					frag.addDepartureTimeZ3(ctx.mkReal(Double.toString(frag.getDepartureTime(i))));
+				}
+
     			solver.add(
 					ctx.mkEq(
 						this.arrivalTime(ctx, i, frag),
@@ -1858,12 +2050,15 @@ public class Port implements Serializable {
 						ctx.mkReal(Double.toString(frag.getScheduledTime(i)))
 					)
 				);
+    		
     			
     		}
     		
     	}
     	
+    	this.cycle.resetSlots();
     	
+
     }
     
     /*
@@ -2101,7 +2296,38 @@ public class Port implements Serializable {
 		this.cycle.setCycleStart(cycleStart);
 		
 	}
-
-		
 	
+
+    public RealExpr getPortSpeedZ3() {
+		return portSpeedZ3;
+	}
+
+
+	public void setPortSpeedZ3(RealExpr portSpeedZ3) {
+		this.portSpeedZ3 = portSpeedZ3;
+	}
+	
+	
+	public NetworkProperties getModificationType() {
+		return this.modificationType;
+	}
+
+
+	public void setModificationType(NetworkProperties modificationType) {
+		this.modificationType = modificationType;
+	}
+	
+
+    public TSNSwitch getHostSwitch() {
+		return hostSwitch;
+	}
+
+
+	public void setHostSwitch(TSNSwitch hostSwitch) {
+		this.hostSwitch = hostSwitch;
+	}
+
+	public void setBufferSize(int bufferSize) {
+		this.bufferSizeLimitation = bufferSize;
+	}
 }

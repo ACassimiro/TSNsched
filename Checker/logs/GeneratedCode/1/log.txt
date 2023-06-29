@@ -1,0 +1,276 @@
+SCHEDULER LOG:
+
+
+SWITCH LIST:
+  Switch name: switch0
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch1
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch2
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch3
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch4
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch5
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch6
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch7
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch8
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch9
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch10
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch11
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch12
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch13
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+  Switch name: switch14
+    Max packet size: 0.0
+    Port speed: 125.0
+    Time to Travel: 1.0
+    Transmission time: 0.0
+
+
+FLOW LIST:
+  Flow name: flow0
+    Start first t1: 72/125
+    Start HC: 1000.0
+    Start packet periodicity: 2000
+    Flow type: Multicast
+    List of leaves: dev3, dev4, dev18, dev19, 
+    Path to dev3: dev29, switch9(flow0Fragment1), switch1(flow0Fragment3), dev3, 
+    Path to dev4: dev29, switch9(flow0Fragment1), switch1(flow0Fragment4), dev4, 
+    Path to dev18: dev29, switch9(flow0Fragment2), switch6(flow0Fragment5), dev18, 
+    Path to dev19: dev29, switch9(flow0Fragment2), switch6(flow0Fragment6), dev19, 
+
+    Fragment name: flow0Fragment1
+        Fragment node: switch9
+        Fragment next hop: switch1
+        Fragment priority: 7
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 8.572 ; 2143/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 0.576
+          (0) Fragment arrival time: 8.576
+          (0) Fragment scheduled time: 9.152
+          ----------------------------
+    Fragment name: flow0Fragment2
+        Fragment node: switch9
+        Fragment next hop: switch6
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 8.572 ; 2143/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 0.576
+          (0) Fragment arrival time: 8.576
+          (0) Fragment scheduled time: 9.152
+          ----------------------------
+    Fragment name: flow0Fragment3
+        Fragment node: switch1
+        Fragment next hop: dev3
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow0Fragment4
+        Fragment node: switch1
+        Fragment next hop: dev4
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow0Fragment5
+        Fragment node: switch6
+        Fragment next hop: dev18
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow0Fragment6
+        Fragment node: switch6
+        Fragment next hop: dev19
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+
+  Flow name: flow1
+    Start first t1: 72/125
+    Start HC: 1000.0
+    Start packet periodicity: 2000
+    Flow type: Multicast
+    List of leaves: dev12, dev13, dev39, dev40, 
+    Path to dev12: dev2, switch0(flow1Fragment1), switch4(flow1Fragment3), dev12, 
+    Path to dev13: dev2, switch0(flow1Fragment1), switch4(flow1Fragment4), dev13, 
+    Path to dev39: dev2, switch0(flow1Fragment2), switch13(flow1Fragment5), dev39, 
+    Path to dev40: dev2, switch0(flow1Fragment2), switch13(flow1Fragment6), dev40, 
+
+    Fragment name: flow1Fragment1
+        Fragment node: switch0
+        Fragment next hop: switch4
+        Fragment priority: 7
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 8.572 ; 2143/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 0.576
+          (0) Fragment arrival time: 8.576
+          (0) Fragment scheduled time: 9.152
+          ----------------------------
+    Fragment name: flow1Fragment2
+        Fragment node: switch0
+        Fragment next hop: switch13
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 8.572 ; 2143/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 0.576
+          (0) Fragment arrival time: 8.576
+          (0) Fragment scheduled time: 9.152
+          ----------------------------
+    Fragment name: flow1Fragment3
+        Fragment node: switch4
+        Fragment next hop: dev12
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow1Fragment4
+        Fragment node: switch4
+        Fragment next hop: dev13
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow1Fragment5
+        Fragment node: switch13
+        Fragment next hop: dev39
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.148 ; 4287/250
+        Fragment slot duration 0 : 0.58 ; 29/50
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.728
+          ----------------------------
+    Fragment name: flow1Fragment6
+        Fragment node: switch13
+        Fragment next hop: dev40
+        Fragment priority: 1
+        Fragment size: 72
+        Port cycle start: 0
+        Fragment slot start 0: 17.156 ; 4289/250
+        Fragment slot duration 0 : 0.576 ; 72/125
+        Fragment times-
+          (0) Fragment departure time: 9.152
+          (0) Fragment arrival time: 17.152
+          (0) Fragment scheduled time: 17.732
+          ----------------------------
+

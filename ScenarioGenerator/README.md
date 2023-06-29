@@ -1,6 +1,7 @@
 ## Table of Contents
 
 - [Generating topologies](#generating-topologies)
+- [Converting topologies to JSON file](#converting-topologies-to-json-file)
 
 ## Generating topologies
 
@@ -42,4 +43,17 @@ The output file (GeneratedCode.java which contains the topology) will be generat
 * Press the "run" button
 * The output will be printed bellow the editor
 -->
+
+
+## Converting topologies to JSON file
+
+In order to convert a topology to JSON a conversor from java file to JSON was created.
+
+To run the converter:
+
+``` java -jar ConverterJSON.jar [file_path] ```
+
+All it needs is an argument specifing the path of a file to be converted.
+
+The output JSON is saved at output folder.
 

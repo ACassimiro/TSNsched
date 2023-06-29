@@ -6,8 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/com.microsoft.z3.jar"/>
 	<classpathentry kind="lib" path="libs/java-json.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="libs/z3-turnkey-4.12.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

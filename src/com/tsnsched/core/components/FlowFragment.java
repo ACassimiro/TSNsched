@@ -1,19 +1,7 @@
 package com.tsnsched.core.components;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -39,7 +27,7 @@ public class FlowFragment extends Flow {
     private Boolean isModifiedOrCreated = false;
     private static final long serialVersionUID = 1L;
     private Flow parent;
-    private transient RealExpr packetSize;
+    private transient RealExpr packetSizeZ3;
     private transient RealExpr packetPeriodicityZ3;
     private transient ArrayList<RealExpr> departureTimeZ3 = new ArrayList<RealExpr>();
     private transient ArrayList<RealExpr> scheduledTimeZ3 = new ArrayList<RealExpr>();
@@ -133,18 +121,18 @@ public class FlowFragment extends Flow {
 
 
     public RealExpr getPacketSizeZ3() {
-        return this.packetSize;
+        return this.packetSizeZ3;
     }
 
     public void setPacketSizeZ3(RealExpr packetSize) {
-        this.packetSize = packetSize;
+        this.packetSizeZ3 = packetSize;
     }
 
     public IntExpr getFragmentPriorityZ3() {
         return fragmentPriorityZ3;
     }
 
-    public void setFragmentPriorityZ3(IntExpr flowPriority) {
+	public void setFragmentPriorityZ3(IntExpr flowPriority) {
         this.fragmentPriorityZ3 = flowPriority;
     }
 
@@ -287,4 +275,17 @@ public class FlowFragment extends Flow {
         this.port = port;
     }
 
+	public int getSizeOfDepartureTimeListZ3() {
+		return this.departureTimeZ3.size();
+	}
+
+    public void resetOutputLists() {
+        this.departureTime = new ArrayList<Double>();
+        this.arrivalTime = new ArrayList<Double>();
+        this.scheduledTime = new ArrayList<Double>();
+    }
+
+    public double getSizeOfDepartureTimeList() {
+        return this.departureTime.size();
+    }
 }

@@ -1,0 +1,66 @@
+{
+	"switches": [
+		{
+			"name": "switch0",
+			"scheduleType": "hypercycle",
+			"defaultTimeToTravel": 1,
+			"defaultPortSpeed": 125,
+			"ports": [
+				{
+					"name": "eth0",
+					"connectsTo": "dev0",
+					"timeToTravel": 8,
+					"scheduleType": "microcycle",
+					"maximumSlotDuration": 50,
+					"cycleStart": 0
+				},
+				{
+					"name": "eth1",
+					"connectsTo": "dev1",
+					"timeToTravel": 8,
+					"portSpeed": 125,
+					"guardBandSize": 1,
+					"maximumSlotDuration": 50,
+					"cycleStart": 0
+				}
+			]
+
+		}
+	],
+	"devices": [
+		{
+			"name": "dev0",
+			"defaultFirstSendingTime": 0,
+			"defaultPacketPeriodicity": 1000,
+			"defaultHardConstraintTime": 1000,
+			"defaultPacketSize": 1250
+		},
+		{
+			"name": "dev1",
+			"defaultFirstSendingTime": 0,
+			"defaultPacketPeriodicity": 200,
+			"defaultHardConstraintTime": 1000,
+			"defaultPacketSize": 1250
+		}
+	],
+	"flows": [
+		{
+			"name": "flow1",
+			"type": "unicast",
+			"sourceDevice": "dev1",
+			"endDevices": [
+				"dev0"
+			],
+			"hops": [
+				{
+					"currentNodeName": "dev1",
+					"nextNodeName": "switch0"
+				},
+				{
+					"currentNodeName": "switch0",
+					"nextNodeName": "dev0"
+				}
+			]
+		}
+	]
+}

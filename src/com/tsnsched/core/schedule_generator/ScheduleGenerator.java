@@ -1,18 +1,6 @@
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -27,6 +15,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 import com.microsoft.z3.*;
+import com.tsnsched.core.network.NetworkProperties;
 import com.tsnsched.nest_sched.NestSchedINIGen;
 import com.tsnsched.nest_sched.NestSchedNEDGen;
 import com.tsnsched.nest_sched.NestSchedXMLGen;
@@ -35,6 +24,7 @@ import com.tsnsched.core.components.Port;
 import com.tsnsched.core.interface_manager.ParserManager;
 import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.network.Network;
+import com.tsnsched.core.network.NetworkModificationHandler;
 import com.tsnsched.core.nodes.Switch;
 import com.tsnsched.core.nodes.TSNSwitch;
 import com.tsnsched.core.sched2netconf.XMLExporter;
@@ -54,10 +44,16 @@ public class ScheduleGenerator {
 		private Boolean enableConsoleOutput = false;
 		private Boolean enableLoggerFile = false;
 		private Boolean generateJSONOutput = true;
-		
+		private Boolean useIncrementalStrategy = false;
+		private Boolean enablePacketTimeOutput = false;
+
+		private String topologyFilePath = "network.ser";
+		private ArrayList<Flow> tempFlowList;
+		private int auxIncrementalFlowCounter = 1;
+
 		private ParserManager parserManager = null;
 		private Printer printer = new Printer(); // Used to generate output
-		
+
 	   @SuppressWarnings("serial")
 	   class TestFailedException extends Exception
 	   {
@@ -178,52 +174,81 @@ public class ScheduleGenerator {
            net.setJitterUpperBoundRangeZ3(ctx, 25);
 	       net.secureHC(solver, ctx);
 	   }
-	   
-	   public void generateSchedule(String topologyFilePath) 
+
+
+
+	   public void generateSchedule(String topologyFilePath)
 	   {
 
-		    this.printer.setEnableConsoleOutput(this.enableConsoleOutput);
-		    this.printer.setEnableLoggerFile(this.enableLoggerFile);
-		   
 		    this.parserManager = new ParserManager(topologyFilePath);
 		    this.parserManager.setPrinter(this.printer);
 			Network net = this.parserManager.parseFromFile();
-			 
+			
 			this.generateSchedule(net);
 		   
 	   }
-	   
+
+	   public void generateSchedule(Network net){
+		   /*
+			this.setRulesAndAttemptScheduling(net);
+		   /**/
+		   /**/
+		   if(!this.useIncrementalStrategy){
+			   this.setRulesAndAttemptScheduling(net);
+		   } else {
+
+			   this.serializeNetwork=true;
+
+			   if(this.useIncrementalStrategy){
+				   this.tempFlowList = (ArrayList<Flow>) net.getFlows().clone();
+				   net.setFlows(new ArrayList<Flow>());
+				   net.addFlow(this.tempFlowList.get(0));
+			   }
+
+			   boolean successfullyScheduled = this.setRulesAndAttemptScheduling(net);
+			   this.tempFlowList.remove(0);
+			   this.loadNetwork=true;
+
+			   for(Flow flw : this.tempFlowList) {
+				    if(successfullyScheduled == false) {
+						break;
+					}
+
+					net = this.deserializeNetwork("network.ser");
+					Flow flow = new Flow(net, flw);
+					net.addElement(flow, NetworkProperties.INCREMENTFLOW);
+					successfullyScheduled = this.setRulesAndAttemptScheduling(net);
+			   }
+
+
+		   }
+			/**/
+	   }
+
 	   /**
-	    * [Method]: generateSchedule
-	    * [Usage]: After creating a network, setting up the 
+	    * [Usage]: After creating a network, setting up the
 	    * flows and switches, the user now can call this 
 	    * function in order calculate the schedule values
 	    * using z3 
 	    * 
 	    * @param net   Network used as base to generate the schedule
 	    */
-	   public void generateSchedule(Network net) 
+	   public boolean setRulesAndAttemptScheduling(Network net)
 	   {
-
+		   boolean successfullyScheduled = false;
 		   this.printer.setEnableConsoleOutput(this.enableConsoleOutput);
 		   this.printer.setEnableLoggerFile(this.enableLoggerFile);
-		   
+
 		   if(this.parserManager == null) {
 			   this.parserManager = new ParserManager();
 			   this.parserManager.setPrinter(this.printer);
 		   }
-		   
+
 		   net.setPrinter(printer);
 		   
-			long totalStartTime = System.nanoTime();
+		   long totalStartTime = System.nanoTime();
 		   
 		   Context ctx = this.createContext(); //Creating the z3 context
-		   
-		   /*
-		   for(String tacticName : ctx.getTacticNames()) {
-			   System.out.println(tacticName + " - " + ctx.getTacticDescription(tacticName));			   
-		   }
-		   */
 		   
 		   String name = "qfufbv_ackr";
 		   //System.out.println(ctx.getTacticDescription(name));
@@ -247,10 +272,17 @@ public class ScheduleGenerator {
 		   
 	       if(this.loadNetwork) {
 	    	   this.printer.printIfLoggingIsEnabled("- Loading network and modifications");
-	    	   this.serializeNetwork = false; 
+	    	   //this.serializeNetwork = false; 
+	    	   net.createNewObjects();
 	    	   net.loadNetwork(ctx, solver);	
+	    	   Flow.setInstanceCounter(net.getFlows().size() + 1);
+	    	   if(net.getHasBeenModified()) {
+	    		   net.setSolverAndContextForNetModHandler(solver, ctx);
+	    		   net.applyChangesToSolver();	    		   
+	    	   }
 	    	   // Sets up the hard constraint for each individual flow in the network
-	           net.setJitterUpperBoundRangeZ3(ctx, 25);
+	           net.preventCollisionOnFirstHop(solver, ctx);
+			   net.assertFirstSendingTimeOfFlows(solver, ctx);
 	           net.secureHC(solver, ctx);
 	       } else {
 	    	   this.printer.printIfLoggingIsEnabled("- Creating network");
@@ -324,7 +356,13 @@ public class ScheduleGenerator {
    	   		   Expr v = model.evaluate(switch1CycDuration, false);
 	           if (v != null)
 	           {
-
+	        	   successfullyScheduled = true;
+	        	   net.setAllElementsToNotModified();
+	        	   
+	        	   if(this.exportModel) {
+	    	    	   printer.exportModel(solver);
+	    	       }
+	        	   
             	   printer.generateLog("log.txt", net, ctx, model);   	            	   
 	        	   
 	        	   /*
@@ -334,9 +372,7 @@ public class ScheduleGenerator {
 	        	   */
 	        	   
 	               printer.printOnConsole(net);
-	    	       if(this.exportModel) {
-	    	    	   printer.exportModel(solver);
-	    	       }
+	    	       
 	    	       if(this.generateXMLFiles) {
 	    	    	   new XMLExporter(net);	    	   
 	    	       }
@@ -355,6 +391,7 @@ public class ScheduleGenerator {
 	    		   }
 	    	       
 	    	       if(this.generateJSONOutput) {
+					   this.parserManager.setEnablePacketTimeOutput(this.enablePacketTimeOutput);
 	    	    	   this.parserManager.parseOutput(net);	    	    	   
 	    	       }
 	    	       
@@ -395,6 +432,8 @@ public class ScheduleGenerator {
 		   long totalExecutionTime = totalEndTime - totalStartTime;
 		
 		   this.printer.printIfLoggingIsEnabled("Execution time: " + ((float) totalExecutionTime)/1000000000 + " seconds\n ");
+
+		   return successfullyScheduled;
 	   }
 	   
 	   
@@ -475,6 +514,7 @@ public class ScheduleGenerator {
 	           FileInputStream fileIn = new FileInputStream(path);
 	           ObjectInputStream in = new ObjectInputStream(fileIn);
 	           net = (Network) in.readObject();
+	           net.setNetModHandler(new NetworkModificationHandler());
 	           in.close();
 	           fileIn.close();			   
 		   } catch (Exception i) {
@@ -555,7 +595,14 @@ public class ScheduleGenerator {
 						break;
 					case "-disableJSONOutput":
 						this.generateJSONOutput=false;
-						break;				
+						break;
+					case "-useIncremental":
+						this.useIncrementalStrategy=true;
+						break;
+					case "-enablePacketTimeOutput":
+						this.enablePacketTimeOutput=true;
+						break;
+
 				}
 				
 			}
@@ -625,5 +672,14 @@ public class ScheduleGenerator {
 		public void setEnableLoggerFile(Boolean enableLoggerFile) {
 			this.enableLoggerFile = enableLoggerFile;
 		}
+
+		public Boolean getEnablePacketTimeOutput() {
+			return enablePacketTimeOutput;
+		}
+
+		public void setEnablePacketTimeOutput(Boolean enablePacketTimeOutput) {
+			this.enablePacketTimeOutput = enablePacketTimeOutput;
+		}
+		
 		
 }

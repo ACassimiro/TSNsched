@@ -1,19 +1,7 @@
 package com.tsnsched.core.nodes;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -43,6 +31,8 @@ import com.tsnsched.core.schedule_generator.*;
 public class TSNSwitch extends Switch implements Serializable {
 
 	private Boolean isModifiedOrCreated = true;
+	private Boolean useSameCycleStart = false;
+	private Double firstCycleStart = 0.0;
 	
 	private static final long serialVersionUID = 1L;
 	// private Cycle cycle;
@@ -51,7 +41,7 @@ public class TSNSwitch extends Switch implements Serializable {
     private double cycleDurationUpperBound;
     private double cycleDurationLowerBound;
     
-    private Printer printer;
+    private transient Printer printer;
     
     private double gbSize;
     private transient RealExpr gbSizeZ3; // Size of the guardBand
@@ -211,16 +201,17 @@ public class TSNSwitch extends Switch implements Serializable {
         
 
         // Creating the cycle setting up the bounds for the duration (Cycle duration constraint)
+        /*
         solver.add(
             ctx.mkGe(this.cycleDuration, this.cycleDurationLowerBoundZ3)
         );
         solver.add(
             ctx.mkLe(this.cycleDuration, this.cycleDurationUpperBoundZ3)
         );
-        
+        */
         // A cycle must start on a point in time, so it must be greater than 0
         solver.add( // No negative cycle values constraint
-            ctx.mkGe(this.cycleStart, ctx.mkInt(0))
+            ctx.mkGe((RealExpr) this.cycleStart, (IntExpr) ctx.mkInt(0))
         );
 
                 
@@ -249,17 +240,19 @@ public class TSNSwitch extends Switch implements Serializable {
 
             // The cycle of every port must have the same starting point
             /*
-            solver.add(ctx.mkEq( // Equal cycle constraints
-                this.cycleStart, 
-                port.getCycle().getFirstCycleStartZ3()
-            ));
+            if(this.useSameCycleStart) {
+	            solver.add(ctx.mkEq( // Equal cycle constraints
+	                this.cycleStart, 
+	                port.getCycle().getFirstCycleStartZ3()
+	            ));
+            }
             /**/
             
         }
-        
+
         solver.add(ctx.mkEq(
             this.cycleStart, 
-            ctx.mkInt(0)
+            ctx.mkInt(Double.toString(this.firstCycleStart))
         ));
         
     }
@@ -276,7 +269,7 @@ public class TSNSwitch extends Switch implements Serializable {
     public void setupSchedulingRules(Solver solver, Context ctx) {
                 
         for(Port port : this.ports) {
-        	if(port.getIsModifiedOrCreated()) {
+        	if(port.getIsModifiedOrCreated() || port.checkIfHasIncrement()) {
         		port.setupSchedulingRules(solver, ctx);        		
         	}
         }
@@ -336,6 +329,7 @@ public class TSNSwitch extends Switch implements Serializable {
             );
         
         newPort.setPortNum(this.portNum);
+        newPort.setHostSwitch(this);
         
         switch(this.scheduleType) {
         	case MICROCYCLES:
@@ -345,8 +339,8 @@ public class TSNSwitch extends Switch implements Serializable {
         		newPort.setUseHyperCycle(true);
         		break;
         	case DEFAULT:
-        		//newPort.setUseHyperCycle(true);
-        		newPort.setUseMicroCycles(true);
+        		newPort.setUseHyperCycle(true);
+        		//newPort.setUseMicroCycles(true);
         		break;
         }
         
@@ -415,7 +409,7 @@ public class TSNSwitch extends Switch implements Serializable {
      */
     public void setUpCycleSize(Solver solver, Context ctx) {
     	for(Port port : this.ports) {
-    		port.setUpCycle(solver, ctx);
+    		port.setUpCycle();
     	}
     }
         
@@ -544,20 +538,30 @@ public class TSNSwitch extends Switch implements Serializable {
 			)	
 		);
     	*/
-    	
+
+        this.cycleStart = ctx.mkRealConst("cycleOf" + this.name + "Start"); 
+        solver.add(ctx.mkEq(
+                this.cycleStart, 
+                ctx.mkReal(Double.toString(this.firstCycleStart))
+            ));
+        	
     	if(!ports.isEmpty()) {
     		for(Port port : this.ports) {
-    			//this.printer.printIfLoggingIsEnabled(port.getIsModifiedOrCreated());
-    			if(!port.getIsModifiedOrCreated()) {
-    				// this.printer.printIfLoggingIsEnabled("Loading port " + port.getName());
-    				port.loadZ3(ctx, solver);    		    			    				
+//  			System.out.print("Should load port " + port.getName() + "(" + port.getCycle().getName() + ")? ");
+//    			System.out.println(port.getIsModifiedOrCreated());
+    			if(!port.getIsModifiedOrCreated() || port.getModificationType() == NetworkProperties.INCREMENTFLOW) {
+//    				System.out.println("yes");
+    				port.loadZ3(ctx, solver);    		
+    				   
     			} else {
+//    				System.out.println("no");
     				;
-    				//this.printer.printIfLoggingIsEnabled("Not loading port " + port.getName());
     			}
     		}
     	}
     	
+
+       
     }
     
     
@@ -653,6 +657,14 @@ public class TSNSwitch extends Switch implements Serializable {
 
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
+	}    
+
+	public Boolean getUseSameCycleStart() {
+		return useSameCycleStart;
 	}
-    
+
+	public void setUseSameCycleStart(Boolean useSameCycleStart) {
+		this.useSameCycleStart = useSameCycleStart;
+	}
+
 }

@@ -1,19 +1,7 @@
 package com.tsnsched.core.network;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -43,9 +31,10 @@ import com.tsnsched.core.nodes.TSNSwitch;
  *
  */
 public class Network implements Serializable {
+	private NetworkModificationHandler netModHandler;
 	private Boolean hasBeenModified = false;
 	
-	private Printer printer;
+	private transient Printer printer;
 
 	private static final long serialVersionUID = 1L;
 	String db_name;
@@ -83,6 +72,7 @@ public class Network implements Serializable {
         this.flows = new ArrayList<Flow>();
         this.devices = new ArrayList<Device>();
         this.timeToTravel = 2;        
+        netModHandler = new NetworkModificationHandler();
     }
     
     
@@ -97,6 +87,7 @@ public class Network implements Serializable {
         this.flows = new ArrayList<Flow>();
         this.devices = new ArrayList<Device>();
         this.timeToTravel = 2;
+        netModHandler = new NetworkModificationHandler();
     }
     
     /**
@@ -113,6 +104,7 @@ public class Network implements Serializable {
         this.switches = switches;
         this.flows = flows;
         this.timeToTravel = timeToTravel;
+        netModHandler = new NetworkModificationHandler();
     }
     
     /**
@@ -126,6 +118,7 @@ public class Network implements Serializable {
     public void secureHC(Solver solver, Context ctx) {
     	avgLatencyPerDev = new ArrayList<RealExpr>();
         
+    	
         if(jitterUpperBoundRange != -1) { // If there is a value on the upperBoundRange, it was set through the network
             this.setJitterUpperBoundRangeZ3(ctx, this.jitterUpperBoundRange);
         }
@@ -158,7 +151,7 @@ public class Network implements Serializable {
             solver.add( // No negative cycle values constraint
                 ctx.mkGe(
                     flw.getStartDevice().getFirstT1TimeZ3(),
-                    ctx.mkReal(0)
+                    (RealExpr) ctx.mkReal(0)
                 )
             );
             solver.add( // Maximum transmission offset constraint
@@ -294,11 +287,18 @@ public class Network implements Serializable {
     	// TODO: Don't forget to load the values of this class
     	boolean hasFlow = false;
     	
+    	if(this.jitterUpperBoundRange < 0) {
+    		this.jitterUpperBoundRangeZ3 = ctx.mkRealConst("networkJitterUpperboundRange");
+    	} else {
+    		this.jitterUpperBoundRangeZ3 = ctx.mkReal(Double.toString(this.jitterUpperBoundRange));
+    	}
+    	
     	// On all network flows: Data given by the user will be converted to z3 values 
        for(Flow flw : this.flows) {
            // flw.toZ3(ctx);
     	   if(flw.getIsModifiedOrCreated())
     		   continue;
+    	   
     	   
     	   flw.setFlowPriorityZ3(ctx.mkIntConst(flw.getName() + "Priority"));
     	   flw.setFlowFirstSendingTimeZ3(
@@ -316,7 +316,7 @@ public class Network implements Serializable {
 	       
        // On all network switches: Data given by the user will be converted to z3 values
         for(Switch swt : this.switches) {
-        	if(swt instanceof TSNSwitch) {
+        	if(swt instanceof TSNSwitch) { 
         		hasFlow = false;
         		for(Port port : ((TSNSwitch) swt).getPorts()) {
         			for(FlowFragment frag : port.getFlowFragments()) {
@@ -324,30 +324,47 @@ public class Network implements Serializable {
         				if(frag.getIsModifiedOrCreated() || frag.getParent().getIsModifiedOrCreated()) {
         					continue;
         				}
-        				
+        					
         				hasFlow = true;
+        				
+        				//frag.loadValuesFromParent();
+        				
         				frag.createNewDepartureTimeZ3List();
-        				if(!frag.getDepartureTimeList().isEmpty()) {
+
+                        if(!frag.getDepartureTimeList().isEmpty()) {
         					frag.addDepartureTimeZ3(ctx.mkReal(Double.toString(frag.getDepartureTime(0))));        					
         				}
         				frag.setFlowFirstSendingTimeZ3(ctx.mkReal(
-    						Double.toString(frag.getFlowFirstSendingTime())
+    						Double.toString(frag.getParent().getFlowFirstSendingTime())
 						));
         				frag.setPacketSizeZ3(ctx.mkReal(
-    						Double.toString(frag.getPacketSize())
+    						Double.toString(frag.getParent().getPacketSize())
 						));
         			}
         		}
         		
-        		if(hasFlow) {
-        			((TSNSwitch) swt).toZ3(ctx, solver);
-        			((TSNSwitch) swt).loadZ3(ctx, solver);        			
-        		}
+        		//((TSNSwitch) swt).toZ3(ctx, solver);
+        		((TSNSwitch) swt).loadZ3(ctx, solver);        			
+        		
         	}
         }
-    	
     }
     
+    public void setSolverAndContextForNetModHandler(Solver solver, Context context) {
+    	this.netModHandler.setCtx(context);
+    	this.netModHandler.setSolver(solver);
+    }
+
+    public void modifyElement(Object element, NetworkProperties propertyID, double value) {
+
+    	this.hasBeenModified = true;
+    	
+    	if(element instanceof Port) {
+    		this.netModHandler.modifyProperty((Port)element, propertyID, value);
+    	}
+    	
+    }
+
     public void preventCollisionOnFirstHop(Solver solver, Context context) {
         List<Flow> listOfFlows = null;
 
@@ -562,7 +579,32 @@ public class Network implements Serializable {
 
 
     }
-
+    
+    public void setAllElementsToNotModified() {
+    	
+    	for(Switch swt : this.switches) {
+    		
+    		((TSNSwitch) swt).setIsModifiedOrCreated(false);
+    		
+    		for(Port port : ((TSNSwitch) swt).getPorts()) {
+    			port.setIsModifiedOrCreated(false);
+    			port.setModificationType(null);
+    			
+    			for(FlowFragment frag : port.getFlowFragments()) {
+    				frag.setIsModifiedOrCreated(false);
+    				frag.setModificationType(null);
+    			}
+    		}
+    		
+    	}
+    	
+    	for(Flow flw : this.flows) {
+    		flw.setIsModifiedOrCreated(false);
+    		flw.setModificationType(null);
+    	}
+    	
+    }
+    
     private List<FlowFragment> getFragmentsOfFirstHop(List<Flow> flowList) {
         List<FlowFragment> flowFragList = new ArrayList<FlowFragment>();
 
@@ -586,6 +628,15 @@ public class Network implements Serializable {
         }
 
     }
+
+    public void createNewObjects() {
+    	this.netModHandler.createNewObjects();
+    }
+    
+    public void applyChangesToSolver() {
+    	this.netModHandler.applyChangesToSolver();
+    }
+    
     
     /*
      * GETTERS AND SETTERS
@@ -639,7 +690,15 @@ public class Network implements Serializable {
     public void addSwitch (Switch swt) {
         this.switches.add(swt);
     }
-
+    
+	public NetworkModificationHandler getNetModHandler() {
+		return netModHandler;
+	}
+	
+	public void setNetModHandler(NetworkModificationHandler netModHandler) {
+		this.netModHandler = netModHandler;
+	}
+	
 	public void addDevice(Device dev) {
 		this.devices.add(dev);
 	}
@@ -657,6 +716,13 @@ public class Network implements Serializable {
 		
 		return null;
 	}
+	
+	public void addElement(Flow flow, NetworkProperties propertyID) {
+    	this.hasBeenModified = true;
+		this.addFlow(flow);
+    	this.netModHandler.addElement(flow, propertyID);
+	}
+
 
 	public Boolean getHasBeenModified() {
 		return hasBeenModified;

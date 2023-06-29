@@ -1,0 +1,2937 @@
+{
+	"devices":[
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev0",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev1",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev2",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev3",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev4",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev5",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev6",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev7",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev8",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev9",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev10",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev11",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev12",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev13",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev14",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev15",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev16",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev17",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev18",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev19",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev20",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev21",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev22",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev23",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev24",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev25",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev26",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev27",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev28",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev29",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev30",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev31",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev32",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev33",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev34",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev35",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev36",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev37",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev38",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev39",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev40",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev41",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev42",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev43",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev44",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev45",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev46",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev47",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev48",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+},
+	{
+	"defaultPacketPeriodicity":2000,
+	"defaultFirstSendingTime":0,
+	"name":"dev49",
+	"defaultHardConstraintTime":1000,
+	"defaultPacketSize":1625
+}],
+	"flows":[
+	{
+	"name":"flow0",
+	"endDevices":[
+	"dev15",
+	"dev16",
+	"dev17",
+	"dev18",
+	"dev19"],
+	"hops":[
+	{
+	"nextNodeName":"switch5",
+	"currentNodeName":"dev29"
+},
+	{
+	"nextNodeName":"switch0",
+	"currentNodeName":"switch5"
+},
+	{
+	"nextNodeName":"switch3",
+	"currentNodeName":"switch0"
+},
+	{
+	"nextNodeName":"dev15",
+	"currentNodeName":"switch3"
+},
+	{
+	"nextNodeName":"dev16",
+	"currentNodeName":"switch3"
+},
+	{
+	"nextNodeName":"dev17",
+	"currentNodeName":"switch3"
+},
+	{
+	"nextNodeName":"dev18",
+	"currentNodeName":"switch3"
+},
+	{
+	"nextNodeName":"dev19",
+	"currentNodeName":"switch3"
+}],
+	"sourceDevice":"dev29",
+	"type":"PUBLISH_SUBSCRIBE"
+},
+	{
+	"name":"flow1",
+	"endDevices":[
+	"dev5",
+	"dev6",
+	"dev7",
+	"dev8",
+	"dev9"],
+	"hops":[
+	{
+	"nextNodeName":"switch7",
+	"currentNodeName":"dev38"
+},
+	{
+	"nextNodeName":"switch0",
+	"currentNodeName":"switch7"
+},
+	{
+	"nextNodeName":"switch1",
+	"currentNodeName":"switch0"
+},
+	{
+	"nextNodeName":"dev5",
+	"currentNodeName":"switch1"
+},
+	{
+	"nextNodeName":"dev6",
+	"currentNodeName":"switch1"
+},
+	{
+	"nextNodeName":"dev7",
+	"currentNodeName":"switch1"
+},
+	{
+	"nextNodeName":"dev8",
+	"currentNodeName":"switch1"
+},
+	{
+	"nextNodeName":"dev9",
+	"currentNodeName":"switch1"
+}],
+	"sourceDevice":"dev38",
+	"type":"PUBLISH_SUBSCRIBE"
+},
+	{
+	"name":"flow2",
+	"endDevices":[
+	"dev30",
+	"dev31",
+	"dev32",
+	"dev33",
+	"dev34"],
+	"hops":[
+	{
+	"nextNodeName":"switch4",
+	"currentNodeName":"dev24"
+},
+	{
+	"nextNodeName":"switch2",
+	"currentNodeName":"switch4"
+},
+	{
+	"nextNodeName":"switch6",
+	"currentNodeName":"switch2"
+},
+	{
+	"nextNodeName":"dev30",
+	"currentNodeName":"switch6"
+},
+	{
+	"nextNodeName":"dev31",
+	"currentNodeName":"switch6"
+},
+	{
+	"nextNodeName":"dev32",
+	"currentNodeName":"switch6"
+},
+	{
+	"nextNodeName":"dev33",
+	"currentNodeName":"switch6"
+},
+	{
+	"nextNodeName":"dev34",
+	"currentNodeName":"switch6"
+}],
+	"sourceDevice":"dev24",
+	"type":"PUBLISH_SUBSCRIBE"
+}],
+	"switches":[
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch0",
+	"ports":[
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth0",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth1",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth4",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth5",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth8",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth9",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth12",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth13",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth16",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth17",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth20",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth21",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth24",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth25",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth28",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth29",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth32",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth33",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth180",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth181",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth182",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth183",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth184",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth185",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth186",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth187",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth188",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth189",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch1",
+	"ports":[
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth2",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth3",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth36",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth37",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth40",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth41",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth44",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth45",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth48",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth49",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth52",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth53",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth56",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth57",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth60",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth61",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth64",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth65",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth190",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth191",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth192",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth193",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth194",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth195",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth196",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth197",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth198",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth199",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch2",
+	"ports":[
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth6",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth7",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth38",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth39",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth68",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth69",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth72",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth73",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth76",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth77",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth80",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth81",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth84",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth85",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth88",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth89",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth92",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth93",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth200",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev10",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth201",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth202",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev11",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth203",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth204",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev12",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth205",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth206",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev13",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth207",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth208",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev14",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth209",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch3",
+	"ports":[
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth10",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth11",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth42",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth43",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth70",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth71",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth96",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth97",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth100",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth101",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth104",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth105",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth108",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth109",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth112",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth113",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth116",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth117",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth210",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev15",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth211",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth212",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev16",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth213",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth214",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev17",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth215",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth216",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev18",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth217",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth218",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev19",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth219",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch4",
+	"ports":[
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth14",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth15",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth46",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth47",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth74",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth75",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth98",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth99",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth120",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth121",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth124",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth125",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth128",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth129",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth132",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth133",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth136",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth137",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth220",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev20",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth221",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth222",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev21",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth223",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth224",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev22",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth225",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth226",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev23",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth227",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth228",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev24",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth229",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch5",
+	"ports":[
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth18",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth19",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth50",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth51",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth78",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth79",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth102",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth103",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth122",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth123",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth140",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth141",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth144",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth145",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth148",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth149",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth152",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth153",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth230",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev25",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth231",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth232",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev26",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth233",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth234",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev27",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth235",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth236",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev28",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth237",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth238",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev29",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth239",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch6",
+	"ports":[
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth22",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth23",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth54",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth55",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth82",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth83",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth106",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth107",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth126",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth127",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth142",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth143",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth156",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth157",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth160",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth161",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth164",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth165",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth240",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev30",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth241",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth242",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev31",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth243",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth244",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev32",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth245",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth246",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev33",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth247",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth248",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev34",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth249",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch7",
+	"ports":[
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth26",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth27",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth58",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth59",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth86",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth87",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth110",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth111",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth130",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth131",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth146",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth147",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth158",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth159",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth168",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth169",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth172",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth173",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth250",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev35",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth251",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth252",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev36",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth253",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth254",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev37",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth255",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth256",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev38",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth257",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth258",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev39",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth259",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch8",
+	"ports":[
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth30",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth31",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth62",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth63",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth90",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth91",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth114",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth115",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth134",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth135",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth150",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth151",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth162",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth163",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth170",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth171",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth176",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth177",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth260",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev40",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth261",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth262",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev41",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth263",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth264",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev42",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth265",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth266",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev43",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth267",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth268",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev44",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth269",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+},
+	{
+	"defaultPortSpeed":125,
+	"scheduleType":"hypercycle",
+	"defaultTimeToTravel":1,
+	"name":"switch9",
+	"ports":[
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth34",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch0",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth35",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth66",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch1",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth67",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth94",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch2",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth95",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth118",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch3",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth119",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth138",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch4",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth139",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth154",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch5",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth155",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth166",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch6",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth167",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth174",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch7",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth175",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth178",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"switch8",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth179",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth270",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev45",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth271",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth272",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev46",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth273",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth274",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev47",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth275",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth276",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev48",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth277",
+	"cycleStart":0,
+	"guardBandSize":1
+},
+	{
+	"connectsTo":"switch9",
+	"timeToTravel":1,
+	"scheduleType":"microcycle",
+	"maximumSlotDuration":50,
+	"name":"eth278",
+	"cycleStart":0
+},
+	{
+	"connectsTo":"dev49",
+	"timeToTravel":1,
+	"maximumSlotDuration":50,
+	"portSpeed":125,
+	"name":"eth279",
+	"cycleStart":0,
+	"guardBandSize":1
+}]
+}]
+}

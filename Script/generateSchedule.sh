@@ -39,13 +39,12 @@ then
 else
   echo "${1}"
   PROGRAM_NAME=GenerateScheduleJSONInput.java
+  
 
   javac -classpath ".:${THE_CLASSPATH}" $PROGRAM_NAME
   wait
 
-  echo "${1}"
-
-  java -classpath ".:${THE_CLASSPATH}" "${PROGRAM_NAME::-5}" "$1" > output.txt
+  java -classpath ".:${THE_CLASSPATH}" "${PROGRAM_NAME:0:${#PROGRAM_NAME}-5}" "$1" > output.txt
 
   rm "GenerateScheduleJSONInput.class"
 fi

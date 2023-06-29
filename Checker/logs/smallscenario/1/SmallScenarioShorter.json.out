@@ -1,0 +1,73 @@
+Z3 Major Version: 4
+Z3 Full Version: 4.8.11.0
+Z3 Full Version String: Z3 4.8.11.0
+
+==================================================
+[CREATING FRAGMENTS AND SETTING RULES]
+- Creating network
+Alert: First packet of flow flow1 must have enough time to leave source. Making first sending time a variable.
+Time taken to set the rules: 0.38513628 seconds
+ 
+
+==================================================
+[RULES SET. CHECKING SOLVER]
+Current time of the day: 10:20:13.537681
+Time taken on solving: 1.2949759 seconds 
+Number of assertions: 240
+
+==================================================
+[DATA LOGGING]
+- Model generated successfully.
+
+
+
+
+>>>> INFORMATION OF SWITCH: switch0 <<<<
+    Port list - 
+        => Port name:       eth0
+        Connects to:     dev0
+        Cycle start:    0.0
+        Cycle duration: 200.0
+        Fragments:       flow1Fragment1, 
+        Priority number: 7
+          Index 0 Slot start:      18.125
+          Index 0 Slot duration:   10.0
+        ------------------------
+
+
+
+>>>> INFORMATION OF FLOW0 <<<<
+
+    Total number of packets scheduled: 1
+    Path tree of the flow:
+        Path to dev0: dev1, switch0(flow1Fragment1), dev0, 
+
+
+    Packets heading to dev0:
+       Flow firstDepartureTime of packet 0: 10.0
+       Flow lastScheduledTime of packet 0:  28.125
+       Calculated average Latency: 18.125
+       Method average Latency: 28.125
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 18.125
+
+
+
+==================================================
+[RESULTS SUMMARY]
+
+flow1 average latency: 28.125
+flow1 average jitter: 0.0
+
+Total number of scheduled packets: 1
+Overall average latency: 28.125
+Overall average jitter: 0.0
+
+==================================================
+
+Time taken on logging: 0.7283984 seconds
+
+==================================================
+Execution time: 6.5809493 seconds
+ 

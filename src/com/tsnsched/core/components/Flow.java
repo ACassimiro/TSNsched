@@ -1,19 +1,7 @@
 package com.tsnsched.core.components;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -28,6 +16,7 @@ import java.util.List;
 import com.microsoft.z3.*;
 import com.tsnsched.core.interface_manager.Printer;
 import com.tsnsched.core.network.Network;
+import com.tsnsched.core.network.NetworkProperties;
 import com.tsnsched.core.nodes.Device;
 import com.tsnsched.core.nodes.Switch;
 import com.tsnsched.core.nodes.TSNSwitch;
@@ -48,12 +37,13 @@ public class Flow implements Serializable {
 	// TODO: CHECK FUNCTIONS FOR UNICAST FLOWS
 
 	private Boolean isModifiedOrCreated = false;
+	private NetworkProperties modificationType;
 
 	private static final long serialVersionUID = 1L;
 	static int instanceCounter = 0;
 	private int instance = 0;
 
-	private Printer printer;    
+	private transient Printer printer;    
     
 	protected String name;
     private int type = 0;
@@ -99,6 +89,57 @@ public class Flow implements Serializable {
      */
     public Flow() {
         
+    }
+
+    public Flow(Network net, Flow flow) {
+        this.instance = flow.getInstance();
+        this.name = flow.getName();
+        this.type = flow.getType();
+        this.flowFirstSendingTime = flow.getFlowFirstSendingTime();
+        this.flowSendingPeriodicity = flow.getFlowSendingPeriodicity();
+
+
+        this.startDevice = net.getDevice(flow.getStartDeviceName());
+        for(Device dev : flow.getEndDeviceList()){
+            this.endDeviceList.add(net.getDevice(dev.getName()));
+        }
+
+        if(this.type == 0){
+            this.path = new ArrayList<Switch>();
+            for(Switch swt : flow.getPath()) {
+                this.path.add(net.getSwitch(swt.getName()));
+            }
+            flowFragments = new ArrayList<FlowFragment>();
+        } else {
+            this.pathTree = new PathTree();
+            PathNode node = flow.getPathTree().getRoot();
+            this.clonePathTree(node, net);
+        }
+    }
+
+    public void clonePathTree(PathNode node, Network net) {
+
+        if(node.getChildren().size()==0){
+            return;
+        }
+
+        String nodeObjectName = (node.getNode() instanceof Device ? ((Device) node.getNode()).getName() : ((TSNSwitch) node.getNode()).getName());
+
+        for(PathNode child : node.getChildren()) {
+            String childObjectName = (child.getNode() instanceof Device ? ((Device) child.getNode()).getName() : ((TSNSwitch) child.getNode()).getName());
+
+            if(node.getNode() instanceof Device && child.getNode() instanceof TSNSwitch) {
+                this.addToPath(net.getDevice(nodeObjectName), net.getSwitch(childObjectName));
+            } else if(node.getNode() instanceof TSNSwitch && child.getNode() instanceof TSNSwitch) {
+                this.addToPath(net.getSwitch(nodeObjectName), net.getSwitch(childObjectName));
+            } else if(node.getNode() instanceof TSNSwitch && child.getNode() instanceof Device) {
+                this.addToPath(net.getSwitch(nodeObjectName), net.getDevice(childObjectName));
+            }
+
+
+        }
+
+
     }
     
     
@@ -251,7 +292,8 @@ public class Flow implements Serializable {
     
     public void convertUnicastFlow() {
         // AVOID USING THE ARRAY LIST
-        // TODO: REMOVE OPTION TO DISTINGUISH BETWEEN UNICAST AND MULTICAST LATER
+
+
         if(this.type == UNICAST) {
             LinkedList<PathNode> nodeList;
             
@@ -330,7 +372,7 @@ public class Flow implements Serializable {
             this.nodeToZ3(ctx, this.pathTree.getRoot(), null);
             
         }
-       	
+
     }
     
     /**
@@ -391,6 +433,8 @@ public class Flow implements Serializable {
 
                 if(((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).checkIfAutomatedApplicationPeriod()) {
                     numberOfPackets = (int) (((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize()/this.flowSendingPeriodicity);
+                    //System.out.println("defhypercycle" + ((TSNSwitch)auxN.getNode()).getPortOf(flowFrag.getNextHop()).getDefinedHyperCycleSize());
+                    //System.out.println("sending prd: "+ this.flowSendingPeriodicity);
                     flowFrag.setNumOfPacketsSent(numberOfPackets);
                 }
 
@@ -408,8 +452,8 @@ public class Flow implements Serializable {
                         /**/
                         flowFrag.addDepartureTimeZ3(
                                 (RealExpr) ctx.mkAdd(
-                                        this.flowFirstSendingTimeZ3,
-                                        ctx.mkReal(Double.toString(this.flowSendingPeriodicity * i))
+                                        (RealExpr)this.flowFirstSendingTimeZ3,
+                                        (RealExpr)ctx.mkReal(Double.toString(this.flowSendingPeriodicity * i))
                                 )
                         );
                         /**/
@@ -534,7 +578,10 @@ public class Flow implements Serializable {
         // Setting extra flow properties
         flowFrag.setFragmentPriorityZ3(ctx.mkIntConst(flowFrag.getName() + "Priority"));
         flowFrag.setPacketPeriodicityZ3(this.flowSendingPeriodicityZ3);
+        flowFrag.setFlowSendingPeriodicity(this.flowSendingPeriodicity);
         flowFrag.setPacketSizeZ3(ctx.mkReal(Double.toString(this.packetSize)));
+        flowFrag.setPacketSize(this.packetSize);
+        
 
         /*
          * If index of current switch = last switch in the path, then 
@@ -617,13 +664,13 @@ public class Flow implements Serializable {
         double firstPortCycleDuration = getFirstHopCycleDuration();
 
         if(this.getPacketSize()/firstPortSpeed >= this.flowFirstSendingTime && (this.flowFirstSendingTime>=0)){
-            this.printer.printIfLoggingIsEnabled("Alert: First packet of flow " + this.name + " must have enough time to leave source. Making first sending time a variable.");
+            //this.printer.printIfLoggingIsEnabled("Alert: First packet of flow " + this.name + " must have enough time to leave source. Making first sending time a variable.");
             this.flowFirstSendingTime = -1;
         }
 
 
         if(this.flowFirstSendingTime >= 0){
-            this.printer.printIfLoggingIsEnabled("Alert: " + this.name + " Assert first sending time to " + this.flowFirstSendingTime);
+            //this.printer.printIfLoggingIsEnabled("Alert: " + this.name + " Assert first sending time to " + this.flowFirstSendingTime);
 
             solver.add(
                 ctx.mkEq(
@@ -646,7 +693,7 @@ public class Flow implements Serializable {
         );
         /**/
 
-        /**/
+        /*
         //this.printer.printIfLoggingIsEnabled(
         solver.add(
             ctx.mkLe(
@@ -816,6 +863,7 @@ public class Flow implements Serializable {
      */
     
     public void setUpPeriods(PathNode node) {
+
     	if(node.getChildren().isEmpty()) {
 			return;
     	} else if (node.getNode() instanceof Device) {
@@ -1601,13 +1649,18 @@ public class Flow implements Serializable {
 					this.numOfPacketsSentInFragment = frag.getNumOfPacketsSent();
                 }
 				
-				// this.printer.printIfLoggingIsEnabled("On node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");			
-				// this.printer.printIfLoggingIsEnabled("Node has: " + node.getFlowFragments().size() + " frags");
-				// this.printer.printIfLoggingIsEnabled("Node has: " + node.getChildren().size() + " children");
-				// for(PathNode n : node.getChildren()) {
-				// 		this.printer.printIfLoggingIsEnabled("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
-				// }
-				
+				/*
+				System.out.println("\n\nOn node " + ((TSNSwitch)node.getNode()).getName() + " trying to reach children");			
+				 System.out.println("Node has: " + node.getFlowFragments().size() + " frags");
+				 System.out.println("Node has: " + node.getChildren().size() + " children");
+				 for(PathNode n : node.getChildren()) {
+					 System.out.println("Frag leads to: " + frag.getNextHop());
+				 }
+				 for(PathNode n : node.getChildren()) {
+					 System.out.println("Child is a: " + (n.getNode() instanceof Device ? "Device" : "Switch"));
+				 }
+				*/
+				 
 				this.setNumberOfPacketsSent(node.getChildren().get(index));
 				index = index + 1;
 			}
@@ -1673,6 +1726,7 @@ public class Flow implements Serializable {
         if(this.flowSendingPeriodicity == -1) {
             this.flowSendingPeriodicity = startDevice.getPacketPeriodicity();
         }
+
 
         if(this.type == this.PUBLISH_SUBSCRIBE) {
         	PathTree pathTree = new PathTree();
@@ -1897,6 +1951,17 @@ public class Flow implements Serializable {
 
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
+	}
+
+
+	
+	public NetworkProperties getModificationType() {
+		return this.modificationType;
+	}
+
+
+	public void setModificationType(NetworkProperties modificationType) {
+		this.modificationType = modificationType;
 	}
 
 }

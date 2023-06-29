@@ -149,3 +149,4 @@ printf "${CHECK} TSNSched example generated.\n"
 confirm "Open logs now? [y/N]" && openLogs
 
 printf "${PARTY} End of script\n"
+

@@ -1,0 +1,260 @@
+Z3 Major Version: 4
+Z3 Full Version: 4.8.11.0
+Z3 Full Version String: Z3 4.8.11.0
+
+==================================================
+[CREATING FRAGMENTS AND SETTING RULES]
+- Creating network
+Alert: First packet of flow flow0 must have enough time to leave source. Making first sending time a variable.
+Alert: First packet of flow flow1 must have enough time to leave source. Making first sending time a variable.
+Time taken to set the rules: 0.7779348 seconds
+ 
+
+==================================================
+[RULES SET. CHECKING SOLVER]
+Current time of the day: 11:03:02.560487
+Time taken on solving: 0.9484644 seconds 
+Number of assertions: 4344
+
+==================================================
+[DATA LOGGING]
+- Model generated successfully.
+
+
+
+
+>>>> INFORMATION OF SWITCH: switch0 <<<<
+    Port list - 
+        => Port name:       eth13
+        Connects to:     switch4
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment1, 
+        Priority number: 7
+          Index 0 Slot start:      8.574
+          Index 0 Slot duration:   0.578
+        ------------------------
+        => Port name:       eth49
+        Connects to:     switch13
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment2, 
+        Priority number: 1
+          Index 0 Slot start:      8.578
+          Index 0 Slot duration:   9.13
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch1 <<<<
+    Port list - 
+        => Port name:       eth427
+        Connects to:     dev3
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment3, 
+        Priority number: 7
+          Index 0 Slot start:      0.04
+          Index 0 Slot duration:   17.688
+        ------------------------
+        => Port name:       eth429
+        Connects to:     dev4
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment4, 
+        Priority number: 6
+          Index 0 Slot start:      17.15
+          Index 0 Slot duration:   0.578
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch4 <<<<
+    Port list - 
+        => Port name:       eth445
+        Connects to:     dev12
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment3, 
+        Priority number: 7
+          Index 0 Slot start:      17.154
+          Index 0 Slot duration:   0.576
+        ------------------------
+        => Port name:       eth447
+        Connects to:     dev13
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment4, 
+        Priority number: 6
+          Index 0 Slot start:      17.154
+          Index 0 Slot duration:   0.576
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch6 <<<<
+    Port list - 
+        => Port name:       eth457
+        Connects to:     dev18
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment5, 
+        Priority number: 1
+          Index 0 Slot start:      17.15
+          Index 0 Slot duration:   0.578
+        ------------------------
+        => Port name:       eth459
+        Connects to:     dev19
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment6, 
+        Priority number: 1
+          Index 0 Slot start:      17.15
+          Index 0 Slot duration:   0.578
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch9 <<<<
+    Port list - 
+        => Port name:       eth87
+        Connects to:     switch1
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment1, 
+        Priority number: 7
+          Index 0 Slot start:      0.008
+          Index 0 Slot duration:   9.144
+        ------------------------
+        => Port name:       eth287
+        Connects to:     switch6
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow0Fragment2, 
+        Priority number: 1
+          Index 0 Slot start:      8.574
+          Index 0 Slot duration:   0.578
+        ------------------------
+
+
+>>>> INFORMATION OF SWITCH: switch13 <<<<
+    Port list - 
+        => Port name:       eth499
+        Connects to:     dev39
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment5, 
+        Priority number: 1
+          Index 0 Slot start:      17.152
+          Index 0 Slot duration:   0.578
+        ------------------------
+        => Port name:       eth501
+        Connects to:     dev40
+        Cycle start:    0.0
+        Cycle duration: 2000.0
+        Fragments:       flow1Fragment6, 
+        Priority number: 1
+          Index 0 Slot start:      17.156
+          Index 0 Slot duration:   0.576
+        ------------------------
+
+
+
+>>>> INFORMATION OF FLOW0 <<<<
+
+    Total number of packets scheduled: 6
+    Path tree of the flow:
+        Path to dev3: dev29, switch9(flow0Fragment1), switch1(flow0Fragment3), dev3, 
+        Path to dev4: dev29, switch9(flow0Fragment1), switch1(flow0Fragment4), dev4, 
+        Path to dev18: dev29, switch9(flow0Fragment2), switch6(flow0Fragment5), dev18, 
+        Path to dev19: dev29, switch9(flow0Fragment2), switch6(flow0Fragment6), dev19, 
+
+
+    Packets heading to dev3:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.728
+       Calculated average Latency: 17.152
+       Method average Latency: 17.728
+       Method average Jitter: 0.0
+
+    Packets heading to dev4:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.728
+       Calculated average Latency: 17.152
+       Method average Latency: 17.728
+       Method average Jitter: 0.0
+
+    Packets heading to dev18:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.728
+       Calculated average Latency: 17.152
+       Method average Latency: 17.728
+       Method average Jitter: 0.0
+
+    Packets heading to dev19:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.728
+       Calculated average Latency: 17.152
+       Method average Latency: 17.728
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 17.152
+
+
+>>>> INFORMATION OF FLOW1 <<<<
+
+    Total number of packets scheduled: 6
+    Path tree of the flow:
+        Path to dev12: dev2, switch0(flow1Fragment1), switch4(flow1Fragment3), dev12, 
+        Path to dev13: dev2, switch0(flow1Fragment1), switch4(flow1Fragment4), dev13, 
+        Path to dev39: dev2, switch0(flow1Fragment2), switch13(flow1Fragment5), dev39, 
+        Path to dev40: dev2, switch0(flow1Fragment2), switch13(flow1Fragment6), dev40, 
+
+
+    Packets heading to dev12:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.73
+       Calculated average Latency: 17.154
+       Method average Latency: 17.73
+       Method average Jitter: 0.0
+
+    Packets heading to dev13:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.73
+       Calculated average Latency: 17.154
+       Method average Latency: 17.73
+       Method average Jitter: 0.0
+
+    Packets heading to dev39:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.73
+       Calculated average Latency: 17.154
+       Method average Latency: 17.73
+       Method average Jitter: 0.0
+
+    Packets heading to dev40:
+       Flow firstDepartureTime of packet 0: 0.576
+       Flow lastScheduledTime of packet 0:  17.732
+       Calculated average Latency: 17.156
+       Method average Latency: 17.732
+       Method average Jitter: 0.0
+
+    Calculated average latency of all devices: 17.1545
+
+
+
+==================================================
+[RESULTS SUMMARY]
+
+flow0 average latency: 17.728
+flow0 average jitter: 0.0
+flow1 average latency: 17.7305
+flow1 average jitter: 0.0
+
+Total number of scheduled packets: 12
+Overall average latency: 17.72925
+Overall average jitter: 0.0
+
+==================================================
+
+Time taken on logging: 1.5544717 seconds
+
+==================================================
+Execution time: 4.736299 seconds
+ 

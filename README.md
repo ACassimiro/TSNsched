@@ -19,6 +19,8 @@ Time Sensitive Networking**](Academic%20work/FMCAD%202019%20-%20TSNsched:%20Auto
   * [Executing the program](#executing-the-program-1)
   * [The output](#the-output-1)
 - [Generating topologies](#generating-topologies)
+  * [Repository files:](#repository-files-)
+  * [Execution instructions for the Z3 code](#execution-instructions-for-the-z3-code)
 - [Simulation Parser](#simulation-parser)
   * [Generating Simulation Files](#generating-simulation-files)
   * [Running the Simulation](#running-the-simulation)
@@ -71,33 +73,121 @@ You can also generate other topologies using our flow generator. [Generating top
 * Eclipse IDE 4.8.0
 
 
+## The Input
+
+Internally, TSNsched is capable of perceiving the network as a set of devices, switches and data streams (commonly referred as flows) and these elements can be represented with a JSON object. Example topologies containing possible configurations for TSNsched can be found in the [scripts folder](Script/).
+
+The description of the fields of the json elements describing the network topology (input) is shown bellow:
+
+### Device
+- name: name of the device;
+- defaultPacketSize: (optional) default size of every frame sent by this device. Can be overridden by the packetSize variable on the flow object;
+- defaultPacketPeriodicity: (optional) default interval between frame sendings expressed as time. Can be overridden by the packetPeriodicity variable in the flow object;
+- defaultHardConstraintTime: (optional) default maximum latency of every frame sent by this device expressed as time. Can be overridden by the hardConstraintTime variable in the flow object;
+- defaultFirstSendingTime: (optional) default moment in time in which the first packet of the device is sent expressed as time. Can be overridden by the firstSendingTime variable in the flow object. If the device is the source of multiple flows and the flows do not override the first sending time with different values, or if the transmission of its first packets overlap, this variable will be ignored and a new value for it will be given as output for both flows;
+
+### [INPUT]
+
+### TSNSwitch
+- name: name of the switch;
+- defaultTimeToTravel: (optional) default time taken to travel between the port of the switch and the egress queue of the node it connects to. Can be overridden by the timeToTravel variable of the object. Expressed as time;
+- defaultPortSpeed: (optional) default transmission speed of the ports of the switch. Can be overridden by the portSpeed variable of the Port object. Expressed as size per time;
+- defaultGuardBandSize: (optional) default size of the guard bands in the port. Can be overridden by the guardBandSize variable in the Port object. Expressed as size;
+- defaultScheduleType: (optional) default schedule type of all the ports. Can be overridden by the scheduleTypeVariable in the Port object;
+- defaultSlotArrangementMode: (optional) default slot arrangement mode of all the ports of the switch. It can be overridden by the slotArrangementMode variable on the Port;
+- port* [connectsTo] 
+    - name: name of the port element;
+    - connectsTo: name of the node it connects to;
+    - timeToTravel: (optional) time taken to travel between the port of the switch and the port of the node it connects to. Overrides the default of the switch. Expressed as time;
+    - guardBandSize: (optional) size of the guard bands in the port. Overrides the default guard band size of the switch. Expressed as size;
+    - maximumSlotDuration: (optional) maximum size of all the transmission windows (space of time between the egress gate opening and closing on a port) of the port. Overrides the default maximum slot duration of the switch. Expressed as time;
+    - cycleStart: (optional) first cycle start of the cycle of the port;
+
+### Flow 
+- name: name of the flow
+- fixedPriority: (optional) a boolean variable which, if set to true, will force the flow to have the same priority over all its hops. If set to false, the priority of the flow can change from hop to hop, considering that the network has support for this feature (based on the 802.1Qci standard);
+- priorityValue: (optional) an integer variable where its value ranges from -1 to 7. If it is -1, this variable is given as output. If it is any other value, as long as the fixedPriority variable is set to true, the scheduler will force the flow to be scheduled on the priority number specified by this variable;
+- firstSendingTime: (optional) moment in time in which the first frame sent in this stream of frames is sent. Overrides the defaultFirstSendingTime of the Device object. If the source device is also the source of another flow, and the flows do not override the first sending time with different values, or if the transmission of its first packets overlap, the input value for this variable will be ignored and a new value for it will be given as output. Expressed as time;
+- packetPeriodicity: (optional) interval between frame sendings expressed as time. Overrides the defaltPacketPeriodicity variable in the Device object;
+- hardConstraintTime: maximum latency of the packets of that flow;
+- maximumJitter: (optional) maximum variation of the latency of the packets of that flow;
+- sourceDevice: name of the source device
+- endDevice* [name] - List of names of end devices;
+    - name: name of end device;
+- hop* [nextNodeName]
+    - currentNodeName: name of the node from where the packet departs on the hop;
+    - nextNodeName: next node in the frame’s path;
+   
+### [OUTPUT]
+
+### Flows
+- name: name of the flow
+- averageLatency: average latency of all the packets of the flow
+- jitter: average variation of all the packets of the flow
+- firstSendingTime: moment in time where the first packet of the flow is sent
+- priority: (if fixed priority is true in the input) priority of the packets of the flow
+- hops* (used to specify the priority of each hop, if the flow has no fixed priority)
+     - currentNodeName: name of the current node in the path
+     - nextNodeName: name of the next node in the path
+     - priority: priority of the stream in the egress port of the current node
+
+### Switch
+- name: name of the switch
+- ports* [name]
+      - cycleDuration: duration of the cycle in the port
+      - firstCycleStart: moment in time where the first cycle starts in the port  
+      - prioritySlotData*
+            - priority: priority number of the transmission window
+            - slotsData*
+                  - slotDuration: duration of the transmission window     
+                  - slotStart: moment in time where the transmission window starts
+
+
+
 ## Command Line Usage
 
-The files for the command line usage of this project are all stored in the folder "Script" in this repository. They can be downloaded and used separately.
+Primarily, TSNsched is compiled as a executable .jar file. This file can be found in the [libs](libs/) folder under the name of TSNsched.jar.
 
-### The Input
+To execute TSNsched, please run the following command:
 
-For the input of the command line version of this project, the user must provide a java file with a method called "runTestCase()". This function must implement the network and call the generateSchedule(Network net) method from a TSNsched object. The user can then call methods of the flows and cycles to evaluate the latency, jitter, cycle duration, cycle start, etc.
+     java -jar TSNsched.jar INPUT_FILE_NAME
 
-If the user is not interested in building his own network, we also make available a topology generator, discussed later in this file. The output of this generator is already in the format accepted by the execution script. Samples generated by this tool can be found in the folder "TestCase" and are indentified by the .java extension.
+To use the provided sample file as input, replace INPUT_FILE_NAME with input.json.
+
+[comment]: <> (To use the functionality provided in this deliverable, please run the command above with the “-useIncremental” parameter.)
+
+By default, TSNsched will generate a file titled output.json, which contains the generated schedule organized into json elements. These elements have the necessary information to deploy the schedules in the topology hardware.
+
+TSNsched supports multiple parameters command line execution. The parameters and their description can be seen below:
+
+   - exportModel: Exports the SMT-solver model generated by TSNsched;
+   - generateSimulationFiles: Exports files used as input for simulating the generated schedule in omnet++; 
+   - serializeNetwork: Serializes the network configuration for future use. The schedule can be loaded by using the “-loadNetwork” parameter;
+   - loadNetwork: Used to load the serialized topology into the scheduler;
+   - enableConsoleOutput: Enables console output for debugging and visual feedback of the tool;
+   - enableLoggerFile: Generates a readable file containing the information of the schedule;
+   - disableJSONOutput: Used to stop the tool from generating the JSON output;
+[comment]: <> (   - useIncremental: When used, enable the incremental scheduling approach to be used.)
+
+Alternatively, this project accompanies a script to execute the scheduler with the necessary configuration for exporting human readable output, and the files used in this approach are stored in the folder [Script](Script/) in this repository. They can be downloaded and used separately.
+
+If the user is not interested in building his own network, we also make available a topology generator, discussed later in this file. The output of this generator is already in the format accepted by the execution script. Samples generated by this tool can be found in the folder "TestCase" and are indentified by the .java extension. We discourage the usage of the input for TSNsched as java files, as it is gradually becoming deprecated in favor of the json input.
 
 This file must be placed inside the folder "Script". The name of the file does not matter, as it will be an input on the command line.
 
-### Executing the program
+For the script usage, a script was developed in order to compile the Java file containing the network topology, execute it and handle the input and output files.
 
-For the command line usage, a script was developed in order to compile the Java file containing the network topology, execute it and handle the input and output files.
-
-Once the input file is placed in the same folder of the script, the user must execute the script giving the java file containing the topology as an argument. Given that the name of the file is "example.java", the command will look like the following:
+Once the input file is placed in the same folder of the script, the user must execute the script giving the java file containing the topology as an argument. Given that the name of the file is "example.json", the command will look like the following:
 
 ```
-./generateSchedule.sh example.java
+./generateSchedule.sh example.json
 ```
 
 For practical reasons, the given file will be duplicated, renamed, parsed by the script in order to adapt the code. Then, the files will be compiled and executed with references to the Z3 and TSNsched libraries, placed on the subfolder "libs". The 2 output files will be generated and placed on the folder "output" under the the same name of the argument given in the execution of the switch, but now with the extra extensions .out and .log.   
 
-### The output
+### Complimentary output
 
-The output of this process can be found in the "output" subfolder. If the network topology was specified on a file called "topology.java", then the user should be able to find two new files in the output folder called "topology.java.out" and "topology.java.log", if there was no problem executing the script.
+The output of this process can be found in the "output" subfolder. If the network topology was specified on a file called "topology.json", then the user should be able to find two new files in the output folder called "topology.java.out" and "topology.java.log", if there was no problem executing the script.
 
 The files with the extension .out contain the printed model generated by Z3 with the extra output created by the user (optional).
 
@@ -198,9 +288,36 @@ scheduleGenerator.generateSchedule(Network net); // The network is the input for
 ```
 ### The output
 
-A "log.txt" file must be generated within the project folder. This file contains the information about the topology, as well as the Z3 values generated for the properties of the network (such as cycle start and duration, priorities and packet times).
+By default, TSNsched will generate a .json output file containing the information about the flows, its individual packets and the gate control list information of the switches. The output is structured as follows:
 
-After setting up the network and generating the schedule, the cycles and flows are now able to return numeric data to the user:
+
+### [Flows]
+
+- name: name of the flow
+- averageLatency: average latency of all the packets of the flow
+- jitter: average variation of all the packets of the flow
+- firstSendingTime: moment in time where the first packet of the flow is sent
+- priority: (if fixed priority is true in the input) priority of the packets of the flow
+- hops* (used to specify the priority of each hop, if the flow has no fixed priority)
+     - currentNodeName: name of the current node in the path
+     - nextNodeName: name of the next node in the path
+     - priority: priority of the stream in the egress port of the current node
+
+### [Switch]
+- name: name of the switch
+- ports* [name]
+      - cycleDuration: duration of the cycle in the port
+      - firstCycleStart: moment in time where the first cycle starts in the port  
+      - prioritySlotData*
+            - priority: priority number of the transmission window
+            - slotsData*
+                  - slotDuration: duration of the transmission window     
+                  - slotStart: moment in time where the transmission window starts
+
+
+If the logging functionality is enabled on input, a "log.txt" file must be generated within the project folder. This file contains the information about the topology, as well as the Z3 values generated for the properties of the network (such as cycle start and duration, priorities and packet times).
+
+If importing TSNsched in a library in your project, it is possible to return numeric data to the user accessing the topology object as follows:
 
 ```
 // Retreiving the departure time from a packet in a publish subscribe flow 
@@ -245,7 +362,7 @@ TSNsched offers means of validation through the translation of the values contai
 
 ### Generating Simulation Files
 
-The generation of simulation files is fully automated. The user only needs to enable it at the topology file with the command **scheduleGenerator.generateSimulationFiles(true);**  At the end of the default TSNsched scheduling generation, the creation of the necessary files for the simulation begins, being these files:
+The generation of simulation files is fully automated. At the end of the default TSNsched scheduling generation, the creation of the necessary files for the simulation begins, being these files:
 
 * Network Description (.ned)
 * Initialization (.ini)

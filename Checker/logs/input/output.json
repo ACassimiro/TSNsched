@@ -1,0 +1,46 @@
+{
+  "flows": [
+    {
+      "averageLatency": 25.25,
+      "jitter": 0.0,
+      "name": "flow1",
+      "firstSendingTime": 12.0,
+      "hops": [
+        {
+          "nextNodeName": "endDevice",
+          "currentNodeName": "switch1",
+          "priority": 7
+        }
+      ]
+    }
+  ],
+  "switches": [
+    {
+      "name": "switch1",
+      "ports": [
+        {
+          "cycleDuration": 0.0,
+          "name": "eth0",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": []
+        },
+        {
+          "cycleDuration": 1000.0,
+          "name": "eth1",
+          "firstCycleStart": 0.0,
+          "prioritySlotsData": [
+            {
+              "slotsData": [
+                {
+                  "slotDuration": 12.0,
+                  "slotStart": 13.25
+                }
+              ],
+              "priority": 7
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

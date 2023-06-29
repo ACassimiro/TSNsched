@@ -32,6 +32,8 @@ public class JSONParser implements GenericParser {
 	String fileContent = "";
 
 	private Printer printer;
+
+	private Boolean enablePacketTimeOutput = false;
 	
 
 
@@ -192,10 +194,16 @@ public class JSONParser implements GenericParser {
 	    								)
 		    						);
 	    		    			}
+
+								if(portObject.has("bufferSize")) {
+									port.setBufferSize(
+										portObject.get("bufferSize").getAsInt()
+									);
+								}
 	    		    			
 	    		    			if(portObject.has("scheduleType")) {
 	    		    				String scheduleType = portObject.get("scheduleType").getAsString().toLowerCase();
-	    		    				
+
 	    		    				switch(scheduleType) {
 	    		    					case "hypercycle":
 	    		    						port.clearScheduleType();
@@ -335,8 +343,12 @@ public class JSONParser implements GenericParser {
 	    			Flow flow;
 	    			
 	    			flow = new Flow(flowObject.get("name").getAsString(), Flow.PUBLISH_SUBSCRIBE);
-	    			
-	    			if(flowObject.has("packetPeriodicity")) {
+
+					if(flowObject.has("sourceDevice")) {
+						flow.setStartDevice(net.getDevice(flowObject.get("sourceDevice").getAsString()));
+					}
+
+					if(flowObject.has("packetPeriodicity")) {
 	    				flow.setFlowSendingPeriodicity(
     						this.convertTimeUnits(
 								flowObject.get("packetPeriodicity").getAsDouble(),
@@ -370,11 +382,7 @@ public class JSONParser implements GenericParser {
 	    			if(flowObject.has("priorityValue")) {
 	    				flow.setPriorityValue(flowObject.get("priorityValue").getAsInt());
 	    			}
-	    			
-	    			if(flowObject.has("sourceDevice")) {
-	    				flow.setStartDevice(net.getDevice(flowObject.get("sourceDevice").getAsString()));
-	    			}
-	    			
+
 
 	    			if(flowObject.has("maximumJitter")) {
 	    				flow.setFlowMaximumJitter(
@@ -788,6 +796,27 @@ public class JSONParser implements GenericParser {
 		
 	}
 	
+	private void packetTimeInfoGathering(Flow flow, ArrayList<Map<String, Object>> packetTimeInfoList) {
+		for(PathNode node : flow.getPathTree().getLeaves()) {
+			Device dev = (Device) node.getNode();
+			for(FlowFragment frag : flow.getFlowFromRootToNode(dev)){
+				Map<String,Object> fragTimeInfoList = new HashMap<>();
+				ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+				for (int i=0; i<frag.getNumOfPacketsSent();i++) {
+					Map<String,Object> packetTimes = new HashMap<>();
+					packetTimes.put("packetNumber",i);
+					packetTimes.put("packet"+i+"DepartureTime", frag.getDepartureTime(i));
+					packetTimes.put("packet"+i+"ArrivalTime", frag.getArrivalTime(i));
+					packetTimes.put("packet"+i+"ScheduledTime", frag.getScheduledTime(i));
+					list.add(packetTimes);										
+				}
+				fragTimeInfoList.put(frag.getName(), list);
+				packetTimeInfoList.add(fragTimeInfoList);
+			}
+			
+		}
+	}
+
 	public ArrayList<Map<String, Object>> extractFlowInfoList(Network net) {
 
 		ArrayList<Map<String, Object>> flowInfoList = new ArrayList<Map<String, Object>>();
@@ -801,6 +830,12 @@ public class JSONParser implements GenericParser {
 			flowInfo.put("averageLatency", flow.getAverageLatency());			
 			flowInfo.put("jitter", flow.getAverageJitter());
 			
+			if(this.enablePacketTimeOutput) {
+				ArrayList<Map<String, Object>> packetTimeInfoList = new ArrayList<Map<String, Object>>();
+				this.packetTimeInfoGathering(flow, packetTimeInfoList);
+				flowInfo.put("packetTimes", packetTimeInfoList);
+			}
+
 			if(flow.isFixedPriority()) {
 				flowInfo.put("flowPriority", flow.getPriorityValue());
 			} else {
@@ -853,4 +888,14 @@ public class JSONParser implements GenericParser {
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
 	}
+
+	public Boolean getEnablePacketTimeOutput() {
+		return enablePacketTimeOutput;
+	}
+
+	public void setEnablePacketTimeOutput(Boolean enablePacketTimeOutput) {
+		this.enablePacketTimeOutput = enablePacketTimeOutput;
+	}
+
+	
 }

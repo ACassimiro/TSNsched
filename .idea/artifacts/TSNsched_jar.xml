@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="TSNsched:jar">
+    <output-path>$PROJECT_DIR$/..</output-path>
+    <root id="archive" name="TSNsched.jar">
+      <element id="module-output" name="TSNsched" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/z3-turnkey-4.8.12.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/gson-2.8.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/java-json.jar" path-in-jar="/" />
+      <element id="library" level="project" name="z3-turnkey-4.8.12" />
+    </root>
+  </artifact>
+</component>

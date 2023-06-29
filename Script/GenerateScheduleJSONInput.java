@@ -13,6 +13,7 @@ public class GenerateScheduleJSONInput {
 		
 		ScheduleGenerator gen = new ScheduleGenerator();
 		
+		gen.setParameters(args);
 		gen.generateSchedule(net);
 		parser.generateOutput(net);
 

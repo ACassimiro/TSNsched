@@ -1,19 +1,7 @@
 package com.tsnsched.core.components;
 //TSNsched uses the Z3 theorem solver to generate traffic schedules for Time Sensitive Networking (TSN)
 //
-//    Copyright (C) 2021  Aellison Cassimiro
-//    
-//    TSNsched is licensed under the GNU GPL version 3 or later:
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    TSNsched is licensed under the GNU GPL version 2 or later.
 //    
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -76,10 +64,8 @@ public class Cycle implements Serializable {
     private double maximumSlotDuration;
 
     private double cycleDuration;
-    private double cycleStart = -1;
+    private double cycleStart =-1;
 
-    private transient ArrayList<ArrayList<RealExpr>> slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
-	private transient ArrayList<ArrayList<RealExpr>> slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
     
     private ArrayList<Integer> slotsUsed = new ArrayList<Integer>();
     private ArrayList<ArrayList<Double>> slotStart = new ArrayList<ArrayList<Double>>();
@@ -92,7 +78,7 @@ public class Cycle implements Serializable {
     
     private int numOfSlots = 1;
     
-    SlotArrangementMode slotArrangementMode = SlotArrangementMode.AGRESSIVEDESCENT;
+    SlotArrangementMode slotArrangementMode = SlotArrangementMode.MAXCAPACITY;
 
 	private ArrayList<Integer> numOfSlotsPerPrt;
 
@@ -207,20 +193,7 @@ public class Cycle implements Serializable {
         // this.firstCycleStartZ3 = ctx.mkReal(Double.toString(0));
         // this.firstCycleStartZ3 = ctx.mkReal(Double.toString(firstCycleStart));
         this.maximumSlotDurationZ3 = ctx.mkReal(Double.toString(maximumSlotDuration));
-        
-        this.slotStartZ3 = new ArrayList<ArrayList<RealExpr>>();
-        this.slotDurationZ3 = new ArrayList<ArrayList<RealExpr>>();
-        
-        for(int i = 0; i < this.numOfPrts; i++) {
-        	this.slotStartZ3.add(new ArrayList<RealExpr>());
-        	this.slotDurationZ3.add(new ArrayList<RealExpr>());
-        	for(int j = 0; j < this.numOfSlots; j++) {
-        		this.slotStartZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "start"));
-        	}
-        	for(int j = 0; j < this.numOfSlots; j++) {
-        		this.slotDurationZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "duration"));
-        	}
-        }
+      
     }
     
     
@@ -236,7 +209,7 @@ public class Cycle implements Serializable {
      */
     public RealExpr cycleStartZ3(Context ctx, RealExpr index){
         return (RealExpr) ctx.mkITE( 
-                ctx.mkGe(index, ctx.mkInt(1)),
+                ctx.mkGe(index, (IntExpr) ctx.mkInt(1)),
                 ctx.mkAdd(
                         firstCycleStartZ3,
                         ctx.mkMul(cycleDurationZ3, index)
@@ -288,6 +261,25 @@ public class Cycle implements Serializable {
         
     }
     
+    public void resetSlots() {
+    	//System.out.println("Resetting slots of cycle " + this.name );
+		this.slotsUsed = new ArrayList<Integer>();
+		this.slotStart = new ArrayList<ArrayList<Double>>();
+		this.slotDuration = new ArrayList<ArrayList<Double>>();
+    }
+    
+    
+    public void debuggingCycle() {
+    	System.out.print("Slot used: ");
+    	for(int slotNum : this.slotsUsed) {
+    		System.out.print(slotNum + " ");
+    	}
+    	System.out.println();
+    	
+    	for(ArrayList<Double> slotStartList : this.slotStart) {
+    		System.out.println(slotStartList.size());
+    	}
+    }
     
     /**
      * [Method]: loadZ3
@@ -299,6 +291,20 @@ public class Cycle implements Serializable {
      * @param solver	Solver object to add constraints
      */
     public void loadZ3(Context ctx, Solver solver) {
+    	// maximumSlotDurationZ3 already started on toZ3;
+    	//System.out.println("Loading cycleDuration " + this.cycleDurationZ3 );
+//    	
+//    	if(this.cycleDurationZ3.toString().equals("cycle28Duration")) {
+//    		System.out.println("RESETANDO CICLO 28");
+//    	}
+//    	
+
+        this.cycleDurationZ3 = ctx.mkRealConst("cycle" + Integer.toString(instance) + "Duration");
+        this.firstCycleStartZ3 = ctx.mkRealConst("cycle" + Integer.toString(instance) + "Start");
+        // this.firstCycleStartZ3 = ctx.mkReal(Double.toString(0));
+        // this.firstCycleStartZ3 = ctx.mkReal(Double.toString(firstCycleStart));
+        this.maximumSlotDurationZ3 = ctx.mkReal(Double.toString(maximumSlotDuration));
+        
     	solver.add(
 			ctx.mkEq(
 				this.cycleDurationZ3,
@@ -312,36 +318,65 @@ public class Cycle implements Serializable {
 				ctx.mkReal(Double.toString(this.firstCycleStart))
 			)
 		);
-    	    	
+    	    	    	
 
-    	for(int prt : this.getSlotsUsed()) {
-    		
-    		// Where are the slot duration per priority instantiated? Must do it before loading
-    		
-    		for(int slotIndex = 0; slotIndex < this.numOfSlots; slotIndex++) {
+		for(int prt : this.getSlotsUsed()) {
+        		    		
+    		for(int slotIndex = 0; slotIndex < this.slotStart.get(this.slotsUsed.indexOf(prt)).size(); slotIndex++) {
+    			if(this.slotStart.get(this.slotsUsed.indexOf(prt)).get(slotIndex) < 0 ||
+    				 this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(slotIndex) <= 0) {
+    				continue;
+    			} 
+    			
+    			//System.out.println("On cycle " + this.name + " adding used slot previously " + prt + ": " + Double.toString(this.slotStart.get(this.slotsUsed.indexOf(prt)).get(slotIndex)));
+    			//System.out.println("On cycle " + this.name + " adding used slot previously for priority " + prt + ": " + Double.toString(this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(slotIndex)));
+    			//this.slotStartZ3.get(prt).add(ctx.mkReal(Double.toString(this.slotStart.get(this.slotsUsed.indexOf(prt)).get(slotIndex))));
+    			
+    			/*
+    			System.out.println(this.slotStartZ3(ctx, prt, slotIndex));
+    			System.out.println(this.slotDurationZ3(ctx, prt, slotIndex));
     			solver.add(
-					ctx.mkEq(
-						this.slotStartZ3.get(prt).get(slotIndex),
+					ctx.mkGe(
+						this.slotStartZ3(ctx, prt, slotIndex),
 						ctx.mkReal(Double.toString(this.slotStart.get(this.slotsUsed.indexOf(prt)).get(slotIndex)))	
 					)
 				);
-    		}
-    		
-    		/*
-    		for(int slotIndex = 0; slotIndex < this.numOfSlots; slotIndex++) {
     			solver.add(
-					ctx.mkEq(
-						this.slotDurationZ3.get(prt).get(slotIndex),
-						ctx.mkReal(Double.toString(this.slotDuration.get(prt).get(slotIndex)))	
+					ctx.mkGe(
+						this.slotDurationZ3(ctx, prt, slotIndex),
+						ctx.mkReal(Double.toString(this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(slotIndex)))	
 					)
 				);
+				/**/
+    			//this.slotDurationZ3.get(prt).add(ctx.mkReal(Double.toString(this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(slotIndex))));
+    			
     		}
-    		*/
+    		
     	}
-    	
-    	
-    	
+	
     }
+
+
+/*
+	public void createOpenSlots(Context ctx) {
+		// TODO Auto-generated method stub
+		
+		
+		for(int i = 0; i < this.numOfPrts; i++) {
+			if(this.slotStartZ3.size()-1<i) {
+	        	this.slotStartZ3.add(new ArrayList<RealExpr>());
+	        	this.slotDurationZ3.add(new ArrayList<RealExpr>());
+			}
+
+			for(int j = this.slotStartZ3.get(i).size(); j < this.numOfSlots; j++) {
+        		this.slotStartZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "start"));
+        	}
+        	for(int j = this.slotDurationZ3.get(i).size(); j < this.numOfSlots; j++) {
+        		this.slotDurationZ3.get(i).add(ctx.mkRealConst(this.name + "prt" + (i+1) + "slot" + (j+1) + "duration"));
+        	}
+        }
+	}
+	*/
     
     /*
      *  GETTERS AND SETTERS
@@ -455,12 +490,13 @@ public class Cycle implements Serializable {
     }
 
     public int getNumOfSlots(int prt) {
-    	//System.out.println("          Num of slots for priority " + prt + " is: " + numOfSlotsPerPrt.get(prt));
+//    	System.out.println("          Num of slots for priority " + prt + " is: " + numOfSlotsPerPrt.get(prt));
+//    	System.out.println("          Actual slot size for priority " + prt + " is: " + this.slotStart.get(prt).size());
+		
 		return numOfSlotsPerPrt.get(prt);
 	}
 
 	public void setNumOfSlots(int numOfSlots) {
-		
 		int currentNumOfSlots = numOfSlots;
 		
 		this.numOfSlotsPerPrt = new ArrayList<Integer>();
@@ -511,9 +547,10 @@ public class Cycle implements Serializable {
     }
     
     public ArrayList<Double> getSlotStartList(int prt) {
+    	//System.out.println("On " + this.name + " looking for " + prt);
         return this.slotStart.get(this.slotsUsed.indexOf(prt));
     }
-        
+    
     public double getSlotDuration(int prt, int index) {
         return this.slotDuration.get(this.slotsUsed.indexOf(prt)).get(index);
     }
@@ -531,9 +568,7 @@ public class Cycle implements Serializable {
 		this.portName = portName;
 	}
 
-	public RealExpr getSlotStartZ3(int prt, int slotNum) {
-		return this.slotStartZ3.get(prt).get(slotNum);
-	}
+	
 	
 	public String getName() {
 		return name;
@@ -564,4 +599,5 @@ public class Cycle implements Serializable {
 		return this.slotDurationZ3.get(prt).get(slotNum);
 	}
 	*/
+
 }

@@ -12,6 +12,8 @@ public class ParserManager {
 	private String inputFile = "";
 	private String fileContent = "";
 	private Printer printer;
+
+	private Boolean enablePacketTimeOutput = false;
 	
 	public ParserManager() {
 		;
@@ -49,6 +51,7 @@ public class ParserManager {
 				parser = new JSONParser(this.inputFile);
 				break;
 			default:
+				this.printer.printIfLoggingIsEnabled(this.getFirstNonWhitespace(content) + "");
 				this.printer.printIfLoggingIsEnabled("Input not recognized");
 				break;		
 		}
@@ -73,7 +76,7 @@ public class ParserManager {
 		} catch(Exception e) {
 			contentListOfLines = new ArrayList<String>();
 		}
-		
+
 		this.fileContent = "";
 		for(String line : contentListOfLines) {
 			this.fileContent += line;
@@ -99,6 +102,7 @@ public class ParserManager {
 	public void parseOutput(Network net) {
 		
 		JSONParser parser = new JSONParser();
+		parser.setEnablePacketTimeOutput(this.enablePacketTimeOutput);
 		parser.generateOutput(net);
 		
 	}
@@ -118,4 +122,14 @@ public class ParserManager {
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
 	}
+
+	public Boolean getEnablePacketTimeOutput() {
+		return enablePacketTimeOutput;
+	}
+
+	public void setEnablePacketTimeOutput(Boolean enablePacketTimeOutput) {
+		this.enablePacketTimeOutput = enablePacketTimeOutput;
+	}
+
+	
 }
