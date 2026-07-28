@@ -79,14 +79,14 @@ Internally, TSNsched is capable of perceiving the network as a set of devices, s
 
 The description of the fields of the json elements describing the network topology (input) is shown bellow:
 
+### [INPUT]
+
 ### Device
 - name: name of the device;
 - defaultPacketSize: (optional) default size of every frame sent by this device. Can be overridden by the packetSize variable on the flow object;
 - defaultPacketPeriodicity: (optional) default interval between frame sendings expressed as time. Can be overridden by the packetPeriodicity variable in the flow object;
 - defaultHardConstraintTime: (optional) default maximum latency of every frame sent by this device expressed as time. Can be overridden by the hardConstraintTime variable in the flow object;
 - defaultFirstSendingTime: (optional) default moment in time in which the first packet of the device is sent expressed as time. Can be overridden by the firstSendingTime variable in the flow object. If the device is the source of multiple flows and the flows do not override the first sending time with different values, or if the transmission of its first packets overlap, this variable will be ignored and a new value for it will be given as output for both flows;
-
-### [INPUT]
 
 ### TSNSwitch
 - name: name of the switch;
